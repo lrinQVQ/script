@@ -1,0 +1,24 @@
+#!/bin/bash
+read -p "max user: " port_num
+echo ""
+
+read -p "Encryption(default:chacha20-ietf-poly1305): " encryption
+
+if [ -z $encryption ]
+then
+encryption=chacha20-ietf-poly1305
+fi
+
+read -p "Run User(default:nobody): " run_user
+
+if [ -z $run_user ]
+then
+run_user=nobody
+fi
+
+for ((num=1;num<=$port_num;num++))
+do
+read -p "port$num: " port
+read -p "passwd$num: " passwd
+ss-server -s 0.0.0.0 -p $port -k $passwd -m $encryption -a $run_user -u -6 -d 8.8.8.8 --plugin obfs-server --plugin-opts "obfs=tls" -f /root/ss/shadowsocks-$num.pid
+done
