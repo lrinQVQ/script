@@ -16,9 +16,6 @@ then
 run_user=nobody
 fi
 
-for ((num=1;num<=$port_num;num++))
-do
-read -p "port$num: " port
-read -p "passwd$num: " passwd
-ss-server -s 0.0.0.0 -p $port -k $passwd -m $encryption -a $run_user -u -6 -d 8.8.8.8 --plugin obfs-server --plugin-opts "obfs=tls" -f /root/ss/shadowsocks-$num.pid
-done
+read -p "port$: " port
+read -p "passwd: " passwd
+ss-server -s 0.0.0.0 -p $port -k $passwd -m $encryption -a $run_user -u -d 8.8.8.8 --plugin obfs-server --plugin-opts "obfs=tls" -f /root/ss/shadowsocks-1.pid
