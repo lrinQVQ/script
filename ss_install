@@ -1,7 +1,7 @@
 #!/bin/bash
 cpu_num=`cat /proc/cpuinfo | grep processor | wc -l`
 echo "Installation of basic build dependencies"
-apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev libudns-dev automake asciidoc xmlto git
+apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev libudns-dev automake asciidoc xmlto git libc-ares-dev
 
 echo "work in tmp"
 cd /tmp
