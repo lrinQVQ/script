@@ -22,6 +22,7 @@ cat > /etc/iptables.test.rules << EOF
 > COMMIT
 > EOF
 
+iptables-restore < /etc/iptables.test.rules
 iptables-save > /etc/iptables.up.rules
 
 cat > /etc/network/if-pre-up.d/iptables << EOF
