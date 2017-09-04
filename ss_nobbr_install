@@ -1,0 +1,41 @@
+#!/bin/bash
+cpu_num=`cat /proc/cpuinfo | grep processor | wc -l`
+echo "Installation of basic build dependencies"
+apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev -y
+
+echo "work in tmp"
+cd /tmp
+
+echo "Installation of Libsodium"
+git clone https://github.com/jedisct1/libsodium.git
+pushd libsodium 
+./autogen.sh
+./configure --prefix=/usr && make -j$cpu_num
+make install
+popd
+ldconfig
+
+echo "Installation of MbedTLS"
+git clone https://github.com/ARMmbed/mbedtls.git
+pushd mbedtls
+make SHARED=1 CFLAGS=-fPIC -j$cpu_num
+make DESTDIR=/usr install
+popd
+ldconfig
+
+echo "Installation of Shadowsocks-libev"
+git clone https://github.com/shadowsocks/shadowsocks-libev.git
+pushd shadowsocks-libev
+git submodule update --init --recursive
+./autogen.sh && ./configure && make -j$cpu_num
+make install
+popd
+
+echo "Install simple-obfs"
+git clone https://github.com/lrinQVQ/simple-obfs.git
+pushd simple-obfs
+git submodule update --init --recursive
+./autogen.sh
+./configure && make -j$cpu_num
+make install
+popd
