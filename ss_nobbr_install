@@ -32,7 +32,7 @@ make install
 popd
 
 echo "Install simple-obfs"
-git clone https://github.com/lrinQVQ/simple-obfs.git
+git clone https://github.com/shadowsocks/simple-obfs.git
 pushd simple-obfs
 git submodule update --init --recursive
 ./autogen.sh
