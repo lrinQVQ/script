@@ -1,0 +1,18 @@
+#!/bin/bash
+echo "Install Need Dep"
+sudo apt-get build-dep linux-image-$(uname -r)
+sudo apt-get install git
+
+echo "Dowload Linux kernel Source"
+git clone https://github.com/torvalds/linux.git
+pushd linux
+make localmodconfig
+popd
+pushd linux
+echo "CONFIG_TCP_CONG_BBR=y" >> .config
+echo "CONFIG_DEFAULT_BBR=y" >> .config
+make -j`nproc`
+make -j`nproc` modules
+make install
+make modules_install
+popd
