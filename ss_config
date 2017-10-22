@@ -1,6 +1,4 @@
 #!/bin/bash
-read -p "max user: " port_num
-echo ""
 
 read -p "Encryption(default:chacha20-ietf-poly1305): " encryption
 
