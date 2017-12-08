@@ -1,8 +1,26 @@
 #!/bin/bash
+# Check ROOT Permissions
+if [ $UID -ne 0 ]||[ if command -v sudo ]; then
+SUDO=sudo
+else if [ $LANG=zh_CN.UTF-8 ]; then
+echo "你没有root权限,请尝试安装sudo或者切换至root用户"
+else
+echo "You don't have root permissions,please try install sudo or change to root user"
+fi
+fi
+
+# Check memsize
+MEM_CHECK=`cat /proc/meminfo | grep MemTotal | grep '[0-9]' -o | awk BEGIN{RS=EOF}'{gsub(/\n/,"");print}'`
+# Preclude out of memory
+if [ "$MEM_CHECK" -ge "524288" ]; then
 cpu_num=`cat /proc/cpuinfo | grep processor | wc -l`
+else
+cpu_num=1
+fi
+
 echo "Installation of basic build dependencies"
-apt-get update
-apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev -y
+$SUDO apt-get update
+$SUDO apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev -y
 
 echo "work in tmp"
 cd /tmp
@@ -12,24 +30,24 @@ git clone https://github.com/jedisct1/libsodium.git
 pushd libsodium 
 ./autogen.sh
 ./configure --prefix=/usr && make -j$cpu_num
-make install
+$SUDO make install
 popd
-ldconfig
+$SUDO ldconfig
 
 echo "Installation of MbedTLS"
 git clone https://github.com/ARMmbed/mbedtls.git
 pushd mbedtls
 make SHARED=1 CFLAGS=-fPIC -j$cpu_num
-make DESTDIR=/usr install
+$SUDO make DESTDIR=/usr install
 popd
-ldconfig
+$SUDO ldconfig
 
 echo "Installation of Shadowsocks-libev"
 git clone https://github.com/shadowsocks/shadowsocks-libev.git
 pushd shadowsocks-libev
 git submodule update --init --recursive
 ./autogen.sh && ./configure && make -j$cpu_num
-make install
+$SUDO make install
 popd
 
 echo "Install simple-obfs"
@@ -38,7 +56,7 @@ pushd simple-obfs
 git submodule update --init --recursive
 ./autogen.sh
 ./configure && make -j$cpu_num
-make install
+$SUDO make install
 popd
 
 echo "Enabled BBR"
