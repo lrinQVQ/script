@@ -1,8 +1,8 @@
 #!/bin/bash
 # Check ROOT Permissions
-if [ $UID -ne 0 ] && [ -f /etc/sudoers ]; then
+if [ "$UID" -ne 0 ] && [ -f /etc/sudoers ]; then
 SUDO=sudo
-else if [ $UID -eq 0 ]; then
+else if [ "$UID" -eq 0 ]; then
 SUDO=
 else if [ $LANG=zh_CN.UTF-8 ]; then
 echo "你没有root权限,请尝试安装sudo或者切换至root用户"
@@ -91,7 +91,7 @@ popd
 
 echo "Enabled BBR"
 bbr_check=`lsmod | grep bbr`
-if [ -z $bbr_check ]
+if [ -z "$bbr_check" ]
 then
 modprobe tcp_bbr
 echo "tcp_bbr" >> /etc/modules-load.d/modules.conf
