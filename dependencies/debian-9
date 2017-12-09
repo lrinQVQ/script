@@ -1,5 +1,5 @@
 #!/bin/bash
-source debian
+source $DEP/debian
 
 echo "Enabled BBR"
 bbr_check=`lsmod | grep bbr`

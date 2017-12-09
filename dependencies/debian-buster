@@ -1,2 +1,2 @@
 #!/bin/bash
-source debian-9
+source $DEP/debian-9

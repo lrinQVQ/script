@@ -1,10 +1,12 @@
 #!/bin/bash
+PWD=`pwd`
+DEP=$PWD/dependencies
 # Check ROOT Permissions
 if [ "$UID" -ne 0 ] && [ -f /etc/sudoers ]; then
   SUDO=sudo
-elif [ "$UID" -eq 0 ]; then
+else if [ "$UID" -eq 0 ]; then
   SUDO=
-elif [ $LANG=zh_CN.UTF-8 ]; then
+else if [ $LANG=zh_CN.UTF-8 ]; then
   echo "你没有root权限,请尝试安装sudo或者切换至root用户"
   exit 1
 else
@@ -29,10 +31,14 @@ DEBIAN_VERSION=`cat /etc/debian_version`
 
 case "$DEBIAN_VERSION" in
   7|7.0|7.1|7.2|7.3|7.4|7.5|7.6|7.7|7.8|7.9|7.10|7.11)
-    source dependencies/debian-7
+    source $DEP/debian-7
   ;;
   8|8.0|8.1|8.2|8.3|8.4|8.5|8.6|8.7|8.8|8.9|8.10)
-    source dependencies/debian-8
+    source $DEP/debian-8
   ;;
   9|9.0|9.1|9.2|9.3)
-    source dependencies/debian-9
+    source $DEP/debian-9
+  ;;
+esac
+
+fi
