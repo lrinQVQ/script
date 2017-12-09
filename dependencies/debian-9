@@ -1,73 +1,8 @@
 #!/bin/bash
-# Update system
-if [ $LANG=zh_CN.UTF-8 ]; then
-echo "更新系统"
-else
-echo "Update system"
-fi
-$SUDO apt-get update && $SUDO apt-get upgrade
-
-# Installation of basic build dependencies
-if [ $LANG=zh_CN.UTF-8 ]; then
-echo "安装编译时需要的依赖包"
-else
-echo "Installation of basic build dependencies"
-fi
-$SUDO apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev -y
-
-if [ $LANG=zh_CN.UTF-8 ]; then
-echo "新建~/shadowsocks目录"
-else
-echo "mkdir ~/shadowsocks directory"
-fi
-
-mkdir ~/shadowsocks
-
-if [ $LANG=zh_CN.UTF-8 ]; then
-echo "进入~/shadowsocks"
-else
-echo "work in ~/shadowsocks"
-fi
-
-cd ~/shadowsocks
-
-echo "Installation of Libsodium"
-git clone https://github.com/jedisct1/libsodium.git
-pushd libsodium 
-./autogen.sh
-./configure --prefix=/usr && make -j$cpu_num
-$SUDO make install
-popd
-$SUDO ldconfig
-
-echo "Installation of MbedTLS"
-git clone https://github.com/ARMmbed/mbedtls.git
-pushd mbedtls
-make SHARED=1 CFLAGS=-fPIC -j$cpu_num
-$SUDO make DESTDIR=/usr install
-popd
-$SUDO ldconfig
-
-echo "Installation of Shadowsocks-libev"
-git clone https://github.com/shadowsocks/shadowsocks-libev.git
-pushd shadowsocks-libev
-git submodule update --init --recursive
-./autogen.sh && ./configure && make -j$cpu_num
-$SUDO make install
-popd
-
-echo "Install simple-obfs"
-git clone https://github.com/shadowsocks/simple-obfs.git
-pushd simple-obfs
-git submodule update --init --recursive
-./autogen.sh
-./configure && make -j$cpu_num
-$SUDO make install
-popd
-
+source debian
 echo "Enabled BBR"
 bbr_check=`lsmod | grep bbr`
-if [ -z $bbr_check ]
+if [ -z "$bbr_check" ]
 then
 modprobe tcp_bbr
 echo "tcp_bbr" >> /etc/modules-load.d/modules.conf
