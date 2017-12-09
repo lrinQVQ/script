@@ -1,32 +1,32 @@
 #!/bin/bash
 # Update system
 if [ $LANG=zh_CN.UTF-8 ]; then
-echo "更新系统"
+  echo "更新系统"
 else
-echo "Update system"
+  echo "Update system"
 fi
 $SUDO apt-get update && $SUDO apt-get upgrade
 
 # Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
-echo "安装编译时需要的依赖包"
+  echo "安装编译时需要的依赖包"
 else
-echo "Installation of basic build dependencies"
+  echo "Installation of basic build dependencies"
 fi
 $SUDO apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev -y
 
 if [ $LANG=zh_CN.UTF-8 ]; then
-echo "新建~/shadowsocks目录"
+  echo "新建~/shadowsocks目录"
 else
-echo "mkdir ~/shadowsocks directory"
+  echo "mkdir ~/shadowsocks directory"
 fi
 
 mkdir ~/shadowsocks
 
 if [ $LANG=zh_CN.UTF-8 ]; then
-echo "进入~/shadowsocks"
+  echo "进入~/shadowsocks"
 else
-echo "work in ~/shadowsocks"
+  echo "work in ~/shadowsocks"
 fi
 
 cd ~/shadowsocks

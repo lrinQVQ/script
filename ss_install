@@ -1,15 +1,15 @@
 #!/bin/bash
 # Check ROOT Permissions
 if [ "$UID" -ne 0 ] && [ -f /etc/sudoers ]; then
-SUDO=sudo
-else if [ "$UID" -eq 0 ]; then
-SUDO=
-else if [ $LANG=zh_CN.UTF-8 ]; then
-echo "你没有root权限,请尝试安装sudo或者切换至root用户"
-exit 1
+  SUDO=sudo
+elif [ "$UID" -eq 0 ]; then
+  SUDO=
+elif [ $LANG=zh_CN.UTF-8 ]; then
+  echo "你没有root权限,请尝试安装sudo或者切换至root用户"
+  exit 1
 else
-echo "You don't have root permissions,please try install sudo or change to root user"
-exit 1
+  echo "You don't have root permissions,please try install sudo or change to root user"
+  exit 1
 fi
 fi
 fi
@@ -18,84 +18,21 @@ fi
 MEM_CHECK=`cat /proc/meminfo | grep MemTotal | grep '[0-9]' -o | awk BEGIN{RS=EOF}'{gsub(/\n/,"");print}'`
 # Preclude out of memory
 if [ "$MEM_CHECK" -ge "524288" ]; then
-cpu_num=`cat /proc/cpuinfo | grep processor | wc -l`
+  cpu_num=`cat /proc/cpuinfo | grep processor | wc -l`
 else
-cpu_num=1
+  cpu_num=1
 fi
 
-# Update system
-if [ $LANG=zh_CN.UTF-8 ]; then
-echo "更新系统"
-else
-echo "Update system"
-fi
-$SUDO apt-get update && $SUDO apt-get upgrade
+# Check linux distribution
+if [ -f /etc/debian_version ]; then
+DEBIAN_VERSION=`cat /etc/debian_version`
 
-# Installation of basic build dependencies
-if [ $LANG=zh_CN.UTF-8 ]; then
-echo "安装编译时需要的依赖包"
-else
-echo "Installation of basic build dependencies"
-fi
-$SUDO apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev -y
-
-if [ $LANG=zh_CN.UTF-8 ]; then
-echo "新建~/shadowsocks目录"
-else
-echo "mkdir ~/shadowsocks directory"
-fi
-
-mkdir ~/shadowsocks
-
-if [ $LANG=zh_CN.UTF-8 ]; then
-echo "进入~/shadowsocks"
-else
-echo "work in ~/shadowsocks"
-fi
-
-cd ~/shadowsocks
-
-echo "Installation of Libsodium"
-git clone https://github.com/jedisct1/libsodium.git
-pushd libsodium 
-./autogen.sh
-./configure --prefix=/usr && make -j$cpu_num
-$SUDO make install
-popd
-$SUDO ldconfig
-
-echo "Installation of MbedTLS"
-git clone https://github.com/ARMmbed/mbedtls.git
-pushd mbedtls
-make SHARED=1 CFLAGS=-fPIC -j$cpu_num
-$SUDO make DESTDIR=/usr install
-popd
-$SUDO ldconfig
-
-echo "Installation of Shadowsocks-libev"
-git clone https://github.com/shadowsocks/shadowsocks-libev.git
-pushd shadowsocks-libev
-git submodule update --init --recursive
-./autogen.sh && ./configure && make -j$cpu_num
-$SUDO make install
-popd
-
-echo "Install simple-obfs"
-git clone https://github.com/shadowsocks/simple-obfs.git
-pushd simple-obfs
-git submodule update --init --recursive
-./autogen.sh
-./configure && make -j$cpu_num
-$SUDO make install
-popd
-
-echo "Enabled BBR"
-bbr_check=`lsmod | grep bbr`
-if [ -z "$bbr_check" ]
-then
-modprobe tcp_bbr
-echo "tcp_bbr" >> /etc/modules-load.d/modules.conf
-echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
-echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
-sysctl -p
-fi
+case "$DEBIAN_VERSION" in
+  7|7.0|7.1|7.2|7.3|7.4|7.5|7.6|7.7|7.8|7.9|7.10|7.11)
+    source dependencies/debian-7
+  ;;
+  8|8.0|8.1|8.2|8.3|8.4|8.5|8.6|8.7|8.8|8.9|8.10)
+    source dependencies/debian-8
+  ;;
+  9|9.0|9.1|9.2|9.3)
+    source dependencies/debian-9
