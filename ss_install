@@ -1,6 +1,6 @@
 #!/bin/bash
 # Check ROOT Permissions
-if [ $UID -ne 0 ]||[ if command -v sudo ]; then
+if [ $UID -ne 0 ] && [ -f /etc/sudoers ]; then
 SUDO=sudo
 else if [ $LANG=zh_CN.UTF-8 ]; then
 echo "你没有root权限,请尝试安装sudo或者切换至root用户"
