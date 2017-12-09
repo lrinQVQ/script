@@ -39,6 +39,8 @@ case "$DEBIAN_VERSION" in
   9|9.0|9.1|9.2|9.3)
     source $DEP/debian-9
   ;;
+  buster/sid)
+    source $DEP/debian-sid
 esac
 
 fi
