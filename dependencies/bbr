@@ -1,0 +1,11 @@
+#!/bin/bash
+echo "Enabled BBR"
+bbr_check=`lsmod | grep bbr`
+if [ -z "$bbr_check" ]
+then
+  $SUDO modprobe tcp_bbr
+  $SUDO echo "tcp_bbr" >> /etc/modules-load.d/modules.conf
+  $SUDO echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+  $SUDO echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+  $SUDO sysctl -p
+fi

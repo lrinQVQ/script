@@ -3,8 +3,10 @@ PWD=`pwd`
 DEP=$PWD/dependencies
 # Check ROOT Permissions
 if [ "$UID" -ne 0 ] && [ -f /etc/sudoers ]; then
+  unset SUDO
   SUDO=sudo
 else if [ "$UID" -eq 0 ]; then
+  unset SUDO
   SUDO=
 else if [ $LANG=zh_CN.UTF-8 ]; then
   echo "你没有root权限,请尝试安装sudo或者切换至root用户"
@@ -26,6 +28,7 @@ else
 fi
 
 # Check linux distribution
+#Debian Base
 if [ -f /etc/debian_version ]; then
 DEBIAN_VERSION=`cat /etc/debian_version`
 
@@ -33,10 +36,10 @@ case "$DEBIAN_VERSION" in
   7|7.0|7.1|7.2|7.3|7.4|7.5|7.6|7.7|7.8|7.9|7.10|7.11)
     source $DEP/debian-7
   ;;
-  8|8.0|8.1|8.2|8.3|8.4|8.5|8.6|8.7|8.8|8.9|8.10)
+  8|8.0|8.1|8.2|8.3|8.4|8.5|8.6|8.7|8.8|8.9|8.10|jessie/sid)
     source $DEP/debian-8
   ;;
-  9|9.0|9.1|9.2|9.3)
+  9|9.0|9.1|9.2|9.3|stretch/sid)
     source $DEP/debian-9
   ;;
   buster/sid)
@@ -44,3 +47,20 @@ case "$DEBIAN_VERSION" in
 esac
 
 fi
+
+#Redhat Base
+if [ -f /etc/redhat-release ]; then
+REDHAT_VERSION=`cat /etc/redhat-release | grep -oE  "[0-9.]+"`
+
+case "$REDHAT_VERSION" in
+  7.0.1406)
+    source $DEP/redhat
+esac
+
+unset PWD
+unset DEP
+unset SUDO
+unset MEM_CHECK
+unset cpu_num
+unset DEBIAN_VERSION
+unset REDHAT_VERSION

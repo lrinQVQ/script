@@ -5,7 +5,8 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Update system"
 fi
-$SUDO apt-get update && $SUDO apt-get upgrade
+
+$SUDO yum update -a
 
 # Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
@@ -13,7 +14,8 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Installation of basic build dependencies"
 fi
-$SUDO apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev git -y
+
+$SUDO yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel libev-devel git -y
 
 # Install virtual machine architecture check package
 if [ $LANG=zh_CN.UTF-8 ]; then
@@ -21,7 +23,7 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Install virtual machine architecture check package"
 fi
-$SUDO apt-get install virt-what -y
+$SUDO yum install virt-what -y
 
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "新建~/shadowsocks目录"

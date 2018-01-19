@@ -11,8 +11,8 @@ popd
 pushd linux
 echo "CONFIG_TCP_CONG_BBR=y" >> .config
 echo "CONFIG_DEFAULT_BBR=y" >> .config
-make -j`nproc`
-make -j`nproc` modules
+make -j$cpu_num
+make -j$cpu_num modules
 make install
 make modules_install
 popd
