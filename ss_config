@@ -31,3 +31,8 @@ fi
 }
 
 port_check
+
+unset encryption
+unset run_user
+unset port
+unset passwd
