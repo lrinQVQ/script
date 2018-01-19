@@ -1,0 +1,15 @@
+#!/bin/sh
+#Installation of Libsodium
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装Libsodium"
+else
+  echo "Installation of Libsodium"
+fi
+
+git clone https://github.com/jedisct1/libsodium.git
+pushd libsodium 
+./autogen.sh
+./configure --prefix=/usr && make -j$cpu_num
+$SUDO make install
+popd
+$SUDO ldconfig

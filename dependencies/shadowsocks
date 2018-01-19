@@ -1,0 +1,14 @@
+#!/bin/sh
+#Installation of Shadowsocks-libev
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装Shadowsocks-libev"
+else
+  echo "Installation of Shadowsocks-libev"
+fi
+
+git clone https://github.com/shadowsocks/shadowsocks-libev.git
+pushd shadowsocks-libev
+git submodule update --init --recursive
+./autogen.sh && ./configure && make -j$cpu_num
+$SUDO make install
+popd

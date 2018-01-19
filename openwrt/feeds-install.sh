@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 ./scripts/feeds update -a
 rm -rf feeds/applications/luci-app-shadowsocks-libev
 rm -rf feeds/packages/net/shadowsocks-client

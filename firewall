@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 cat > /etc/iptables.test.rules << EOF
 *filter
 -A INPUT -p tcp -m tcp --dport 80 -j DROP

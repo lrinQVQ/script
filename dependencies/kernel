@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 echo "Install Need Dep"
 sudo apt-get build-dep linux-image-$(uname -r)
 sudo apt-get install git

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # Update system
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "更新系统"
@@ -41,56 +41,7 @@ fi
 
 cd ~/shadowsocks
 
-if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "安装Libsodium"
-else
-  echo "Installation of Libsodium"
-fi
-
-git clone https://github.com/jedisct1/libsodium.git
-pushd libsodium 
-./autogen.sh
-./configure --prefix=/usr && make -j$cpu_num
-$SUDO make install
-popd
-$SUDO ldconfig
-
-if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "安装MbedTLS"
-else
-  echo "Installation of MbedTLS"
-fi
-
-git clone https://github.com/ARMmbed/mbedtls.git
-pushd mbedtls
-make SHARED=1 CFLAGS=-fPIC -j$cpu_num
-$SUDO make DESTDIR=/usr install
-popd
-$SUDO ldconfig
-
-if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "安装Shadowsocks-libev"
-else
-  echo "Installation of Shadowsocks-libev"
-fi
-
-git clone https://github.com/shadowsocks/shadowsocks-libev.git
-pushd shadowsocks-libev
-git submodule update --init --recursive
-./autogen.sh && ./configure && make -j$cpu_num
-$SUDO make install
-popd
-
-if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "安装simple-obfs"
-else
-  echo "Install simple-obfs"
-fi
-
-git clone https://github.com/shadowsocks/simple-obfs.git
-pushd simple-obfs
-git submodule update --init --recursive
-./autogen.sh
-./configure && make -j$cpu_num
-$SUDO make install
-popd
+source $DEP/libsodium
+source $DEP/mbedtls
+source $DEP/shadowsocks
+source $DEP/simple-obfs

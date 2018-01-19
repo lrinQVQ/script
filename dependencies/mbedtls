@@ -1,0 +1,13 @@
+#!/bin/sh
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装MbedTLS"
+else
+  echo "Installation of MbedTLS"
+fi
+
+git clone https://github.com/ARMmbed/mbedtls.git
+pushd mbedtls
+make SHARED=1 CFLAGS=-fPIC -j$cpu_num
+$SUDO make DESTDIR=/usr install
+popd
+$SUDO ldconfig
