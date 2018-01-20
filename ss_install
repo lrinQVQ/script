@@ -2,10 +2,10 @@
 PWD=`pwd`
 DEP=$PWD/dependencies
 # Check ROOT Permissions
-if [ "$UID" -ne 0 ] && [ -f /etc/sudoers ]; then
+if [ "$UID" != 0 ] && [ -f /etc/sudoers ]; then
   unset SUDO
   SUDO=sudo
-else if [ "$UID" -eq 0 ]; then
+else if [ "$UID" = 0 ]; then
   unset SUDO
   SUDO=
 else if [ $LANG=zh_CN.UTF-8 ]; then
