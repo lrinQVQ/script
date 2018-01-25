@@ -5,7 +5,7 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Update system"
 fi
-$SUDO apt-get update && $SUDO apt-get upgrade
+$SUDO apt-get update && $SUDO apt-get upgrade -y
 
 # Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
@@ -39,7 +39,7 @@ fi
 
 cd ~/shadowsocks
 
-source $DEP/libsodium
-source $DEP/mbedtls
-source $DEP/shadowsocks
-source $DEP/simple-obfs
+. $DEP/libsodium
+. $DEP/mbedtls
+. $DEP/shadowsocks
+. $DEP/simple-obfs

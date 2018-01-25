@@ -41,7 +41,7 @@ fi
 
 cd ~/shadowsocks
 
-source $DEP/libsodium
-source $DEP/mbedtls
-source $DEP/shadowsocks
-source $DEP/simple-obfs
+. $DEP/libsodium
+. $DEP/mbedtls
+. $DEP/shadowsocks
+. $DEP/simple-obfs
