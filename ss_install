@@ -57,6 +57,8 @@ case "$REDHAT_VERSION" in
     . $DEP/redhat
 esac
 
+fi
+
 unset PWD
 unset DEP
 unset SUDO
