@@ -6,7 +6,7 @@ else
   echo "Update system"
 fi
 
-$SUDO yum update -a
+$SUDO yum update -y
 
 # Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
