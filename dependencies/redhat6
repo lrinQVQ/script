@@ -1,2 +1,13 @@
 #!/bin/sh
+. $DEP/autoconf
 . $DEP/readhat
+
+#Auto uninstall autoconf after the script is completed
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "卸载autoconf 2.69"
+else
+  echo "uninstall autoconf 2.69"
+fi
+
+cd autoconf-2.69
+$SUDO make uninstall
