@@ -1,0 +1,15 @@
+#!/bin/sh
+#Building libev for Redhat 6 derivatives
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "Redhat 6及其衍生需要编译libev"
+else
+  echo "Redhat 6 and derivatives require building of libev"
+fi
+curl -L -O http://dist.schmorp.de/libev/libev-4.24.tar.gz
+tar zxf libev-4.24.tar.gz
+cd libev-4.24
+./configure --prefix=/usr
+make -j$CPU_NUM
+$SUDO make install
+$SUDO ldconfig
+cd ..

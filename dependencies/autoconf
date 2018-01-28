@@ -1,9 +1,9 @@
 #!/bin/sh
-#Update autoconf to 2.69 for Readhat 6 derivatives
+#Update autoconf to 2.69 for Redhat 6 derivatives
 if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "Readhat 6及其衍生需要更新autoconf到2.69,脚本完成后自动卸载"
+  echo "Redhat 6及其衍生需要更新autoconf到2.69,脚本完成后自动卸载"
 else
-  echo "Readhat 6 and derivatives need to be updated autoconf to 2.69,After the script is completed automatically uninstall"
+  echo "Redhat 6 and derivatives need to be updated autoconf to 2.69,After the script is completed automatically uninstall"
 fi
 $SUDO yum install curl tar openssl-devel -y
 curl -L -O http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz

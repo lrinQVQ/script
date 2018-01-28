@@ -1,5 +1,14 @@
 #!/bin/sh
+#Install Redhat 6 and its derivative building dependencies
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装Redhat 6及其衍生编译时特定依赖"
+else
+  echo "Install Redhat 6 and its derivative building dependencies"
+fi
+$SUDO yum install pcre-devel -y
+
 . $DEP/autoconf
+. $DEP/libev
 . $DEP/redhat
 
 #Auto uninstall autoconf after the script is completed
