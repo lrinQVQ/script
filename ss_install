@@ -1,5 +1,4 @@
 #!/bin/sh
-export PWD=`pwd`
 export DEP=$PWD/dependencies
 export USERID=`id -u`
 # Check ROOT Permissions
