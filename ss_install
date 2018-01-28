@@ -1,12 +1,12 @@
 #!/bin/sh
 export PWD=`pwd`
 export DEP=$PWD/dependencies
-export UID=`id -u`
+export USERID=`id -u`
 # Check ROOT Permissions
-if [ "$UID" != 0 ] && [ -f /etc/sudoers ]; then
+if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
   unset SUDO
   export SUDO=sudo
-else if [ "$UID" = 0 ]; then
+else if [ "$USERID" = 0 ]; then
   unset SUDO
   export SUDO=
 else if [ $LANG=zh_CN.UTF-8 ]; then
@@ -18,7 +18,7 @@ else
 fi
 fi
 fi
-unset UID
+unset USERID
 
 # Check memsize
 MEM_CHECK=`cat /proc/meminfo | grep MemTotal | grep '[0-9]' -o | awk BEGIN{RS=EOF}'{gsub(/\n/,"");print}'`
