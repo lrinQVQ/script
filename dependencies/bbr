@@ -1,7 +1,7 @@
 #!/bin/sh
 echo "Enabled BBR"
-bbr_check=`lsmod | grep bbr`
-if [ -z "$bbr_check" ]
+BBR_CHECK=`lsmod | grep bbr`
+if [ -z "$BBR_CHECK" ]
 then
   $SUDO modprobe tcp_bbr
   $SUDO echo "tcp_bbr" >> /etc/modules-load.d/modules.conf
@@ -9,3 +9,4 @@ then
   $SUDO echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
   $SUDO sysctl -p
 fi
+unset BBR_CHECK

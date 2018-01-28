@@ -23,9 +23,9 @@ unset USERID
 MEM_CHECK=`cat /proc/meminfo | grep MemTotal | grep '[0-9]' -o | awk BEGIN{RS=EOF}'{gsub(/\n/,"");print}'`
 # Preclude out of memory
 if [ "$MEM_CHECK" -ge "524288" ]; then
-  export cpu_num=`cat /proc/cpuinfo | grep processor | wc -l`
+  export CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
 else
-  export cpu_num=1
+  export CPU_NUM=1
 fi
 
 # Check linux distribution
@@ -55,7 +55,9 @@ REDHAT_VERSION=`cat /etc/redhat-release | grep -oE  "[0-9.]+"`
 
 case "$REDHAT_VERSION" in
   7.0.1406|7.1.1503|7.2.1511|7.3.1611|7.4.1708)
-    . $DEP/redhat
+    . $DEP/redhat7
+  6.5)
+    . $DEP/redhat6
 esac
 
 fi
@@ -64,6 +66,6 @@ unset PWD
 unset DEP
 unset SUDO
 unset MEM_CHECK
-unset cpu_num
+unset CPU_NUM
 unset DEBIAN_VERSION
 unset REDHAT_VERSION

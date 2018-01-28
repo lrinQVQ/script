@@ -1,18 +1,16 @@
 #!/bin/sh
 echo "Install Need Dep"
-sudo apt-get build-dep linux-image-$(uname -r)
-sudo apt-get install git
+$SUDO apt-get build-dep linux-image-$(uname -r)
+$SUDO apt-get install git
 
 echo "Dowload Linux kernel Source"
 git clone https://github.com/torvalds/linux.git
-pushd linux
+cd linux
 make localmodconfig
-popd
-pushd linux
 echo "CONFIG_TCP_CONG_BBR=y" >> .config
 echo "CONFIG_DEFAULT_BBR=y" >> .config
-make -j$cpu_num
-make -j$cpu_num modules
-make install
-make modules_install
-popd
+make -j$CPU_NUM
+make -j$CPU_NUM modules
+$SUDO make install
+$SUDO make modules_install
+cd ..
