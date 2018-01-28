@@ -7,7 +7,7 @@ fi
 
 git clone https://github.com/ARMmbed/mbedtls.git
 cd mbedtls
-make SHARED=1 CFLAGS=-fPIC -j$cpu_num
+make SHARED=1 CFLAGS=-fPIC -j$CPU_NUM
 $SUDO make DESTDIR=/usr install
 cd ..
 $SUDO ldconfig

@@ -9,7 +9,7 @@ fi
 git clone https://github.com/jedisct1/libsodium.git
 cd libsodium 
 ./autogen.sh
-./configure --prefix=/usr && make -j$cpu_num
+./configure --prefix=/usr && make -j$CPU_NUM
 $SUDO make install
 cd ..
 $SUDO ldconfig

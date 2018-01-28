@@ -9,6 +9,6 @@ fi
 git clone https://github.com/shadowsocks/shadowsocks-libev.git
 cd shadowsocks-libev
 git submodule update --init --recursive
-./autogen.sh && ./configure && make -j$cpu_num
+./autogen.sh && ./configure && make -j$CPU_NUM
 $SUDO make install
 cd ..

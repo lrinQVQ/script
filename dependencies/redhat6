@@ -1,6 +1,6 @@
 #!/bin/sh
 . $DEP/autoconf
-. $DEP/readhat
+. $DEP/redhat
 
 #Auto uninstall autoconf after the script is completed
 if [ $LANG=zh_CN.UTF-8 ]; then

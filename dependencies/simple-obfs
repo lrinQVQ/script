@@ -10,6 +10,6 @@ git clone https://github.com/shadowsocks/simple-obfs.git
 cd simple-obfs
 git submodule update --init --recursive
 ./autogen.sh
-./configure && make -j$cpu_num
+./configure && make -j$CPU_NUM
 $SUDO make install
 cd ..
