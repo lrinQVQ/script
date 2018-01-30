@@ -1,12 +1,21 @@
 #!/bin/sh
-echo "Enabled BBR"
-BBR_CHECK=`lsmod | grep bbr`
-if [ -z "$BBR_CHECK" ]
-then
+#BBR Check
+if [ -f "/lib/modules/$KERNEL_VERSION/kernel/net/ipv4/tcp_bbr.ko" ]; then
   $SUDO modprobe tcp_bbr
   $SUDO echo "tcp_bbr" >> /etc/modules-load.d/modules.conf
   $SUDO echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
   $SUDO echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
   $SUDO sysctl -p
+if [ $LANG=zh_CN.UTF-8 ];
+then
+  echo "开启BBR"
+else
+  echo "BBR ENABLED"
 fi
-unset BBR_CHECK
+else if [ "$VM" = "kvm" ] | [ "$VM" = "" ] ; then
+  . $DEP/kernel
+fi
+fi
+
+unset KERNEL_VERSION
+unset VM

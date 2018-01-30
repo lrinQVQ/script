@@ -1,12 +1,26 @@
 #!/bin/sh
-echo "Install Need Dep"
-$SUDO apt-get build-dep linux-image-$(uname -r)
-$SUDO apt-get install git
+#Install Need Dep
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装编译内核时需要的依赖包"
+else
+  echo "Installation of kernel basic build dependencies"
+fi
+if [ $OS=debian ]; then
+$SUDO apt-get build-dep linux-image-$(uname -r) -y
+else if [ $OS=redhat ]; then
+$SUDO yum groupinstall "Development Tools" -y
+$SUDO yum install openssl-devel -y
+fi
+fi
 
-echo "Dowload Linux kernel Source"
-git clone https://github.com/torvalds/linux.git
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "下载Linux内核源码"
+else
+  echo "Dowload Linux kernel Source"
+fi
+git clone --depth 1 https://github.com/torvalds/linux.git
 cd linux
-make localmodconfig
+yes "" | make oldconfig
 echo "CONFIG_TCP_CONG_BBR=y" >> .config
 echo "CONFIG_DEFAULT_BBR=y" >> .config
 make -j$CPU_NUM
@@ -14,3 +28,5 @@ make -j$CPU_NUM modules
 $SUDO make install
 $SUDO make modules_install
 cd ..
+
+unset VM
