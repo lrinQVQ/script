@@ -1,11 +1,13 @@
 #!/bin/sh
 #Install Redhat 6 and its derivative building dependencies
+# Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "安装Redhat 6及其衍生编译时特定依赖"
+  echo "安装编译Shadowsocks-libev时需要的依赖包"
 else
-  echo "Install Redhat 6 and its derivative building dependencies"
+  echo "Installation of basic Shadowsocks-libev build dependencies"
 fi
-$SUDO yum install pcre-devel -y
+
+$SUDO yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel git -y
 
 . $DEP/autoconf
 . $DEP/libev

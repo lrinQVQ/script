@@ -1,2 +1,10 @@
 #!/bin/sh
+# Installation of basic build dependencies
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装编译Shadowsocks-libev时需要的依赖包"
+else
+  echo "Installation of basic Shadowsocks-libev build dependencies"
+fi
+
+$SUDO yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel libev-devel git -y
 . $DEP/redhat
