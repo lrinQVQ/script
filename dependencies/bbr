@@ -12,7 +12,7 @@ then
 else
   echo "BBR ENABLED"
 fi
-else if [ "$VM" = "kvm" ] | [ "$VM" = "" ] ; then
+else if [ "$VM" = "kvm" ] || [ "$VM" = "" ] ; then
   . $DEP/kernel
 fi
 fi
