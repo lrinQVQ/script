@@ -30,4 +30,15 @@ $SUDO make install
 $SUDO make modules_install
 cd ..
 
+#Enable BBR
+if [ $LANG=zh_CN.UTF-8 ];
+then
+  echo "开启BBR"
+else
+  echo "BBR ENABLED"
+fi
+$SUDO echo "tcp_bbr" >> /etc/modules-load.d/modules.conf
+$SUDO echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+$SUDO echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+
 unset VM
