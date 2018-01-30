@@ -66,8 +66,6 @@ fi
 export KERNEL_VERSION=`uname -r`
 export VM=`$SUDO virt-what`
 
-. $DEP/bbr
-
 unset PWD
 unset DEP
 unset SUDO

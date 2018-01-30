@@ -15,7 +15,7 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Install virtual machine architecture check package"
 fi
-$SUDO yum install virt-what -y
+$SUDO yum install virt-what which -y
 
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "新建~/shadowsocks目录"
