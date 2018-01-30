@@ -7,6 +7,7 @@ else
 fi
 if [ $OS=debian ]; then
 $SUDO apt-get build-dep linux-image-$(uname -r) -y
+$SUDO apt-get install libelf-dev -y
 else if [ $OS=redhat ]; then
 $SUDO yum groupinstall "Development Tools" -y
 $SUDO yum install openssl-devel -y
