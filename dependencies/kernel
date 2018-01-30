@@ -24,8 +24,8 @@ cd linux
 yes "" | make oldconfig
 echo "CONFIG_TCP_CONG_BBR=y" >> .config
 echo "CONFIG_DEFAULT_BBR=y" >> .config
-make -j$CPU_NUM
-make -j$CPU_NUM modules
+make
+make modules
 $SUDO make install
 $SUDO make modules_install
 cd ..
