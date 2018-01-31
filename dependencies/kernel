@@ -21,13 +21,13 @@ else
 fi
 git clone --depth 1 https://github.com/torvalds/linux.git
 cd linux
-yes "" | make config
+make localmodconfig
 echo "CONFIG_TCP_CONG_BBR=y" >> .config
 echo "CONFIG_DEFAULT_BBR=y" >> .config
 make
 make modules
-$SUDO make install
 $SUDO make modules_install
+$SUDO make install
 cd ..
 
 #Enable BBR
