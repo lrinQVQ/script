@@ -21,7 +21,7 @@ else
 fi
 git clone --depth 1 https://github.com/torvalds/linux.git
 cd linux
-make localmodconfig
+yes "" | make oldconfig
 echo "CONFIG_TCP_CONG_BBR=y" >> .config
 echo "CONFIG_DEFAULT_BBR=y" >> .config
 make
