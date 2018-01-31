@@ -6,7 +6,7 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Update system"
 fi
-$SUDO apt-get update && $SUDO apt-get upgrade -y
+$SUDO apt-get update && $SUDO apt-get upgrade -y && $SUDO apt-get autoremove && $SUDO apt-get autoclean && $SUDO apt-get clean
 
 # Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
