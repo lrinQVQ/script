@@ -6,6 +6,6 @@ else
   echo "Installation of basic Shadowsocks-libev build dependencies"
 fi
 
-$SUDO yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel libev-devel git policycoreutils-python -y
+$SUDO yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel libev-devel pcre-devel git -y
 
 . $DEP/redhat
