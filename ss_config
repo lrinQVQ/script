@@ -36,6 +36,7 @@ iptables -I INPUT -p tcp --dport $port -j ACCEPT
 iptables -I INPUT -p udp --dport $port -j ACCEPT
 service iptables save
 fi
+fi
 }
 
 port_check
