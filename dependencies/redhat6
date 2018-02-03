@@ -1,4 +1,5 @@
 #!/bin/sh
+export OS=redhat6
 #Install Redhat 6 and its derivative building dependencies
 # Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then

@@ -1,4 +1,5 @@
 #!/bin/sh
+export OS=redhat7
 # Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "安装编译Shadowsocks-libev时需要的依赖包"

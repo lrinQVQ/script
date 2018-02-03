@@ -1,5 +1,4 @@
 #!/bin/sh
-export OS=redhat
 # Update system
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "更新系统"

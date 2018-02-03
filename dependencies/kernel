@@ -5,10 +5,10 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Installation of kernel basic build dependencies"
 fi
-if [ $OS=debian ]; then
+if [ $OS = debian ]; then
 $SUDO apt-get build-dep linux-image-$(KERNEL_VERSION) -y
 $SUDO apt-get install libelf-dev libssl-dev -y
-else if [ $OS=redhat ]; then
+else if [ $OS = redhat6 ] || [ $OS = redhat7 ] ; then
 $SUDO yum groupinstall "Development Tools" -y
 $SUDO yum install openssl-devel -y
 fi

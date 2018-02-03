@@ -27,6 +27,14 @@ else
   echo "Please use a port smaller than 8300 and larger than 8400"
   port_check
 fi
+if [ $OS = redhat7 ]; then
+$SUDO firewall-cmd --permanent --zone=public --add-port=$port/udp
+$SUDO firewall-cmd --permanent --zone=public --add-port=$port/udp
+firewall-cmd --reload
+else if [ $OS = redhat6 ]; then
+iptables -I INPUT -p tcp --dport $port -j ACCEPT
+iptables -I INPUT -p udp --dport $port -j ACCEPT
+service iptables save
 fi
 }
 
