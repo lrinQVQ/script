@@ -21,7 +21,7 @@ read -p "port: " port
 
 if [ "$port" -lt "8300" ] || [ "$port" -ge "8400" ]; then
 read -p "passwd: " passwd
-ss-server -s 0.0.0.0 -p $port -k $passwd -m $encryption -a $run_user -u -d 8.8.8.8 --no-delay --reuse-port --plugin obfs-server --plugin-opts "obfs=tls" -f /root/ss/shadowsocks-1.pid
+ss-server -s 0.0.0.0 -p $port -k $passwd -m $encryption -a $run_user -u -d 8.8.8.8 --no-delay $FASTOPEN --reuse-port --plugin obfs-server --plugin-opts "obfs=tls" -f /root/ss/shadowsocks-1.pid
 else if [ $LANG=zh_CN.UTF-8 ]; then
   echo "请使用小于8300且大于8400的端口"
   port_check
