@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. $DEP/fastopen_check
+
 read -p "Encryption(default:chacha20-ietf-poly1305): " encryption
 
 if [ -z $encryption ]
