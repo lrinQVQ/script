@@ -14,3 +14,4 @@ else
   echo "Not support TCP FASTOPEN"
 fi
 fi
+unset FASTOPEN_CHECK
