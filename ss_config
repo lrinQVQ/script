@@ -48,3 +48,4 @@ unset encryption
 unset run_user
 unset port
 unset passwd
+unset FASTOPEN
