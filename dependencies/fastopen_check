@@ -1,0 +1,16 @@
+#!/bin/sh
+if [ -f "/proc/sys/net/ipv4/tcp_fastopen" ]; then
+FASTOPEN_CHECK=`cat /proc/sys/net/ipv4/tcp_fastopen`
+if [ $FASTOPEN_CHECK = "3" ]; then
+FASTOPEN=--fast-open
+else
+FASTOPEN=
+fi
+else
+if [ $LANG=zh_CN.UTF-8 ];
+then
+  echo "不支持TCP FASTOPEN"
+else
+  echo "Not support TCP FASTOPEN"
+fi
+fi
