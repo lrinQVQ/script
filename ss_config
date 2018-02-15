@@ -16,12 +16,34 @@ then
 run_user=nobody
 fi
 
+read -p "UDP forwarding(default:yes):(yes/no) " UDP
+
+if [ $UDP_ENABLE = "yes" ]; then
+UDP=-u
+elif [ $UDP_ENABLE = "no" ]; then
+UDP=
+fi
+
+read -p "Remote DNS(default:8.8.8.8): " REMOTE_DNS
+
+if [ -z $REMOTE_DNS ]； then
+REMOTE_DNS=8.8.8.8
+fi
+
+read -p "TCP NODELAY(default:yes):(yes/no) " TCP_NODELAY
+
+if [ $TCP_NODELAY = "yes" ]; then
+TCP_NODELAY=--no-delay
+elif [ $TCP_NODELAY = "no" ]; then
+TCP_NODELAY=
+fi
+
 port_check() {
 read -p "port: " port
 
 if [ "$port" -lt "8300" ] || [ "$port" -ge "8400" ]; then
 read -p "passwd: " passwd
-ss-server -s 0.0.0.0 -p $port -k $passwd -m $encryption -a $run_user -u -d 8.8.8.8 --no-delay $FASTOPEN --reuse-port --plugin obfs-server --plugin-opts "obfs=tls" -f /root/ss/shadowsocks-1.pid
+ss-server -s 0.0.0.0 -p $port -k $passwd -m $encryption -a $run_user $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN --reuse-port --plugin obfs-server --plugin-opts "obfs=tls" -f /root/ss/shadowsocks-1.pid
 else if [ $LANG=zh_CN.UTF-8 ]; then
   echo "请使用小于8300且大于8400的端口"
   port_check
@@ -49,3 +71,6 @@ unset run_user
 unset port
 unset passwd
 unset FASTOPEN
+unset UDP
+unset REMOTE_DNS
+unset TCP_NODELAY
