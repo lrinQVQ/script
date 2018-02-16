@@ -2,21 +2,21 @@
 
 . $DEP/fastopen_check
 
-read -p "Encryption(default:chacha20-ietf-poly1305): " encryption
+read -p "Encryption(default:chacha20-ietf-poly1305): " ENCRYPTION
 
-if [ -z $encryption ]
+if [ -z $ENCRYPTION ]
 then
-encryption=chacha20-ietf-poly1305
+ENCRYPTION=chacha20-ietf-poly1305
 fi
 
-read -p "Run User(default:nobody): " run_user
+read -p "Run User(default:nobody): " RUN_USER
 
-if [ -z $run_user ]
+if [ -z $RUN_USER ]
 then
-run_user=nobody
+RUN_USER=nobody
 fi
 
-read -p "UDP forwarding(default:yes):(yes/no) " UDP
+read -p "Enable udprelay mode(default:yes):(yes/no) " UDP
 
 if [ $UDP_ENABLE = "yes" ]; then
 UDP=-u
@@ -30,7 +30,7 @@ if [ -z $REMOTE_DNS ]； then
 REMOTE_DNS=8.8.8.8
 fi
 
-read -p "TCP NODELAY(default:yes):(yes/no) " TCP_NODELAY
+read -p "Enable TCP_NODELAY(default:yes):(yes/no) " TCP_NODELAY
 
 if [ $TCP_NODELAY = "yes" ]; then
 TCP_NODELAY=--no-delay
@@ -38,12 +38,20 @@ elif [ $TCP_NODELAY = "no" ]; then
 TCP_NODELAY=
 fi
 
-port_check() {
-read -p "port: " port
+read -p "Enable port reuse(default:yes):(yes/no) " PORT_REUSE
 
-if [ "$port" -lt "8300" ] || [ "$port" -ge "8400" ]; then
-read -p "passwd: " passwd
-ss-server -s 0.0.0.0 -p $port -k $passwd -m $encryption -a $run_user $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN --reuse-port --plugin obfs-server --plugin-opts "obfs=tls" -f /root/ss/shadowsocks-1.pid
+if [ $PORT_REUSE = "yes" ]; then
+PORT_REUSE=--reuse-port
+elif [ $PORT_REUSE = "no" ]; then
+PORT_REUSE=
+fi
+
+port_check() {
+read -p "port: " PORT
+
+if [ "$PORT" -lt "8300" ] || [ "$PORT" -ge "8400" ]; then
+read -p "passwd: " PASSWD
+ss-server -s 0.0.0.0 -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=tls" -f /root/ss/shadowsocks-1.pid
 else if [ $LANG=zh_CN.UTF-8 ]; then
   echo "请使用小于8300且大于8400的端口"
   port_check
@@ -52,12 +60,12 @@ else
   port_check
 fi
 if [ $OS = redhat7 ]; then
-$SUDO firewall-cmd --permanent --zone=public --add-port=$port/udp
-$SUDO firewall-cmd --permanent --zone=public --add-port=$port/udp
+$SUDO firewall-cmd --permanent --zone=public --add-port=$PORT/udp
+$SUDO firewall-cmd --permanent --zone=public --add-port=$PORT/udp
 firewall-cmd --reload
 else if [ $OS = redhat6 ]; then
-iptables -I INPUT -p tcp --dport $port -j ACCEPT
-iptables -I INPUT -p udp --dport $port -j ACCEPT
+iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
+iptables -I INPUT -p udp --dport $PORT -j ACCEPT
 service iptables save
 fi
 fi
@@ -66,10 +74,10 @@ fi
 
 port_check
 
-unset encryption
-unset run_user
-unset port
-unset passwd
+unset ENCRYPTION
+unset RUN_USER
+unset PORT
+unset PASSWD
 unset FASTOPEN
 unset UDP
 unset REMOTE_DNS
