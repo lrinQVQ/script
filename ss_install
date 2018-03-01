@@ -68,8 +68,6 @@ export VM=`$SUDO virt-what`
 
 . $DEP/bbr
 
-unset PWD
-unset DEP
 unset SUDO
 unset MEM_CHECK
 unset CPU_NUM
