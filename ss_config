@@ -88,6 +88,7 @@ fi
 
 port_check
 
+unset DEP
 unset ENCRYPTION
 unset RUN_USER
 unset PORT
@@ -96,3 +97,5 @@ unset FASTOPEN
 unset UDP
 unset REMOTE_DNS
 unset TCP_NODELAY
+unset PLUGIN
+unset PLUGIN_OPTIONS
