@@ -46,12 +46,26 @@ elif [ $PORT_REUSE = "no" ]; then
 PORT_REUSE=
 fi
 
+read -p "Enable SIP003 plugin. (Experimental)(default:yes):(yes/no) " PLUGIN_CHECK
+
+if [ $PLUGIN_CHECK = "yes" ]; then
+read -p "Select plugin: (1.simple-obfs ) " PLUGIN
+case $PLUGIN in
+  1|simple-obfs)
+   PLUGIN=--plugin obfs-server
+   read -p "Set SIP003 plugin options. (Experimental)(default:tls):(tls/http) " PLUGIN_OPTIONS
+   PLUGIN_OPTIONS=--plugin-opts "obfs=$PLUGIN_OPTIONS"
+   ;;
+  2|kcptun)
+esac
+fi
+
 port_check() {
 read -p "port: " PORT
 
 if [ "$PORT" -lt "8300" ] || [ "$PORT" -ge "8400" ]; then
 read -p "passwd: " PASSWD
-ss-server -s 0.0.0.0 -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=tls" -f /root/ss/shadowsocks-1.pid
+ss-server -s 0.0.0.0 -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE $PLUGIN $PLUGIN_OPTIONS -f /root/ss/shadowsocks-1.pid
 else if [ $LANG=zh_CN.UTF-8 ]; then
   echo "请使用小于8300且大于8400的端口"
   port_check
