@@ -5,11 +5,11 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Redhat 6 and derivatives need to be updated autoconf to 2.69,After the script is completed automatically uninstall"
 fi
-$SUDO yum install curl tar openssl-devel -y
+echo $PASSWD | $SUDO yum install curl tar openssl-devel -y
 curl -L -O http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
 tar zxf autoconf-2.69.tar.gz
 cd autoconf-2.69
 ./configure
 make -j$CPU_NUM
-$SUDO make install
+echo $PASSWD | $SUDO make install
 cd ..
