@@ -11,5 +11,5 @@ cd simple-obfs
 git submodule update --init --recursive
 ./autogen.sh
 ./configure && make -j$CPU_NUM
-$SUDO make install
+echo $PASSWD | $SUDO make install
 cd ..
