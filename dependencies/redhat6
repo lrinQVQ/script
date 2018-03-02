@@ -8,7 +8,7 @@ else
   echo "Installation of basic Shadowsocks-libev build dependencies"
 fi
 
-$SUDO yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel git -y
+echo $PASSWD | $SUDO yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel git -y
 
 . $DEP/autoconf
 . $DEP/libev
@@ -22,4 +22,4 @@ else
 fi
 
 cd ../script/autoconf-2.69
-$SUDO make uninstall
+echo $PASSWD | $SUDO make uninstall
