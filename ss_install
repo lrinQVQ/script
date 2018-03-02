@@ -6,9 +6,9 @@ if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
   unset SUDO
   export SUDO=sudo
   if [ $LANG=zh_CN.UTF-8 ]; then
-  read -p "Please enter the current user password: " PASSWD
-  else
   read -p "请输入当前用户密码: " PASSWD
+  else
+  read -p "Please enter the current user password: " PASSWD
   fi
 else if [ "$USERID" = 0 ]; then
   unset SUDO
