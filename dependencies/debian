@@ -6,7 +6,7 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Update system"
 fi
-$SUDO apt-get update -y && $SUDO apt-get upgrade -y && $SUDO apt-get autoremove -y && $SUDO apt-get autoclean -y && $SUDO apt-get clean -y
+echo $PASSWD | $SUDO apt-get update -y && $SUDO apt-get upgrade -y && $SUDO apt-get autoremove -y && $SUDO apt-get autoclean -y && $SUDO apt-get clean -y
 
 # Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
@@ -14,7 +14,7 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Installation of basic Shadowsocks-libev build dependencies"
 fi
-$SUDO apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev git -y
+echo $PASSWD | $SUDO apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev git -y
 
 # Install virtual machine architecture check package
 if [ $LANG=zh_CN.UTF-8 ]; then
@@ -22,7 +22,7 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Install virtual machine architecture check package"
 fi
-$SUDO apt-get install virt-what -y
+echo $PASSWD | $SUDO apt-get install virt-what -y
 
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "新建~/shadowsocks目录"
