@@ -10,6 +10,6 @@ tar zxf libev-4.24.tar.gz
 cd libev-4.24
 ./configure --prefix=/usr
 make -j$CPU_NUM
-$SUDO make install
-$SUDO ldconfig
+echo $PASSWD | $SUDO make install
+echo $PASSWD | $SUDO ldconfig
 cd ..
