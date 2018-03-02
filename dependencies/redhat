@@ -6,7 +6,7 @@ else
   echo "Update system"
 fi
 
-$SUDO yum update -y
+echo $PASSWD | $SUDO yum update -y
 
 # Install virtual machine architecture check package
 if [ $LANG=zh_CN.UTF-8 ]; then
@@ -14,7 +14,7 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Install virtual machine architecture check package"
 fi
-$SUDO yum install virt-what which -y
+echo $PASSWD | $SUDO yum install virt-what which -y
 
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "新建~/shadowsocks目录"
