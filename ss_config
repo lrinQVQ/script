@@ -89,6 +89,7 @@ fi
 port_check
 
 unset DEP
+unset SUDO
 unset ENCRYPTION
 unset RUN_USER
 unset PORT
