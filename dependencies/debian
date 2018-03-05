@@ -14,7 +14,7 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Installation of basic Shadowsocks-libev build dependencies"
 fi
-echo $PASSWD | $SUDO apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev git -y
+echo $PASSWD | $SUDO apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl git -y
 
 # Install virtual machine architecture check package
 if [ $LANG=zh_CN.UTF-8 ]; then
