@@ -1,6 +1,6 @@
 #!/bin/sh
 
-. $DEP/fastopen_check
+#. $DEP/fastopen_check
 
 IPV6=`curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1`
 if [ "$IPV6" = "200" ]; then
