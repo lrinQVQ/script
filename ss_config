@@ -18,15 +18,15 @@ fi
 
 read -p "Enable udprelay mode(default:yes):(yes/no) " UDP
 
-if [ $UDP_ENABLE = "yes" ]; then
+if [ $UDP = "yes" ]; then
 UDP=-u
-elif [ $UDP_ENABLE = "no" ]; then
+elif [ $UDP = "no" ]; then
 UDP=
 fi
 
 read -p "Remote DNS(default:8.8.8.8): " REMOTE_DNS
 
-if [ -z $REMOTE_DNS ]； then
+if [ -z $REMOTE_DNS ]; then
 REMOTE_DNS=8.8.8.8
 fi
 
