@@ -7,6 +7,6 @@ else
   echo "Installation of basic Shadowsocks-libev build dependencies"
 fi
 
-echo $PASSWD | $SUDO yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel libev-devel pcre-devel git -y
+echo $PASSWD | $SUDO yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel libev-devel pcre-devel curl git -y
 
 . $DEP/redhat
