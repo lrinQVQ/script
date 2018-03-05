@@ -1,6 +1,20 @@
 #!/bin/sh
 
-#. $DEP/fastopen_check
+if [ -f "/proc/sys/net/ipv4/tcp_fastopen" ]; then
+FASTOPEN_CHECK=`cat /proc/sys/net/ipv4/tcp_fastopen`
+if [ $FASTOPEN_CHECK = "3" ]; then
+FASTOPEN=--fast-open
+else
+FASTOPEN=
+fi
+else
+if [ $LANG=zh_CN.UTF-8 ];
+then
+  echo "不支持TCP FASTOPEN"
+else
+  echo "Not support TCP FASTOPEN"
+fi
+fi
 
 IPV6=`curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1`
 if [ "$IPV6" = "200" ]; then
@@ -109,3 +123,4 @@ unset REMOTE_DNS
 unset TCP_NODELAY
 unset PLUGIN
 unset PLUGIN_OPTIONS
+unset FASTOPEN_CHECK
