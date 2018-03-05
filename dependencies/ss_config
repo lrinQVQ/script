@@ -2,6 +2,15 @@
 
 . $DEP/fastopen_check
 
+IPV6=`curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1`
+if [ "$IPV6" = "200" ]; then
+IPV6=-s ::
+IPV6_FIRST=-6
+else
+IPV6=
+IPV6_FIRST=
+fi
+
 read -p "Encryption(default:chacha20-ietf-poly1305): " ENCRYPTION
 
 if [ -z $ENCRYPTION ]
@@ -65,7 +74,7 @@ read -p "port: " PORT
 
 if [ "$PORT" -lt "8300" ] || [ "$PORT" -ge "8400" ]; then
 read -p "passwd: " PASSWD
-ss-server -s 0.0.0.0 -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE $PLUGIN $PLUGIN_OPTIONS -f /root/ss/shadowsocks-1.pid
+ss-server -s 0.0.0.0 $IPV6 -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $IPV6_FIRST $TCP_NODELAY $FASTOPEN $PORT_REUSE $PLUGIN $PLUGIN_OPTIONS -f /root/ss/shadowsocks-1.pid
 else if [ $LANG=zh_CN.UTF-8 ]; then
   echo "请使用小于8300且大于8400的端口"
   port_check
@@ -78,9 +87,9 @@ $SUDO firewall-cmd --permanent --zone=public --add-port=$PORT/udp
 $SUDO firewall-cmd --permanent --zone=public --add-port=$PORT/udp
 firewall-cmd --reload
 else if [ $OS = redhat6 ]; then
-iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
-iptables -I INPUT -p udp --dport $PORT -j ACCEPT
-service iptables save
+$SUDO iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
+$SUDO iptables -I INPUT -p udp --dport $PORT -j ACCEPT
+$SUDO service iptables save
 fi
 fi
 fi
