@@ -1,6 +1,6 @@
 #!/bin/sh
 ./scripts/feeds update -a
-rm -rf feeds/applications/luci-app-shadowsocks-libev
+rm -rf feeds/luci/applications/luci-app-shadowsocks-libev
 rm -rf feeds/packages/net/shadowsocks-client
 rm -rf feeds/packages/net/shadowsocks-libev
 ./scripts/feeds update -a
