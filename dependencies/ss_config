@@ -77,7 +77,6 @@ else
   echo "Invalid parameters"
 fi
 fi
-fi
 esac
 fi
 
