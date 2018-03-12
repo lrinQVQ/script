@@ -66,11 +66,18 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
 read -p "Select plugin: (1.simple-obfs ) " PLUGIN
 case $PLUGIN in
   1|simple-obfs)
-   PLUGIN=--plugin obfs-server
-   read -p "Set SIP003 plugin options. (Experimental)(default:tls):(tls/http) " PLUGIN_OPTIONS
-   PLUGIN_OPTIONS=--plugin-opts "obfs=$PLUGIN_OPTIONS"
-   ;;
-  2|kcptun)
+read -p "Set SIP003 plugin options. (Experimental)(default:tls):(tls/http) " PLUGIN_OPTIONS
+if [ "$PLUGIN_OPTIONS" = "tls" ] || [ "$PLUGIN_OPTIONS" = "" ]; then
+PLUGIN_OPTIONS=tls
+elif [ "$PLUGIN_OPTIONS" = "http" ]; then
+PLUGIN_OPTIONS=http
+else if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "参数无效"
+else
+  echo "Invalid parameters"
+fi
+fi
+fi
 esac
 fi
 
@@ -80,10 +87,17 @@ read -p "port: " PORT
 if [ "$PORT" -lt "8300" ] || [ "$PORT" -ge "8400" ]; then
 read -p "passwd: " PASSWD
 IPV6=`curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1`
+if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
 if [ "$IPV6" = "200" ]; then
-ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE $PLUGIN $PLUGIN_OPTIONS -f /root/ss/shadowsocks-1.pid
+ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /root/ss/shadowsocks-1.pid
 else
-ss-server -s 0.0.0.0 -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE $PLUGIN $PLUGIN_OPTIONS -f /root/ss/shadowsocks-1.pid
+ss-server -s 0.0.0.0 -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /root/ss/shadowsocks-1.pid
+fi
+elif [ "$PLUGIN_CHECK" = "no" ]; then
+if [ "$IPV6" = "200" ]; then
+ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /root/ss/shadowsocks-1.pid
+else
+ss-server -s 0.0.0.0 -p $PORT -k $PASSWD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /root/ss/shadowsocks-1.pid
 fi
 else if [ $LANG=zh_CN.UTF-8 ]; then
   echo "请使用小于8300且大于8400的端口"
@@ -92,9 +106,11 @@ else
   echo "Please use a port smaller than 8300 and larger than 8400"
   port_check
 fi
+fi
+fi
 if [ $OS = redhat7 ]; then
 $SUDO firewall-cmd --permanent --zone=public --add-port=$PORT/udp
-$SUDO firewall-cmd --permanent --zone=public --add-port=$PORT/udp
+$SUDO firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
 firewall-cmd --reload
 else if [ $OS = redhat6 ]; then
 $SUDO iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
