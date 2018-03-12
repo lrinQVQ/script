@@ -1,5 +1,5 @@
 #!/bin/sh
-
+#TCP fast open check
 if [ -f "/proc/sys/net/ipv4/tcp_fastopen" ]; then
 FASTOPEN_CHECK=`cat /proc/sys/net/ipv4/tcp_fastopen`
 if [ $FASTOPEN_CHECK = "3" ]; then
