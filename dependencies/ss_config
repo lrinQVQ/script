@@ -32,9 +32,9 @@ fi
 
 read -p "Enable udprelay mode(default:yes):(yes/no) " UDP
 
-if [ $UDP = "yes" ]; then
+if [ "$UDP" = "yes" ] || [ "$UDP" = "" ]; then
 UDP=-u
-elif [ $UDP = "no" ]; then
+elif [ "$UDP" = "no" ]; then
 UDP=
 fi
 
@@ -46,7 +46,7 @@ fi
 
 read -p "Enable TCP_NODELAY(default:yes):(yes/no) " TCP_NODELAY
 
-if [ $TCP_NODELAY = "yes" ]; then
+if [ "$TCP_NODELAY" = "yes" ] || [ "$TCP_NODELAY" = "" ]; then
 TCP_NODELAY=--no-delay
 elif [ $TCP_NODELAY = "no" ]; then
 TCP_NODELAY=
@@ -54,7 +54,7 @@ fi
 
 read -p "Enable port reuse(default:yes):(yes/no) " PORT_REUSE
 
-if [ $PORT_REUSE = "yes" ]; then
+if [ "$PORT_REUSE" = "yes" ] || [ "$PORT_REUSE" = "" ]; then
 PORT_REUSE=--reuse-port
 elif [ $PORT_REUSE = "no" ]; then
 PORT_REUSE=
@@ -62,7 +62,7 @@ fi
 
 read -p "Enable SIP003 plugin. (Experimental)(default:yes):(yes/no) " PLUGIN_CHECK
 
-if [ $PLUGIN_CHECK = "yes" ]; then
+if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
 read -p "Select plugin: (1.simple-obfs ) " PLUGIN
 case $PLUGIN in
   1|simple-obfs)
