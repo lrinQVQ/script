@@ -107,15 +107,14 @@ else
 fi
 fi
 fi
-if [ $OS = redhat7 ]; then
+if [ $OS=redhat7 ]; then
 echo $PASSWD | sudo -S firewall-cmd --permanent --zone=public --add-port=$PORT/udp
 echo $PASSWD | sudo -S firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
 firewall-cmd --reload
-else if [ $OS = redhat6 ]; then
+elif [ $OS=redhat6 ]; then
 echo $PASSWD | sudo -S iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
 echo $PASSWD | sudo -S iptables -I INPUT -p udp --dport $PORT -j ACCEPT
 echo $PASSWD | sudo -S service iptables save
-fi
 fi
 }
 
