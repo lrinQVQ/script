@@ -2,11 +2,11 @@
 #BBR Check
 if [ -f "/lib/modules/$KERNEL_VERSION/kernel/net/ipv4/tcp_bbr.ko" ]; then
 if [ $SUDO = yes ]; then
-  echo $PASSWD | $SUDO -S modprobe tcp_bbr
-  echo $PASSWD | $SUDO -S sh -c "echo 'tcp_bbr' >> /etc/modules-load.d/modules.conf"
-  echo $PASSWD | $SUDO -S sh -c "echo 'net.core.default_qdisc=fq' >> /etc/sysctl.conf"
-  echo $PASSWD | $SUDO -S sh -c "echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf"
-  echo $PASSWD | $SUDO -S sysctl -p
+  echo $PASSWD | sudo -S modprobe tcp_bbr
+  echo $PASSWD | sudo -S sh -c "echo 'tcp_bbr' >> /etc/modules-load.d/modules.conf"
+  echo $PASSWD | sudo -S sh -c "echo 'net.core.default_qdisc=fq' >> /etc/sysctl.conf"
+  echo $PASSWD | sudo -S sh -c "echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf"
+  echo $PASSWD | sudo -S sysctl -p
 elif [ $SUDO = no ]; then
   modprobe tcp_bbr
   echo 'tcp_bbr' >> /etc/modules-load.d/modules.conf
