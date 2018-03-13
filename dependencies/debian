@@ -6,7 +6,11 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Update system"
 fi
-echo '$PASSWD' | $SUDO apt-get update -y && $SUDO apt-get upgrade -y && $SUDO apt-get autoremove -y && $SUDO apt-get autoclean -y && $SUDO apt-get clean -y
+if [ $SUDO = yes ]; then
+echo '$PASSWD' | sudo -S apt-get update -y && sudo -S apt-get upgrade -y && sudo -S apt-get autoremove -y && sudo -S apt-get autoclean -y && $SUDO -S apt-get clean -y
+elif [ $SUDO = no ]; then
+apt-get update -y && apt-get upgrade -y && apt-get autoremove -y && apt-get autoclean -y && apt-get clean -y
+fi
 
 # Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
