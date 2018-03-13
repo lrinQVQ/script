@@ -4,7 +4,7 @@ export USERID=`id -u`
 # Check ROOT Permissions
 if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
   unset SUDO
-  export SUDO=sudo -S
+  export SUDO=yes
   if [ $LANG=zh_CN.UTF-8 ]; then
   read -p "请输入当前用户密码: " PASSWD
   else
@@ -12,7 +12,7 @@ if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
   fi
 else if [ "$USERID" = 0 ]; then
   unset SUDO
-  export SUDO=
+  export SUDO=no
 else if [ $LANG=zh_CN.UTF-8 ]; then
   echo "你没有root权限,请尝试安装sudo或者切换至root用户"
   exit 1
