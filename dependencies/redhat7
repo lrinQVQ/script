@@ -6,7 +6,10 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   echo "Installation of basic Shadowsocks-libev build dependencies"
 fi
-
-echo $PASSWD | $SUDO yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel libev-devel pcre-devel curl git -y
+if [ $SUDO = yes ]; then
+echo $PASSWD | sudo -S yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel libev-devel pcre-devel curl git -y
+elif [ $SUDO = no ]; then
+yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel libev-devel pcre-devel curl git -y
+fi
 
 . $DEP/redhat
