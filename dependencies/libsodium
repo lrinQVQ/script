@@ -10,6 +10,11 @@ git clone https://github.com/jedisct1/libsodium.git
 cd libsodium 
 ./autogen.sh
 ./configure --prefix=/usr && make -j$CPU_NUM
-echo $PASSWD | $SUDO make install
+if [ $SUDO = yes ]; then
+echo $PASSWD | sudo -S make install
+echo $PASSWD | sudo -S ldconfig
+elif [ $SUDO = no ]; then
+make install
+ldconfig
+fi
 cd ..
-echo $PASSWD | $SUDO ldconfig
