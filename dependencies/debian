@@ -31,7 +31,7 @@ else
   echo "Install virtual machine architecture check package"
 fi
 if [ $SUDO = yes ]; then
-echo $PASSWD | $SUDO apt-get install virt-what -y
+echo $PASSWD | sudo -S apt-get install virt-what -y
 elif [ $SUDO = no ]; then
 apt-get install virt-what -y
 fi
