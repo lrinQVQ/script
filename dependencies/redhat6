@@ -24,7 +24,7 @@ else
   echo "uninstall autoconf 2.69"
 fi
 
-cd ../script/autoconf-2.69
+cd autoconf-2.69
 if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S make uninstall
 elif [ $SUDO = no ]; then
