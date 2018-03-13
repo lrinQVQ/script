@@ -117,7 +117,6 @@ $SUDO iptables -I INPUT -p udp --dport $PORT -j ACCEPT
 $SUDO service iptables save
 fi
 fi
-fi
 }
 
 port_check
