@@ -11,5 +11,9 @@ tar zxf autoconf-2.69.tar.gz
 cd autoconf-2.69
 ./configure
 make -j$CPU_NUM
-echo $PASSWD | $SUDO make install
+if [ $SUDO = yes ]; then
+echo $PASSWD | sudo -S make install
+elif [ $SUDO = no ]; then
+make install
+fi
 cd ..
