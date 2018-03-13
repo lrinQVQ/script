@@ -78,7 +78,7 @@ esac
 fi
 
 export KERNEL_VERSION=`uname -r`
-export VM=`$SUDO virt-what`
+export VM=`echo $PASSWD | sudo -S virt-what`
 
 . $DEP/bbr
 . $DEP/ss_config
