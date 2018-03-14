@@ -6,10 +6,10 @@ else
   echo "Installation of kernel basic build dependencies"
 fi
 if [ $OS = debian ]; then
-echo $PASSWD | $SUDO apt-get install build-essential bison flex libelf-dev libssl-dev -y
+echo $PASSWD | sudo -S apt-get install build-essential bison flex libelf-dev libssl-dev -y
 else if [ $OS = redhat6 ] || [ $OS = redhat7 ] ; then
-echo $PASSWD | $SUDO yum groupinstall "Development Tools" -y
-echo $PASSWD | $SUDO yum install openssl-devel -y
+echo $PASSWD | sudo -S yum groupinstall "Development Tools" -y
+echo $PASSWD | sudo -S yum install openssl-devel -y
 fi
 fi
 
@@ -25,8 +25,8 @@ echo "CONFIG_TCP_CONG_BBR=y" >> .config
 echo "CONFIG_DEFAULT_BBR=y" >> .config
 make
 make modules
-echo $PASSWD | $SUDO make modules_install
-echo $PASSWD | $SUDO make install
+echo $PASSWD | sudo -S make modules_install
+echo $PASSWD | sudo -S make install
 cd ..
 
 #Enable BBR
@@ -36,8 +36,8 @@ then
 else
   echo "BBR ENABLED"
 fi
-echo $PASSWD | $SUDO echo "tcp_bbr" >> /etc/modules-load.d/modules.conf
-echo $PASSWD | $SUDO echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
-echo $PASSWD | $SUDO echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
+echo $PASSWD | sudo -S echo "tcp_bbr" >> /etc/modules-load.d/modules.conf
+echo $PASSWD | sudo -S echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
+echo $PASSWD | sudo -S echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
 
 unset VM
