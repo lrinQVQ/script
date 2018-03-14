@@ -1,9 +1,9 @@
 #!/bin/sh
 #Update autoconf to 2.69 for Redhat 6 derivatives
 if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "Redhat 6及其衍生需要更新autoconf到2.69,脚本完成后自动卸载"
+  read -p "Redhat 6及其衍生需要更新autoconf到2.69,是否卸载?卸载后无法自动更新(yes/no) " AUTOUPDATE_CHECK
 else
-  echo "Redhat 6 and derivatives need to be updated autoconf to 2.69,After the script is completed automatically uninstall"
+  read -p  "Redhat 6 and its derivatives need to update autoconf to 2.69. Is it uninstalled? Unable to update automatically after uninstalling(yes/no) " AUTOUPDATE_CHECK
 fi
 if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S yum install curl tar openssl-devel -y
