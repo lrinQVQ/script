@@ -88,15 +88,31 @@ read -p "passwd: " PASSWORD
 IPV6=`curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1`
 if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
 if [ "$IPV6" = "200" ]; then
+if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /root/ss/shadowsocks-1.pid
+elif [ $SUDO = no ]; then
+ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /root/ss/shadowsocks-1.pid
+fi
 else
+if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /root/ss/shadowsocks-1.pid
+elif [ $SUDO = no ]; then
+ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /root/ss/shadowsocks-1.pid
+fi
 fi
 elif [ "$PLUGIN_CHECK" = "no" ]; then
 if [ "$IPV6" = "200" ]; then
+if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /root/ss/shadowsocks-1.pid
+elif [ $SUDO = no ]; then
+ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /root/ss/shadowsocks-1.pid
+fi
 else
+if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /root/ss/shadowsocks-1.pid
+elif [ $SUDO = no ]; then
+ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /root/ss/shadowsocks-1.pid
+fi
 fi
 else if [ $LANG=zh_CN.UTF-8 ]; then
   echo "请使用小于8300且大于8400的端口"
@@ -108,13 +124,24 @@ fi
 fi
 fi
 if [ "$OS" = "redhat7" ]; then
+if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S firewall-cmd --permanent --zone=public --add-port=$PORT/udp
 echo $PASSWD | sudo -S firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
+echo $PASSWD | sudo -S firewall-cmd --reload
+elif [ $SUDO = no ]; then
+firewall-cmd --permanent --zone=public --add-port=$PORT/udp
+firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
 firewall-cmd --reload
+fi
 elif [ "$OS" = "redhat6" ]; then
+if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
 echo $PASSWD | sudo -S iptables -I INPUT -p udp --dport $PORT -j ACCEPT
 echo $PASSWD | sudo -S service iptables save
+elif [ $SUDO = no ]; then
+iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
+iptables -I INPUT -p udp --dport $PORT -j ACCEPT
+service iptables save
 fi
 }
 
