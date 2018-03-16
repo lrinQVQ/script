@@ -6,10 +6,10 @@ else
   echo "Installation of kernel basic build dependencies"
 fi
 if [ $OS = debian ]; then
-echo $PASSWD | sudo -S apt-get install build-essential bison flex libelf-dev libssl-dev libncurses5-dev -y
+echo $PASSWD | sudo -S apt-get install build-essential bison flex libelf-dev libssl-dev libncurses5-dev bc -y
 else if [ $OS = redhat6 ] || [ $OS = redhat7 ] ; then
 echo $PASSWD | sudo -S yum groupinstall "Development Tools" -y
-echo $PASSWD | sudo -S yum install openssl-devel -y
+echo $PASSWD | sudo -S yum install openssl-devel bc -y
 fi
 fi
 
