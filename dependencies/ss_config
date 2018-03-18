@@ -78,6 +78,8 @@ else
 fi
 fi
 esac
+elif [ "$PLUGIN_CHECK" = "no" ]; then
+PLUGIN_CHECK=no
 fi
 
 port_check() {
@@ -114,15 +116,15 @@ elif [ $SUDO = no ]; then
 ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /root/ss/shadowsocks-1.pid
 fi
 fi
-else if [ $LANG=zh_CN.UTF-8 ]; then
+fi
+elif [ $LANG=zh_CN.UTF-8 ]; then
   echo "请使用小于8300且大于8400的端口"
   port_check
 else
   echo "Please use a port smaller than 8300 and larger than 8400"
   port_check
 fi
-fi
-fi
+
 if [ "$OS" = "redhat7" ]; then
 if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S firewall-cmd --permanent --zone=public --add-port=$PORT/udp
