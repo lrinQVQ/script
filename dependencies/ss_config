@@ -65,7 +65,7 @@ read -p "Enable SIP003 plugin. (Experimental)(default:yes):(yes/no) " PLUGIN_CHE
 if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
 read -p "Select plugin: (1.simple-obfs ) " PLUGIN
 case "$PLUGIN" in
-  1|simple-obfs)
+  1|simple-obfs|"")
 read -p "Set SIP003 plugin options. (Experimental)(default:tls):(tls/http) " PLUGIN_OPTIONS
 if [ "$PLUGIN_OPTIONS" = "tls" ] || [ "$PLUGIN_OPTIONS" = "" ]; then
 PLUGIN_OPTIONS=tls
