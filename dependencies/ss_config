@@ -92,13 +92,13 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
 if [ "$IPV6" = "200" ]; then
 if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /root/ss/shadowsocks-1.pid
-elif [ $SUDO = no ]; then
+elif [ $SUDO = "no" ] || [ $SUDO = "" ]; then
 ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /root/ss/shadowsocks-1.pid
 fi
 else
-if [ $SUDO = yes ]; then
+if [ $SUDO = "yes" ]; then
 echo $PASSWD | sudo -S ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /root/ss/shadowsocks-1.pid
-elif [ $SUDO = no ]; then
+elif [ $SUDO = "no" ] || [ $SUDO = "" ]; then
 ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /root/ss/shadowsocks-1.pid
 fi
 fi
@@ -112,7 +112,7 @@ fi
 else
 if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /root/ss/shadowsocks-1.pid
-elif [ $SUDO = no ]; then
+elif [ $SUDO = "no" ] || [ $SUDO = "" ]; then
 ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /root/ss/shadowsocks-1.pid
 fi
 fi
@@ -130,7 +130,7 @@ if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S firewall-cmd --permanent --zone=public --add-port=$PORT/udp
 echo $PASSWD | sudo -S firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
 echo $PASSWD | sudo -S firewall-cmd --reload
-elif [ $SUDO = no ]; then
+elif [ $SUDO = "no" ] || [ $SUDO = "" ]; then
 firewall-cmd --permanent --zone=public --add-port=$PORT/udp
 firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
 firewall-cmd --reload
@@ -140,7 +140,7 @@ if [ $SUDO = yes ]; then
 echo $PASSWD | sudo -S iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
 echo $PASSWD | sudo -S iptables -I INPUT -p udp --dport $PORT -j ACCEPT
 echo $PASSWD | sudo -S service iptables save
-elif [ $SUDO = no ]; then
+elif [ $SUDO = "no" ] || [ $SUDO = "" ]; then
 iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
 iptables -I INPUT -p udp --dport $PORT -j ACCEPT
 service iptables save
