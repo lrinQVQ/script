@@ -11,6 +11,10 @@ unencrytedpasswd() {
 export PASSWD=`echo "$PASSWD" | base64 -d`
 }
 
+ss_config() {
+. $WORKDIRECTORY/ss_config
+}
+
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "创建工作目录"
 else
@@ -106,7 +110,6 @@ export VM=`echo $PASSWD | sudo -S virt-what`
 encrytedpasswd
 
 . $DEP/bbr
-cp -v $DEP/ss_config $WORKDIRECTORY
 
 #Autoupdate requirement check
 if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
@@ -128,6 +131,9 @@ elif [ $SUDO = no ]; then
   echo "0 0 * * * `whoami` sh $WORKDIRECTORY/ss_update" > /var/spool/cron/crontabs/`whoami`
 fi
 fi
+
+cp -v $DEP/ss_config $WORKDIRECTORY
+ss_config
 
 unset MEM_CHECK
 unset CPU_NUM
