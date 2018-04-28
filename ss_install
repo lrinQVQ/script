@@ -71,6 +71,7 @@ else
   export CPU_NUM=1
 fi
 echo "export CPU_NUM=$CPU_NUM" >> $WORKDIRECTORY/envsetup.sh
+chmod +x $WORKDIRECTORY/envsetup.sh
 
 # Check linux distribution
 #Debian Base
