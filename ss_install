@@ -135,12 +135,13 @@ fi
   cp -v $DEP/mbedtls_update $WORKDIRECTORY
   cp -v $DEP/shadowsocks_update $WORKDIRECTORY
   cp -v $DEP/simple-obfs_update $WORKDIRECTORY
+  echo "0 0 * * * `whoami` sh $WORKDIRECTORY/ss_update" > $WORKDIRECTORY/`whoami`
 if [ $SUDO = yes ]; then
   unencrytedpasswd
-  echo $PASSWD | sudo -S echo "0 0 * * * `whoami` sh $WORKDIRECTORY/ss_update" > /var/spool/cron/crontabs/`whoami`
+  echo $PASSWD | sudo -S cp -v $WORKDIRECTORY/`whoami` /var/spool/cron/crontabs/`whoami`
   encrytedpasswd
 elif [ $SUDO = no ]; then
-  echo "0 0 * * * `whoami` sh $WORKDIRECTORY/ss_update" > /var/spool/cron/crontabs/`whoami`
+  cp -v $WORKDIRECTORY/`whoami` /var/spool/cron/crontabs/`whoami`
 fi
 fi
 
