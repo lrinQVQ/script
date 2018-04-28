@@ -24,7 +24,7 @@ else
 fi
 if [ $SUDO = yes ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl git -y
+echo $PASSWD | sudo -S apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl libcap2-bin -y
 encrytedpasswd
 elif [ $SUDO = no ]; then
 apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl git -y
