@@ -124,7 +124,7 @@ encrytedpasswd
 if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
 if [ $LANG=zh_CN.UTF-8 ]; then
   read -p "是否部署自动更新?" AUTOUPDATE_CHECK
-elif
+else
   read -p "Whether to deploy automatic updates?" AUTOUPDATE_CHECK
 fi
   cp -v $DEP/ss_update $WORKDIRECTORY
