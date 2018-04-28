@@ -1,18 +1,27 @@
 #!/bin/sh
 export OS=redhat6
-#Install Redhat 6 and its derivative building dependencies
-# Installation of basic build dependencies
+
 if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "安装编译Shadowsocks-libev时需要的依赖包"
+  echo "进入$WORKDIRECTORY"
 else
-  echo "Installation of basic Shadowsocks-libev build dependencies"
-fi
-if [ $SUDO = yes ]; then
-echo $PASSWD | sudo -S yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
-elif [ $SUDO = no ]; then
-yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
+  echo "work in $WORKDIRECTORY"
 fi
 
+cd $WORKDIRECTORY
+
+# Update system
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "更新系统"
+else
+  echo "Update system"
+fi
+if [ $SUDO = yes ]; then
+echo $PASSWD | sudo -S yum update -y
+elif [ $SUDO = no ]; then
+yum update -y
+fi
+
+#Install Redhat 6 and its derivative building dependencies
 . $DEP/autoconf
 . $DEP/libev
 . $DEP/redhat
@@ -31,6 +40,7 @@ echo $PASSWD | sudo -S make uninstall
 elif [ $SUDO = no ]; then
 make uninstall
 fi
+cd ..
 elif [ "$UNINSTALL_AUTOCONF" = "no" ] || [ "$UNINSTALL_AUTOCONF" = "" ]; then
 export AUTOUPDATE_CHECK=yes
 fi

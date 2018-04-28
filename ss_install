@@ -1,6 +1,24 @@
 #!/bin/sh
 export DEP=$PWD/dependencies
 export USERID=`id -u`
+export WORKDIRECTORY=$PWD/shadowsocks
+
+encrytedpasswd() {
+export PASSWD=`echo "$PASSWD" | base64 -i`
+}
+
+unencrytedpasswd() {
+export PASSWD=`echo "$PASSWD" | base64 -d`
+}
+
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "创建工作目录"
+else
+  echo "Create work directory"
+fi
+
+mkdir $WORKDIRECTORY
+
 # Check ROOT Permissions
 if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
   unset SUDO
@@ -10,6 +28,8 @@ if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
   else
   read -p "Please enter the current user password: " PASSWD
   fi
+encrytedpasswd
+echo "export PASSWD=$PASSWD" >> $WORKDIRECTORY/envsetup.sh
 else if [ "$USERID" = 0 ]; then
   unset SUDO
   export SUDO=no
@@ -23,6 +43,7 @@ fi
 fi
 fi
 unset USERID
+echo "export SUDO=$SUDO" >> $WORKDIRECTORY/envsetup.sh
 
 # Check memsize
 MEM_CHECK=`cat /proc/meminfo | grep MemTotal | grep '[0-9]' -o | awk BEGIN{RS=EOF}'{gsub(/\n/,"");print}'`
@@ -32,6 +53,7 @@ if [ "$MEM_CHECK" -ge "524288" ]; then
 else
   export CPU_NUM=1
 fi
+echo "export CPU_NUM=$CPU_NUM" >> $WORKDIRECTORY/envsetup.sh
 
 # Check linux distribution
 #Debian Base
@@ -87,3 +109,4 @@ unset MEM_CHECK
 unset CPU_NUM
 unset DEBIAN_VERSION
 unset REDHAT_VERSION
+unset WORKDIRECTORY

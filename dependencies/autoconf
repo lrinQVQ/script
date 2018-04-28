@@ -6,18 +6,12 @@ else
   read -p  "Redhat 6 and its derivatives need to update autoconf to 2.69. Is it uninstalled? Unable to update automatically after uninstalling(yes/no)(default:no) " UNINSTALL_AUTOCONF
 fi
 if [ $SUDO = yes ]; then
+unencrytedpasswd
 echo $PASSWD | sudo -S yum install curl tar openssl-devel -y
+encrytedpasswd
 elif [ $SUDO = no ]; then
 yum install curl tar openssl-devel -y
 fi
-
-if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "进入~/shadowsocks"
-else
-  echo "work in ~/shadowsocks"
-fi
-
-cd ~/shadowsocks
 
 curl -L -O http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
 tar zxf autoconf-2.69.tar.gz
@@ -25,7 +19,9 @@ cd autoconf-2.69
 ./configure
 make -j$CPU_NUM
 if [ $SUDO = yes ]; then
+unencrytedpasswd
 echo $PASSWD | sudo -S make install
+encrytedpasswd
 elif [ $SUDO = no ]; then
 make install
 fi

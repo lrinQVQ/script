@@ -1,14 +1,16 @@
 #!/bin/sh
-# Update system
+# Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "更新系统"
+  echo "安装编译Shadowsocks-libev时需要的依赖包"
 else
-  echo "Update system"
+  echo "Installation of basic Shadowsocks-libev build dependencies"
 fi
 if [ $SUDO = yes ]; then
-echo $PASSWD | sudo -S yum update -y
+unencrytedpasswd
+echo $PASSWD | sudo -S yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
+encrytedpasswd
 elif [ $SUDO = no ]; then
-yum update -y
+yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
 fi
 
 # Install virtual machine architecture check package
@@ -18,26 +20,12 @@ else
   echo "Install virtual machine architecture check package"
 fi
 if [ $SUDO = yes ]; then
+unencrytedpasswd
 echo $PASSWD | sudo -S yum install virt-what which -y
+encrytedpasswd
 elif [ $SUDO = no ]; then
 yum install virt-what which -y
 fi
-
-if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "新建~/shadowsocks目录"
-else
-  echo "mkdir ~/shadowsocks directory"
-fi
-
-mkdir ~/shadowsocks
-
-if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "进入~/shadowsocks"
-else
-  echo "work in ~/shadowsocks"
-fi
-
-cd ~/shadowsocks
 
 . $DEP/libsodium
 . $DEP/mbedtls

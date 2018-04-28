@@ -11,8 +11,10 @@ cd libsodium
 ./autogen.sh
 ./configure --prefix=/usr && make -j$CPU_NUM
 if [ $SUDO = yes ]; then
+unencrytedpasswd
 echo $PASSWD | sudo -S make install
 echo $PASSWD | sudo -S ldconfig
+encrytedpasswd
 elif [ $SUDO = no ]; then
 make install
 ldconfig
