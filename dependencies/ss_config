@@ -1,4 +1,12 @@
 #!/bin/sh
+encrytedpasswd() {
+export PASSWD=`echo "$PASSWD" | base64 -i`
+}
+
+unencrytedpasswd() {
+export PASSWD=`echo "$PASSWD" | base64 -d`
+}
+
 if [ -f "$PWD/envsetup.sh" ]; then
 ./envsetup.sh
 else
