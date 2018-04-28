@@ -1,6 +1,6 @@
 #!/bin/sh
 if [ -f "$PWD/envsetup.sh" ]; then
-source $PWD/envsetup.sh
+./envsetup.sh
 else
 exit 1
 fi
