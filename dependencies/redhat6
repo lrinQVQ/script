@@ -37,10 +37,13 @@ fi
 
 cd autoconf-2.69
 if [ $SUDO = yes ]; then
+unencrytedpasswd
 echo $PASSWD | sudo -S make uninstall
+encrytedpasswd
 elif [ $SUDO = no ]; then
 make uninstall
 fi
+export AUTOUPDATE_CHECK=no
 cd ..
 elif [ "$UNINSTALL_AUTOCONF" = "no" ] || [ "$UNINSTALL_AUTOCONF" = "" ]; then
 export AUTOUPDATE_CHECK=yes
