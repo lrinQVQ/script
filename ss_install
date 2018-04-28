@@ -22,6 +22,9 @@ else
   echo "Create work directory"
 fi
 
+if [ -d "$WORKDIRECTORY" ]; then
+  rm -rf $WORKDIRECTORY
+fi
 mkdir $WORKDIRECTORY
 echo "export WORKDIRECTORY=$WORKDIRECTORY" >> $WORKDIRECTORY/envsetup.sh
 
