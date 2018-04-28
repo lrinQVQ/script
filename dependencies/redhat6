@@ -1,5 +1,6 @@
 #!/bin/sh
 export OS=redhat6
+echo "export OS=$OS" >> $WORKDIRECTORY/envsetup.sh
 
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "进入$WORKDIRECTORY"

@@ -1,2 +1,21 @@
 #!/bin/sh
+if [ -f "$PWD/envsetup.sh" ]; then
+source $PWD/envsetup.sh
+else
+exit 1
+fi
 
+encrytedpasswd() {
+export PASSWD=`echo "$PASSWD" | base64 -i`
+}
+
+unencrytedpasswd() {
+export PASSWD=`echo "$PASSWD" | base64 -d`
+}
+
+cd $WORKDIRECTORY
+
+. $PWD/libsodium_update
+. $PWD/mbedtls_update
+. $PWD/shadowsocks_update
+. $PWD/simple-obfs_update

@@ -18,6 +18,7 @@ else
 fi
 
 mkdir $WORKDIRECTORY
+echo "export WORKDIRECTORY=$WORKDIRECTORY" >> $WORKDIRECTORY/envsetup.sh
 
 # Check ROOT Permissions
 if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
@@ -100,10 +101,17 @@ esac
 fi
 
 export KERNEL_VERSION=`uname -r`
+unencrytedpasswd
 export VM=`echo $PASSWD | sudo -S virt-what`
+encrytedpasswd
 
 . $DEP/bbr
-. $DEP/ss_config
+cp -v $DEP/ss_config $WORKDIRECTORY
+cp -v $DEP/ss_update $WORKDIRECTORY
+cp -v $DEP/libsodium_update $WORKDIRECTORY
+cp -v $DEP/mbedtls_update $WORKDIRECTORY
+cp -v $DEP/shadowsocks_update $WORKDIRECTORY
+cp -v $DEP/simple-obfs_update $WORKDIRECTORY
 
 unset MEM_CHECK
 unset CPU_NUM

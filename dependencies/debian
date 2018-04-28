@@ -1,5 +1,7 @@
 #!/bin/sh
 export OS=debian
+echo "export OS=$OS" >> $WORKDIRECTORY/envsetup.sh
+
 # Update system
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "更新系统"

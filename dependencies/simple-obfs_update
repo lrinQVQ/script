@@ -1,0 +1,16 @@
+#!/bin/sh
+#Update simple-obfs
+cd simple-obfs
+make distclean
+git pull
+git submodule update --init --recursive
+./autogen.sh
+./configure && make -j$CPU_NUM
+if [ $SUDO = yes ]; then
+unencrytedpasswd
+echo $PASSWD | sudo -S make install
+encrytedpasswd
+elif [ $SUDO = no ]; then
+make install
+fi
+cd ..
