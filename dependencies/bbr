@@ -1,5 +1,14 @@
 #!/bin/sh
 #BBR Check
+BBRCHECK=`lsmod | grep -o tcp_bbr`
+if [ $BBRCHECK = tcp_bbr ]; then
+if [ $LANG=zh_CN.UTF-8 ];
+then
+  echo "BBR已经加载"
+else
+  echo "BBR has loaded"
+fi
+else
 if [ -f "/lib/modules/$KERNEL_VERSION/kernel/net/ipv4/tcp_bbr.ko" ]; then
 if [ $SUDO = yes ]; then
   unencrytedpasswd
@@ -27,6 +36,8 @@ else if [ "$VM" = "kvm" ] || [ "$VM" = "" ] ; then
   echo "Don't building kernel now"
 fi
 fi
+fi
 
 unset KERNEL_VERSION
 unset VM
+unset BBRCHECK
