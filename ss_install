@@ -2,6 +2,7 @@
 export DEP=$PWD/dependencies
 export USERID=`id -u`
 export WORKDIRECTORY=$PWD/shadowsocks
+export DEFAULTSHELL=`readlink -f /bin/sh`
 
 encrytedpasswd() {
 export PASSWD=`echo "$PASSWD" | base64 -i`
@@ -28,11 +29,18 @@ echo "export WORKDIRECTORY=$WORKDIRECTORY" >> $WORKDIRECTORY/envsetup.sh
 if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
   unset SUDO
   export SUDO=yes
-  if [ $LANG=zh_CN.UTF-8 ]; then
+if [ $LANG=zh_CN.UTF-8 ]; then
+if [ $DEFAULTSHELL = $DEFAULTSHELL ]; then
+  read -p "请输入当前用户密码: " PASSWD
+else
   read -s -p "请输入当前用户密码: " PASSWD
-  else
+fi
+else
+if [ $DEFAULTSHELL = $DEFAULTSHELL ]; then
+  read -p "Please enter the current user password: " PASSWD
+else
   read -s -p "Please enter the current user password: " PASSWD
-  fi
+fi
 encrytedpasswd
 echo "export PASSWD=$PASSWD" >> $WORKDIRECTORY/envsetup.sh
 else if [ "$USERID" = 0 ]; then
@@ -140,3 +148,4 @@ unset CPU_NUM
 unset DEBIAN_VERSION
 unset REDHAT_VERSION
 unset WORKDIRECTORY
+unset DEFAULTSHELL
