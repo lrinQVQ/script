@@ -112,7 +112,7 @@ if [ "$SUDO" = "yes" ]; then
 unencrytedpasswd
 echo $PASSWD | sudo -S ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-1.pid
 encrytedpasswd
-elif [ $SUDO = "no" ] || [ $SUDO = "" ]; then
+elif [ "$SUDO" = "no" ] || [ "$SUDO" = "" ]; then
 ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-1.pid
 fi
 else
