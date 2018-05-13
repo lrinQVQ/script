@@ -127,10 +127,11 @@ encrytedpasswd
 #Autoupdate requirement check
 if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
 if [ $LANG=zh_CN.UTF-8 ]; then
-  read -p "是否部署自动更新?" AUTOUPDATE_CHECK
+  read -p "是否部署自动更新?(yes/no) (default:yes): " AUTOUPDATE_CHECK
 else
-  read -p "Whether to deploy automatic updates?" AUTOUPDATE_CHECK
+  read -p "Whether to deploy automatic updates?(yes/no) (default:yes): " AUTOUPDATE_CHECK
 fi
+if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
   cp -v $DEP/ss_update $WORKDIRECTORY
   cp -v $DEP/libsodium_update $WORKDIRECTORY
   cp -v $DEP/mbedtls_update $WORKDIRECTORY
@@ -143,6 +144,7 @@ if [ $SUDO = yes ]; then
   encrytedpasswd
 elif [ $SUDO = no ]; then
   cp -v $WORKDIRECTORY/`whoami` /var/spool/cron/crontabs/`whoami`
+fi
 fi
 fi
 
