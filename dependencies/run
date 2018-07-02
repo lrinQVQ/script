@@ -13,9 +13,10 @@ unencrytedpasswd() {
 export PASSWD=`echo "$PASSWD" | base64 -d`
 }
 
-cd $WORKDIRECTORY
-
-. $PWD/libsodium_update
-. $PWD/mbedtls_update
-. $PWD/shadowsocks_update
-. $PWD/simple-obfs_update
+if [ $SUDO = yes ]; then
+unencrytedpasswd
+echo $PASSWD | sudo -S sh -c $WORKDIRECTORY/ss_run
+encrytedpasswd
+elif [ $SUDO = no ]; then
+sh $WORKDIRECTORY/ss_run
+fi

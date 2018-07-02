@@ -16,6 +16,10 @@ ss_config() {
 . $WORKDIRECTORY/ss_config
 }
 
+run_server() {
+. $WORKDIRECTORY/run
+}
+
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "创建工作目录"
 else
@@ -139,15 +143,25 @@ fi
   echo "0 0 * * * `whoami` sh $WORKDIRECTORY/ss_update" > $WORKDIRECTORY/`whoami`
 if [ $SUDO = yes ]; then
   unencrytedpasswd
-  echo $PASSWD | sudo -S cp -v $WORKDIRECTORY/`whoami` /var/spool/cron/crontabs/`whoami`
+  echo $PASSWD | sudo -S cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`
   encrytedpasswd
 elif [ $SUDO = no ]; then
-  cp -v $WORKDIRECTORY/`whoami` /var/spool/cron/crontabs/`whoami`
+  cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`
 fi
 fi
 
 cp -v $DEP/ss_config $WORKDIRECTORY
 ss_config
+
+if [ $LANG=zh_CN.UTF-8 ]; then
+  read -p "是否运行Shadowsocks服务器?" RUN_SERVER
+else
+  read -p "Running shadowsocks server?" RUN_SERVER
+fi
+  cp -v $DEP/run $WORKDIRECTORY
+if [ $RUN_SERVER = yes ]; then
+run_server
+fi
 
 unset MEM_CHECK
 unset CPU_NUM
