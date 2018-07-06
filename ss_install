@@ -164,7 +164,7 @@ if [ $LANG=zh_CN.UTF-8 ]; then
 else
   read -p "Running shadowsocks server?" RUN_SERVER
 fi
-  cp -v $DEP/run $WORKDIRECTORY
+  cp -v $DEP/run $WORKDIRECTORY/run
 if [ $RUN_SERVER = yes ]; then
 run_server
 fi
