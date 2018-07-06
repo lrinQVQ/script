@@ -3,6 +3,7 @@ export DEP=$PWD/dependencies
 export USERID=`id -u`
 export WORKDIRECTORY=$PWD/shadowsocks
 export DEFAULTSHELL=`readlink -f /bin/sh`
+export ISDASH=`readlink -f /bin/sh | grep dash`
 
 encrytedpasswd() {
 export PASSWD=`echo "$PASSWD" | base64 -i`
@@ -20,7 +21,7 @@ run_server() {
 . $WORKDIRECTORY/run
 }
 
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "创建工作目录"
 else
   echo "Create work directory"
@@ -36,14 +37,14 @@ echo "export WORKDIRECTORY=$WORKDIRECTORY" >> $WORKDIRECTORY/envsetup.sh
 if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
   unset SUDO
   export SUDO=yes
-if [ $LANG=zh_CN.UTF-8 ]; then
-if [ $DEFAULTSHELL = $DEFAULTSHELL ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
   read -p "请输入当前用户密码: " PASSWD
 else
   read -s -p "请输入当前用户密码: " PASSWD
 fi
 else
-if [ $DEFAULTSHELL = $DEFAULTSHELL ]; then
+if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
   read -p "Please enter the current user password: " PASSWD
 else
   read -s -p "Please enter the current user password: " PASSWD
@@ -54,7 +55,7 @@ echo "export PASSWD=$PASSWD" >> $WORKDIRECTORY/envsetup.sh
 else if [ "$USERID" = 0 ]; then
   unset SUDO
   export SUDO=no
-else if [ $LANG=zh_CN.UTF-8 ]; then
+else if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "你没有root权限,请尝试安装sudo或者切换至root用户"
   exit 1
 else
@@ -110,7 +111,7 @@ case "$REDHAT_VERSION" in
     . $DEP/redhat6
   ;;
   *)
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "暂不支持您的系统"
   exit 1
 else
@@ -122,11 +123,11 @@ esac
 fi
 
 export KERNEL_VERSION=`uname -r`
-if [ $SUDO = yes ]; then
+if [ "$SUDO" = "yes" ]; then
 unencrytedpasswd
 export VM=`echo $PASSWD | sudo -S virt-what`
 encrytedpasswd
-elif [ $SUDO = no ]; then
+elif [ "$SUDO" = "no" ]; then
 export VM=`virt-what`
 fi
 
@@ -134,7 +135,7 @@ fi
 
 #Autoupdate requirement check
 if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   read -p "是否部署自动更新?(yes/no) (default:yes): " AUTOUPDATE_CHECK
 else
   read -p "Whether to deploy automatic updates?(yes/no) (default:yes): " AUTOUPDATE_CHECK
@@ -146,11 +147,11 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
   cp -v $DEP/shadowsocks_update $WORKDIRECTORY
   cp -v $DEP/simple-obfs_update $WORKDIRECTORY
   echo "0 0 * * * `whoami` sh $WORKDIRECTORY/ss_update" > $WORKDIRECTORY/`whoami`
-if [ $SUDO = yes ]; then
+if [ "$SUDO" = "yes" ]; then
   unencrytedpasswd
   echo $PASSWD | sudo -S cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`
   encrytedpasswd
-elif [ $SUDO = no ]; then
+elif [ "$SUDO" = "no" ]; then
   cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`
 fi
 fi
@@ -159,13 +160,13 @@ fi
 cp -v $DEP/ss_config $WORKDIRECTORY
 ss_config
 
-if [ $LANG=zh_CN.UTF-8 ]; then
-  read -p "是否运行Shadowsocks服务器?" RUN_SERVER
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "是否运行Shadowsocks服务器?(yes/no)" RUN_SERVER
 else
-  read -p "Running shadowsocks server?" RUN_SERVER
+  read -p "Running shadowsocks server?(yes/no)" RUN_SERVER
 fi
-  cp -v $DEP/run $WORKDIRECTORY/run
-if [ $RUN_SERVER = yes ]; then
+cp -v $DEP/run $WORKDIRECTORY/run
+if [ $RUN_SERVER = "yes" ]; then
 run_server
 fi
 
