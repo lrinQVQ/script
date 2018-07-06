@@ -6,7 +6,7 @@ rm -rf feeds/packages/net/shadowsocks-libev
 rm -rf package/libs/mbedtls
 ./scripts/feeds update -a
 git clone https://github.com/lrinQVQ/openwrt-feeds.git package/feeds
-pushd package/feeds
+cd package/feeds
 git submodule update --init --recursive
-popd
+cd ../..
 ./scripts/feeds install -a
