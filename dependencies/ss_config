@@ -103,7 +103,7 @@ fi
 port_check() {
 read -p "port: " PORT
 
-if [ "$PORT" -lt 8300 ] || [ "$PORT" -ge 8400 ] || [ "$PORT" = "" ]; then
+if [ "$PORT" -lt 8300 ] || [ "$PORT" -ge 8400 ] || [ "$PORT" -ne "" ]; then
 read -p "passwd: " PASSWORD
 IPV6=`curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1`
 if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
