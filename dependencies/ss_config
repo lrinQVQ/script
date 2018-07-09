@@ -120,10 +120,10 @@ echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UD
 fi
 fi
 elif [ $LANG=zh_CN.UTF-8 ]; then
-  echo "请使用小于8300且大于8400的端口"
+  echo "请使用小于8300或大于8400的端口"
   port_check
 else
-  echo "Please use a port smaller than 8300 and larger than 8400"
+  echo "Please use a port smaller than 8300 or larger than 8400"
   port_check
 fi
 
