@@ -20,7 +20,7 @@ fi
 #TCP fast open check
 if [ -f "/proc/sys/net/ipv4/tcp_fastopen" ]; then
 FASTOPEN_CHECK=`cat /proc/sys/net/ipv4/tcp_fastopen`
-if [ $FASTOPEN_CHECK = "3" ]; then
+if [ "$FASTOPEN_CHECK" = "3" ]; then
 FASTOPEN=--fast-open
 else
 FASTOPEN=
@@ -66,7 +66,7 @@ read -p "Enable TCP_NODELAY(default:yes):(yes/no) " TCP_NODELAY
 
 if [ "$TCP_NODELAY" = "yes" ] || [ "$TCP_NODELAY" = "" ]; then
 TCP_NODELAY=--no-delay
-elif [ $TCP_NODELAY = "no" ]; then
+elif [ "$TCP_NODELAY" = "no" ]; then
 TCP_NODELAY=
 fi
 
@@ -74,7 +74,7 @@ read -p "Enable port reuse(default:yes):(yes/no) " PORT_REUSE
 
 if [ "$PORT_REUSE" = "yes" ] || [ "$PORT_REUSE" = "" ]; then
 PORT_REUSE=--reuse-port
-elif [ $PORT_REUSE = "no" ]; then
+elif [ "$PORT_REUSE" = "no" ]; then
 PORT_REUSE=
 fi
 
@@ -112,7 +112,7 @@ if [ "$SUDO" = "yes" ]; then
 unencrytedpasswd
 echo $PASSWD | sudo -S ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-1.pid
 encrytedpasswd
-elif [ $SUDO = "no" ] || [ $SUDO = "" ]; then
+elif [ "$SUDO" = "no" ] || [ "$SUDO" = "" ]; then
 ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-1.pid
 fi
 else
