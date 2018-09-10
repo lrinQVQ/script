@@ -8,7 +8,8 @@ export PASSWD=`echo "$PASSWD" | base64 -d`
 }
 
 if [ -f "$PWD/envsetup.sh" ]; then
-./envsetup.sh
+. $PWD/envsetup.sh
+fi
 else
 exit 1
 fi
