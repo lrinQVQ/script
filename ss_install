@@ -28,6 +28,7 @@ if [ -d "$WORKDIRECTORY" ]; then
 fi
 mkdir $WORKDIRECTORY
 echo "export WORKDIRECTORY=$WORKDIRECTORY" >> $WORKDIRECTORY/envsetup.sh
+echo "export ISDASH=$ISDASH" >> $WORKDIRECTORY/envsetup.sh
 
 # Check ROOT Permissions
 if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
