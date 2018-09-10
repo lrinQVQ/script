@@ -154,7 +154,7 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
   echo "0 0 * * * `whoami` sh $WORKDIRECTORY/ss_update" > $WORKDIRECTORY/`whoami`
 if [ "$SUDO" = "yes" ]; then
   unencrytedpasswd
-  echo $PASSWD | sudo -S cp -v $WORKDIRECTORY/`whoami` /var/spool/cron/crontabs/`whoami`
+  echo $PASSWD | sudo sh -c "cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`"
   encrytedpasswd
 elif [ "$SUDO" = "no" ]; then
   cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`
