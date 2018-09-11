@@ -179,20 +179,6 @@ fi
 
 port_check
 
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  read -p "是否运行Shadowsocks服务器?(yes/no)" RUN_SERVER
-else
-  read -p "Running shadowsocks server?(yes/no)" RUN_SERVER
-fi
-
-if [ "$FIRST_RUN" = "yes" ]; then
-cp -v $DEP/run $WORKDIRECTORY
-fi
-if [ "$RUN_SERVER" = "yes" ]; then
-. $WORKDIRECTORY/run
-fi
-
-unset DEP
 unset SUDO
 unset ENCRYPTION
 unset PLUGIN_CHECK
