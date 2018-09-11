@@ -5,8 +5,6 @@ cat > /etc/iptables.test.rules << EOF
 -A INPUT -p udp -m udp --dport 80 -j DROP
 -A INPUT -p tcp -m tcp --dport 443 -j DROP
 -A INPUT -p udp -m udp --dport 443 -j DROP
--A INPUT -p tcp -m tcp --dport 22 -j DROP
--A INPUT -p udp -m udp --dport 22 -j DROP
 -A INPUT -p tcp -m tcp --dport 1723 -j DROP
 -A INPUT -p udp -m udp --dport 1723 -j DROP
 -A INPUT -p tcp -m tcp --dport 1701 -j DROP

@@ -1,9 +1,18 @@
 #!/bin/sh
+# Get the dependencies script absolute path
 export DEP=$PWD/dependencies
+
+# Get user id
 export USERID=`id -u`
+
+# Assign work directory
 export WORKDIRECTORY=$PWD/shadowsocks
+
+# Get default shell
 export DEFAULTSHELL=`readlink -f /bin/sh`
-export ISDASH=`readlink -f /bin/sh | grep dash`
+
+# Determine if the default shell is a dash
+export ISDASH=`echo $DEFAULTSHELL | grep dash`
 
 encrytedpasswd() {
 export PASSWD=`echo "$PASSWD" | base64 -i`
@@ -24,11 +33,14 @@ else
 fi
 
 if [ -d "$WORKDIRECTORY" ]; then
-  rm -rf $WORKDIRECTORY
+  . $WORKDIRECTORY/ss_update
 fi
+
 mkdir $WORKDIRECTORY
+
 echo "export WORKDIRECTORY=$WORKDIRECTORY" >> $WORKDIRECTORY/envsetup.sh
 echo "export ISDASH=$ISDASH" >> $WORKDIRECTORY/envsetup.sh
+echo "export DEFAULTSHELL=$DEFAULTSHELL" >> $WORKDIRECTORY/envsetup.sh
 
 # Check ROOT Permissions
 if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
@@ -47,8 +59,23 @@ else
   read -s -p "Please enter the current user password: " PASSWD
 fi
 fi
+
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "是否将密码用base64加密并存储到$WORKDIRECTORY/envsetup.sh中以方便程序自动更新(yes/no)(default:yes): " SAVEPASSWORD
+else
+  read -p "Whether to encrypt the password with base64 and store it in $WORKDIRECTORY/envsetup.sh to facilitate automatic program update.(yes/no)(default:yes): " SAVEPASSWORD
+fi
+if [ "SAVEPASSWORD" = "yes" ] | [ "SAVEPASSWORD" = "" ]; then
+  export AUTOUPDATE_CHECK=yes
+elif [ "SAVEPASSWORD" = "no" ]; then
+  export AUTOUPDATE_CHECK=no
+fi
+echo "export SAVEPASSWORD=$SAVEPASSWORD" >> $WORKDIRECTORY/envsetup.sh
+if [ "$SAVEPASSWORD" = "yes" ] | [ "SAVEPASSWORD" = "" ]; then
 encrytedpasswd
 echo "export PASSWD=$PASSWD" >> $WORKDIRECTORY/envsetup.sh
+fi
+
 else if [ "$USERID" = 0 ]; then
   unset SUDO
   export SUDO=no
@@ -156,6 +183,7 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
 if [ "$SUDO" = "yes" ]; then
   unencrytedpasswd
   echo $PASSWD | sudo sh -c "cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`"
+  echo $PASSWD | sudo sh -c "chown `whoami`:crontab /var/spool/cron/crontabs/`whoami`"
   encrytedpasswd
 elif [ "$SUDO" = "no" ]; then
   cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`
@@ -172,3 +200,6 @@ unset DEBIAN_VERSION
 unset REDHAT_VERSION
 unset WORKDIRECTORY
 unset DEFAULTSHELL
+unset SAVEPASSWORD
+unset AUTOUPDATE_CHECK
+unset ISDASH

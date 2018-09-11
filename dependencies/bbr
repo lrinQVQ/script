@@ -2,8 +2,7 @@
 #BBR Check
 BBRCHECK=`lsmod | grep -o tcp_bbr`
 if [ $BBRCHECK = tcp_bbr ]; then
-if [ $LANG=zh_CN.UTF-8 ];
-then
+if [ $LANG=zh_CN.UTF-8 ]; then
   echo "BBR已经加载"
 else
   echo "BBR has loaded"
