@@ -27,6 +27,20 @@ elif [ $SUDO = no ]; then
 yum install virt-what which -y
 fi
 
+# Install port occupancy detection tool
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装端口占用检测工具"
+else
+  echo "Install port occupancy detection tool"
+fi
+if [ $SUDO = yes ]; then
+unencrytedpasswd
+echo $PASSWD | sudo -S yum install lsof -y
+encrytedpasswd
+elif [ $SUDO = no ]; then
+yum install lsof -y
+fi
+
 . $DEP/libsodium
 . $DEP/mbedtls
 . $DEP/shadowsocks
