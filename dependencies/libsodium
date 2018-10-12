@@ -1,22 +1,16 @@
 #!/bin/sh
 #Installation of Libsodium
 if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "安装Libsodium"
+  echo "在$WORKDIRECTORY安装Libsodium"
 else
-  echo "Installation of Libsodium"
+  echo "Installation Libsodium in $WORKDIRECTORY"
 fi
 
 git clone https://github.com/jedisct1/libsodium.git
 cd libsodium
 ./autogen.sh
-./configure --prefix=/usr && make -j$CPU_NUM
-if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -S make install
-echo $PASSWD | sudo -S ldconfig
-encrytedpasswd
-elif [ $SUDO = no ]; then
+./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
 make install
-ldconfig
-fi
+export PATH=$WORKDIRECTORY/bin:$PATH
+echo "export PATH=$WORKDIRECTORY/bin:\$PATH" >> $WORKDIRECTORY/envsetup.sh
 cd ..

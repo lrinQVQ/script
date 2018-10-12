@@ -13,9 +13,11 @@ unencrytedpasswd() {
 export PASSWD=`echo "$PASSWD" | base64 -d`
 }
 
-cd $WORKDIRECTORY
+cd $WORKDIRECTORY && cd .. && git pull
 
-. $PWD/libsodium_update
-. $PWD/mbedtls_update
-. $PWD/shadowsocks_update
-. $PWD/simple-obfs_update
+cd $WORKDIRECTORY/src
+
+. $WORKDIRECTORY/bin/libsodium_update
+. $WORKDIRECTORY/bin/mbedtls_update
+. $WORKDIRECTORY/bin/shadowsocks_update
+. $WORKDIRECTORY/bin/simple-obfs_update

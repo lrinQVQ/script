@@ -9,15 +9,7 @@ fi
 curl -L -O http://dist.schmorp.de/libev/libev-4.24.tar.gz
 tar zxf libev-4.24.tar.gz
 cd libev-4.24
-./configure --prefix=/usr
+./configure --prefix=$WORKDIRECTORY
 make -j$CPU_NUM
-if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -S make install
-echo $PASSWD | sudo -S ldconfig
-encrytedpasswd
-elif [ $SUDO = no ]; then
 make install
-ldconfig
-fi
 cd ..

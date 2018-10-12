@@ -13,8 +13,12 @@ else
 exit 1
 fi
 
-if [ ! -d "/var/run/shadowsocks" ]; then
-  mkdir /var/run/shadowsocks
+if [ ! -d "$WORKDIRECTORY/pid" ]; then
+  mkdir -v $WORKDIRECTORY/pid
+fi
+
+if [ ! -d "$WORKDIRECTORY/config" ]; then
+  mkdir -v $WORKDIRECTORY/config
 fi
 
 #TCP fast open check
@@ -54,12 +58,6 @@ if [ "$UDP" = "yes" ] || [ "$UDP" = "" ]; then
 UDP=-u
 elif [ "$UDP" = "no" ]; then
 UDP=
-fi
-
-read -p "Remote DNS(default:8.8.8.8): " REMOTE_DNS
-
-if [ -z $REMOTE_DNS ]; then
-REMOTE_DNS=8.8.8.8
 fi
 
 read -p "Enable TCP_NODELAY(default:yes):(yes/no) " TCP_NODELAY
@@ -106,13 +104,19 @@ read -p "port: " PORT
 if [ "$PORT" = "" ]; then
   port_check
 else
-PORT_USE_CHECK=`lsof -i :$PORT | grep -v "PID" | awk '{print $2}'`
+if [ "$SUDO" = "yes" ]; then
+unencrytedpasswd
+PORT_USE_CHECK=`echo $PASSWD | sudo -SE sh -c "lsof -i:$PORT"`
+encrytedpasswd
+elif [ "$SUDO" = "no" ]; then
+PORT_USE_CHECK=`lsof -i:$PORT`
+fi
 if [ "$PORT_USE_CHECK" != "" ] || [ "$PORT" = "" ]; then
   port_check
 else
-if [ -f "$WORKDIRECTORY/ss_run" ]; then
-PORT_EXIST=`grep -rwo "\-p $PORT" $WORKDIRECTORY/ss_run`
-PID_NUM=`grep -o 'ss-server' $WORKDIRECTORY/ss_run | wc -l`
+if [ -f "$WORKDIRECTORY/config/ss_run1" ]; then
+PORT_EXIST=`grep -rwo "\-p $PORT" $WORKDIRECTORY/config`
+PID_NUM=`grep -ro 'ss-server' $WORKDIRECTORY/config | wc -l`
 PID_NUM=`expr $PID_NUM + 1`
 else
 PORT_EXIST=""
@@ -128,15 +132,19 @@ read -p "passwd: " PASSWORD
 IPV6=`curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1`
 if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
 if [ "$IPV6" = "200" ]; then
-echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /var/run/shadowsocks/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/ss_run
+echo "#!""/bin/sh" >> $WORKDIRECTORY/config/ss_run$PID_NUM
+echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/config/ss_run$PID_NUM
 else
-echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f /var/run/shadowsocks/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/ss_run
+echo "#!""/bin/sh" >> $WORKDIRECTORY/config/ss_run$PID_NUM
+echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/config/ss_run$PID_NUM
 fi
 elif [ "$PLUGIN_CHECK" = "no" ]; then
 if [ "$IPV6" = "200" ]; then
-echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /var/run/shadowsocks/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/ss_run
+echo "#!""/bin/sh" >> $WORKDIRECTORY/config/ss_run$PID_NUM
+echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/config/ss_run$PID_NUM
 else
-echo "ss-server -s 0.0.0.0 -p $PORT[$ELEMENTS_NUMBER] -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -d $REMOTE_DNS $TCP_NODELAY $FASTOPEN $PORT_REUSE -f /var/run/shadowsocks/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/ss_run
+echo "#!""/bin/sh" >> $WORKDIRECTORY/config/ss_run$PID_NUM
+echo "ss-server -s 0.0.0.0 -p $PORT[$ELEMENTS_NUMBER] -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/config/ss_run$PID_NUM
 fi
 fi
 elif [ $LANG=zh_CN.UTF-8 ]; then
@@ -153,9 +161,9 @@ fi
 if [ "$OS" = "redhat7" ]; then
 if [ "$SUDO" = "yes" ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S firewall-cmd --permanent --zone=public --add-port=$PORT/udp
-echo $PASSWD | sudo -S firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
-echo $PASSWD | sudo -S firewall-cmd --reload
+echo $PASSWD | sudo -SE firewall-cmd --permanent --zone=public --add-port=$PORT/udp
+echo $PASSWD | sudo -SE firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
+echo $PASSWD | sudo -SE firewall-cmd --reload
 encrytedpasswd
 elif [ "$SUDO" = "no" ] || [ "$SUDO" = "" ]; then
 firewall-cmd --permanent --zone=public --add-port=$PORT/udp
@@ -165,9 +173,9 @@ fi
 elif [ "$OS" = "redhat6" ]; then
 if [ "$SUDO" = "yes" ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
-echo $PASSWD | sudo -S iptables -I INPUT -p udp --dport $PORT -j ACCEPT
-echo $PASSWD | sudo -S service iptables save
+echo $PASSWD | sudo -SE iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
+echo $PASSWD | sudo -SE iptables -I INPUT -p udp --dport $PORT -j ACCEPT
+echo $PASSWD | sudo -SE service iptables save
 encrytedpasswd
 elif [ "$SUDO" = "no" ] || [ "$SUDO" = "" ]; then
 iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
@@ -179,7 +187,19 @@ fi
 
 port_check
 
-unset SUDO
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "是否运行Shadowsocks服务器?(yes/no) (默认:yes)" RUN_SERVER 
+else
+  read -p "Running shadowsocks server?(yes/no) (default:yes)" RUN_SERVER
+fi
+
+if [ "$FIRST_RUN" = "yes" ]; then
+ln -v $DEP/run $WORKDIRECTORY/bin
+fi
+if [ "$RUN_SERVER" = "yes" ] || [ "$RUN_SERVER" = "" ]; then
+. $WORKDIRECTORY/bin/run
+fi
+
 unset ENCRYPTION
 unset PLUGIN_CHECK
 unset PORT
@@ -193,4 +213,4 @@ unset PLUGIN
 unset PLUGIN_OPTIONS
 unset FASTOPEN_CHECK
 unset PORT_USE_CHECK
-unset PID_NUM
+unset RUN_SERVER 

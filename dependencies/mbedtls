@@ -1,20 +1,12 @@
 #!/bin/sh
 if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "安装MbedTLS"
+  echo "在$WORKDIRECTORY安装MbedTLS"
 else
-  echo "Installation of MbedTLS"
+  echo "Installation MbedTLS in $WORKDIRECTORY"
 fi
 
 git clone https://github.com/ARMmbed/mbedtls.git
 cd mbedtls
 make SHARED=1 CFLAGS=-fPIC -j$CPU_NUM
-if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -S make DESTDIR=/usr install
-echo $PASSWD | sudo -S ldconfig
-encrytedpasswd
-elif [ $SUDO = no ]; then
-make DESTDIR=/usr install
-ldconfig
-fi
+make DESTDIR=$WORKDIRECTORY install
 cd ..

@@ -1,13 +1,14 @@
 #!/bin/sh
 #Update autoconf to 2.69 for Redhat 6 derivatives
 if [ $LANG=zh_CN.UTF-8 ]; then
-  read -p "Redhat 6及其衍生需要更新autoconf到2.69,是否卸载?卸载后无法自动更新(yes/no)(default:no) " UNINSTALL_AUTOCONF
+  echo "Redhat 6及其衍生需要更新autoconf到2.69"
 else
-  read -p  "Redhat 6 and its derivatives need to update autoconf to 2.69. Is it uninstalled? Unable to update automatically after uninstalling(yes/no)(default:no) " UNINSTALL_AUTOCONF
+  echo "Redhat 6 and its derivatives need to update autoconf to 2.69"
 fi
+
 if [ $SUDO = yes ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S yum install curl tar openssl-devel -y
+echo $PASSWD | sudo -SE yum install curl tar openssl-devel -y
 encrytedpasswd
 elif [ $SUDO = no ]; then
 yum install curl tar openssl-devel -y
@@ -16,13 +17,8 @@ fi
 curl -L -O http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz
 tar zxf autoconf-2.69.tar.gz
 cd autoconf-2.69
-./configure
+./configure --prefix=$WORKDIRECTORY
 make -j$CPU_NUM
-if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -S make install
-encrytedpasswd
-elif [ $SUDO = no ]; then
 make install
-fi
+export PATH=$WORKDIRECTORY/bin:$PATH
 cd ..

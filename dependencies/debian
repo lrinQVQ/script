@@ -1,18 +1,30 @@
 #!/bin/sh
+encrytedpasswd() {
+export PASSWD=`echo "$PASSWD" | base64 -i`
+}
+
+unencrytedpasswd() {
+export PASSWD=`echo "$PASSWD" | base64 -d`
+}
+
 export OS=debian
 echo "export OS=$OS" >> $WORKDIRECTORY/envsetup.sh
 
 # Update system
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "更新系统"
 else
   echo "Update system"
 fi
-if [ $SUDO = yes ]; then
+if [ "$SUDO" = "yes" ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S apt-get update -y && sudo -S apt-get upgrade -y && sudo -S apt-get autoremove -y && sudo -S apt-get autoclean -y && $SUDO -S apt-get clean -y
+echo $PASSWD | sudo -SE apt-get update -y
+echo $PASSWD | sudo -SE apt-get upgrade -y
+echo $PASSWD | sudo -SE apt-get autoremove -y
+echo $PASSWD | sudo -SE apt-get autoclean -y
+echo $PASSWD | sudo -SE apt-get clean -y
 encrytedpasswd
-elif [ $SUDO = no ]; then
+elif [ "$SUDO" = "no" ]; then
 apt-get update -y && apt-get upgrade -y && apt-get autoremove -y && apt-get autoclean -y && apt-get clean -y
 fi
 
@@ -24,7 +36,7 @@ else
 fi
 if [ $SUDO = yes ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl libcap2-bin -y
+echo $PASSWD | sudo -SE apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl libcap2-bin -y
 encrytedpasswd
 elif [ $SUDO = no ]; then
 apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl git -y
@@ -38,7 +50,7 @@ else
 fi
 if [ $SUDO = yes ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S apt-get install virt-what -y
+echo $PASSWD | sudo -SE apt-get install virt-what -y
 encrytedpasswd
 elif [ $SUDO = no ]; then
 apt-get install virt-what -y
@@ -52,19 +64,19 @@ else
 fi
 if [ $SUDO = yes ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S apt-get install lsof -y
+echo $PASSWD | sudo -SE apt-get install lsof -y
 encrytedpasswd
 elif [ $SUDO = no ]; then
 apt-get install lsof -y
 fi
 
 if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "进入$WORKDIRECTORY"
+  echo "进入$WORKDIRECTORY/src"
 else
-  echo "work in $WORKDIRECTORY"
+  echo "work in $WORKDIRECTORY/src"
 fi
 
-cd $WORKDIRECTORY
+cd $WORKDIRECTORY/src
 
 . $DEP/libsodium
 . $DEP/mbedtls

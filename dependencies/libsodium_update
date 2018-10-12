@@ -4,14 +4,6 @@ cd libsodium
 make distclean
 git pull
 ./autogen.sh
-./configure --prefix=/usr && make -j$CPU_NUM
-if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -S make install
-echo $PASSWD | sudo -S ldconfig
-encrytedpasswd
-elif [ $SUDO = no ]; then
+./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
 make install
-ldconfig
-fi
 cd ..

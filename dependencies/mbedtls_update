@@ -4,13 +4,5 @@ cd mbedtls
 make clean
 git pull
 make SHARED=1 CFLAGS=-fPIC -j$CPU_NUM
-if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -S make DESTDIR=/usr install
-echo $PASSWD | sudo -S ldconfig
-encrytedpasswd
-elif [ $SUDO = no ]; then
-make DESTDIR=/usr install
-ldconfig
-fi
+make DESTDIR=$WORKDIRECTORY install
 cd ..

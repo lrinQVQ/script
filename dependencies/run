@@ -14,12 +14,12 @@ export PASSWD=`echo "$PASSWD" | base64 -d`
 }
 
 ss_run() {
-sh $WORKDIRECTORY/ss_run
+sh $WORKDIRECTORY/config/ss_run$PID_NUM
 }
 
 sudo_ss_run() {
 unencrytedpasswd
-echo $PASSWD | sudo -S sh -c $WORKDIRECTORY/ss_run
+echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run$PID_NUM
 encrytedpasswd
 }
 
@@ -32,7 +32,7 @@ elif [ "$SUDO" = "no" ]; then
 fi
 else
 if [ "$SUDO" = "yes" ]; then
-if [ "$SAVEPASSWORD" = "yes" ]; then
+if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
   sudo_ss_run
 elif [ "$SAVEPASSWORD" = "no" ]; then
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
@@ -60,3 +60,4 @@ fi
 
 unset RUN_USER
 unset FIRST_RUN
+unset PID_NUM

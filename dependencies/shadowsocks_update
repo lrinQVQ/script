@@ -4,12 +4,19 @@ cd shadowsocks-libev
 make distclean
 git pull
 git submodule update --init --recursive
-./autogen.sh && ./configure && make -j$CPU_NUM
+if [ "$OS" = "redhat6" ]; then
+./autogen.sh && ./configure --with-mbedtls=$WORKDIRECTORY --with-sodium=$WORKDIRECTORY --with-ev=$WORKDIRECTORY --prefix=$WORKDIRECTORY && make -j$CPU_NUM
+else
+./autogen.sh && ./configure --with-mbedtls=$WORKDIRECTORY --with-sodium=$WORKDIRECTORY --prefix=$WORKDIRECTORY && make -j$CPU_NUM
+fi
+
+make install
+
 if [ $SUDO = yes ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S make install
+echo $PASSWD | sudo -SE setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/ss-server
 encrytedpasswd
 elif [ $SUDO = no ]; then
-make install
+setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/ss-server
 fi
 cd ..

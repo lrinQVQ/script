@@ -1,4 +1,12 @@
 #!/bin/sh
+encrytedpasswd() {
+export PASSWD=`echo "$PASSWD" | base64 -i`
+}
+
+unencrytedpasswd() {
+export PASSWD=`echo "$PASSWD" | base64 -d`
+}
+
 # Installation of basic build dependencies
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "安装编译Shadowsocks-libev时需要的依赖包"
@@ -7,7 +15,7 @@ else
 fi
 if [ $SUDO = yes ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
+echo $PASSWD | sudo -SE yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
 encrytedpasswd
 elif [ $SUDO = no ]; then
 yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
@@ -21,7 +29,7 @@ else
 fi
 if [ $SUDO = yes ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S yum install virt-what which -y
+echo $PASSWD | sudo -SE yum install virt-what which -y
 encrytedpasswd
 elif [ $SUDO = no ]; then
 yum install virt-what which -y
@@ -35,7 +43,7 @@ else
 fi
 if [ $SUDO = yes ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S yum install lsof -y
+echo $PASSWD | sudo -SE yum install lsof -y
 encrytedpasswd
 elif [ $SUDO = no ]; then
 yum install lsof -y

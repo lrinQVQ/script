@@ -5,13 +5,20 @@ make distclean
 git pull
 git submodule update --init --recursive
 ./autogen.sh
-./configure && make -j$CPU_NUM
+if [ "$OS" = "redhat6" ]; then
+./configure --with-ev=$WORKDIRECTORY --prefix=$WORKDIRECTORY && make -j$CPU_NUM
+else
+./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
+fi
+
+make install
+
 if [ $SUDO = yes ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -S make install
-echo $PASSWD | sudo -S setcap cap_net_bind_service+ep `which obfs-server`
+echo $PASSWD | sudo -SE setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/obfs-server
 encrytedpasswd
 elif [ $SUDO = no ]; then
-make install
+setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/obfs-server
 fi
+
 cd ..

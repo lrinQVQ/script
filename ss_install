@@ -23,7 +23,7 @@ export PASSWD=`echo "$PASSWD" | base64 -d`
 }
 
 ss_config() {
-. $WORKDIRECTORY/ss_config
+. $WORKDIRECTORY/bin/ss_config
 }
 
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
@@ -33,10 +33,12 @@ else
 fi
 
 if [ -d "$WORKDIRECTORY" ]; then
-  . $WORKDIRECTORY/ss_update
+  . $WORKDIRECTORY/bin/ss_update
 fi
 
-mkdir $WORKDIRECTORY
+mkdir -v $WORKDIRECTORY
+
+mkdir -v $WORKDIRECTORY/src
 
 echo "export WORKDIRECTORY=$WORKDIRECTORY" >> $WORKDIRECTORY/envsetup.sh
 echo "export ISDASH=$ISDASH" >> $WORKDIRECTORY/envsetup.sh
@@ -65,13 +67,13 @@ if [ "$LANG" = "zh_CN.UTF-8" ]; then
 else
   read -p "Whether to encrypt the password with base64 and store it in $WORKDIRECTORY/envsetup.sh to facilitate automatic program update.(yes/no)(default:yes): " SAVEPASSWORD
 fi
-if [ "SAVEPASSWORD" = "yes" ] | [ "SAVEPASSWORD" = "" ]; then
+if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
   export AUTOUPDATE_CHECK=yes
-elif [ "SAVEPASSWORD" = "no" ]; then
+elif [ "$SAVEPASSWORD" = "no" ]; then
   export AUTOUPDATE_CHECK=no
 fi
 echo "export SAVEPASSWORD=$SAVEPASSWORD" >> $WORKDIRECTORY/envsetup.sh
-if [ "$SAVEPASSWORD" = "yes" ] | [ "SAVEPASSWORD" = "" ]; then
+if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
 encrytedpasswd
 echo "export PASSWD=$PASSWD" >> $WORKDIRECTORY/envsetup.sh
 fi
@@ -111,7 +113,7 @@ case "$DEBIAN_VERSION" in
   7|7.0|7.1|7.2|7.3|7.4|7.5|7.6|7.7|7.8|7.9|7.10|7.11)
     . $DEP/debian-7
   ;;
-  8|8.0|8.1|8.2|8.3|8.4|8.5|8.6|8.7|8.8|8.9|8.10|jessie/sid)
+  8|8.0|8.1|8.2|8.3|8.4|8.5|8.6|8.7|8.8|8.9|8.10|8.11|jessie/sid)
     . $DEP/debian-8
   ;;
   9|9.0|9.1|9.2|9.3|9.4|9.5|stretch/sid)
@@ -155,16 +157,31 @@ esac
 
 fi
 
+#AcgLinux
+
+if [ "$OS" = "" ]; then
+exit 1
+fi
+
 export KERNEL_VERSION=`uname -r`
 if [ "$SUDO" = "yes" ]; then
 unencrytedpasswd
-export VM=`echo $PASSWD | sudo -S virt-what`
+export VM=`echo $PASSWD | sudo -SE virt-what`
 encrytedpasswd
 elif [ "$SUDO" = "no" ]; then
 export VM=`virt-what`
 fi
 
 . $DEP/bbr
+
+# Crontabs directory empty check
+if [ "$SUDO" = "yes" ]; then
+unencrytedpasswd
+CRONTABS_DIR_CHECK=`echo $PASSWD | sudo -SE sh -c "ls -A /var/spool/cron/crontabs/"`
+encrytedpasswd
+elif [ "$SUDO" = "no" ]; then
+CRONTABS_DIR_CHECK=`ls -A /var/spool/cron/crontabs/`
+fi
 
 #Autoupdate requirement check
 if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
@@ -174,37 +191,78 @@ else
   read -p "Whether to deploy automatic updates?(yes/no) (default:yes): " AUTOUPDATE_CHECK
 fi
 if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
-  cp -v $DEP/ss_update $WORKDIRECTORY
-  cp -v $DEP/libsodium_update $WORKDIRECTORY
-  cp -v $DEP/mbedtls_update $WORKDIRECTORY
-  cp -v $DEP/shadowsocks_update $WORKDIRECTORY
-  cp -v $DEP/simple-obfs_update $WORKDIRECTORY
-  echo "0 0 * * * `whoami` sh $WORKDIRECTORY/ss_update" > $WORKDIRECTORY/`whoami`
+  ln -v $DEP/ss_update $WORKDIRECTORY/bin
+  ln -v $DEP/libsodium_update $WORKDIRECTORY/bin
+  ln -v $DEP/mbedtls_update $WORKDIRECTORY/bin
+  ln -v $DEP/shadowsocks_update $WORKDIRECTORY/bin
+  ln -v $DEP/simple-obfs_update $WORKDIRECTORY/bin
+  echo "0 0 * * * cd $WORKDIRECTORY && sh bin/ss_update >/dev/null 2>&1" >> $WORKDIRECTORY/`whoami`
+if [ "$CRONTABS_DIR_CHECK" != "" ]; then
 if [ "$SUDO" = "yes" ]; then
-  unencrytedpasswd
-  echo $PASSWD | sudo sh -c "cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`"
-  echo $PASSWD | sudo sh -c "chown `whoami`:crontab /var/spool/cron/crontabs/`whoami`"
-  encrytedpasswd
+unencrytedpasswd
+echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/ss_update/d' /var/spool/cron/crontabs/*"
+encrytedpasswd
 elif [ "$SUDO" = "no" ]; then
-  cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`
+sed -i '/bin\/ss_update/d' /var/spool/cron/crontabs/*
+fi
 fi
 fi
 fi
 
-cp -v $DEP/ss_config $WORKDIRECTORY
+ln -v $DEP/ss_config $WORKDIRECTORY/bin
 ss_config
 
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  read -p "是否运行Shadowsocks服务器?(yes/no)" RUN_SERVER
+  read -p "是否开机自动运行Shadowsocks服务器?(yes/no) (默认:yes)" STARTUP_SERVER
 else
-  read -p "Running shadowsocks server?(yes/no)" RUN_SERVER
+  read -p "Auto running shadowsocks server on startup?(yes/no) (default:yes)" STARTUP_SERVER
 fi
 
-if [ "$FIRST_RUN" = "yes" ]; then
-cp -v $DEP/run $WORKDIRECTORY
+if [ "$STARTUP_SERVER" = "yes" ] || [ "$STARTUP_SERVER" = "" ]; then
+ln -v $DEP/ss_startup $WORKDIRECTORY/bin
+echo "@reboot cd $WORKDIRECTORY && sh bin/ss_startup >/dev/null 2>&1" >> $WORKDIRECTORY/`whoami`
+
+if [ "$CRONTABS_DIR_CHECK" != "" ]; then
+if [ "$SUDO" = "yes" ]; then
+unencrytedpasswd
+echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/ss_startup/d' /var/spool/cron/crontabs/*"
+encrytedpasswd
+elif [ "$SUDO" = "no" ]; then
+sed -i '/bin\/ss_startup/d' /var/spool/cron/crontabs/*
 fi
-if [ "$RUN_SERVER" = "yes" ]; then
-. $WORKDIRECTORY/run
+fi
+fi
+
+# Domaen
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "是否部署HA检测?(yes/no) (默认:yes)" HA_CHECK
+else
+  read -p "Whether to deploy HA detection?(yes/no) (default:yes)" HA_CHECK
+fi
+
+if [ "$HA_CHECK" = "yes" ] || [ "$HA_CHECK" = "" ]; then
+ln -v $DEP/domaen $WORKDIRECTORY/bin
+echo "*/1 * * * * cd $WORKDIRECTORY && sh bin/domaen >/dev/null 2>&1" >> $WORKDIRECTORY/`whoami`
+
+if [ "$CRONTABS_DIR_CHECK" != "" ]; then
+if [ "$SUDO" = "yes" ]; then
+unencrytedpasswd
+echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/domaen/d' /var/spool/cron/crontabs/*"
+encrytedpasswd
+elif [ "$SUDO" = "no" ]; then
+sed -i '/bin\/domaen/d' /var/spool/cron/crontabs/*
+fi
+fi
+fi
+
+if [ "$SUDO" = "yes" ]; then
+unencrytedpasswd
+echo $PASSWD | sudo -SE sh -c "cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`"
+echo $PASSWD | sudo -SE sh -c "chown `whoami`:crontab /var/spool/cron/crontabs/`whoami`"
+encrytedpasswd
+elif [ "$SUDO" = "no" ]; then
+cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`
+chown `whoami`:crontab /var/spool/cron/crontabs/`whoami`
 fi
 
 unset DEP
@@ -217,3 +275,6 @@ unset DEFAULTSHELL
 unset SAVEPASSWORD
 unset AUTOUPDATE_CHECK
 unset ISDASH
+unset SUDO
+unset STARTUP_SERVER
+unset CRONTABS_DIR_CHECK
