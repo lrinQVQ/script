@@ -49,6 +49,21 @@ elif [ $SUDO = no ]; then
 yum install lsof -y
 fi
 
+# Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装与Linux内核中POSIX 1003.1e功能接口的实现"
+else
+  echo "Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels"
+fi
+if [ $SUDO = yes ]; then
+unencrytedpasswd
+echo $PASSWD | sudo -SE yum install libcap2 -y
+encrytedpasswd
+elif [ $SUDO = no ]; then
+yum install libcap2 -y
+fi
+
+
 . $DEP/libsodium
 . $DEP/mbedtls
 . $DEP/shadowsocks
