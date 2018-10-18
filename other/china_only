@@ -15,6 +15,11 @@ echo "请安装iptables"
 exit 1
 fi
 
+# Check Redhat Base
+if [ -f /etc/redhat-release ]; then
+REDHAT_VERSION=`cat /etc/redhat-release | grep -oE  "[0-9.]+"`
+fi
+
 choose() {
 echo "1.安装"
 echo "2.卸载"
@@ -63,8 +68,14 @@ echo "iptables -A CNONLY -s $IP -p TCP --dport $PORT -j ACCEPT" >> /mnt/china_on
 echo "iptables -A CNONLY -s $IP -p UDP --dport $PORT -j ACCEPT" >> /mnt/china_only
 echo "done" >> /mnt/china_only
 
+if [ "$REDHAT_VERSION" = 7.0.1406 ] || [ "$REDHAT_VERSION" = 7.1.1503 ] || [ "$REDHAT_VERSION" = 7.2.1511 ] || [ "$REDHAT_VERSION" = 7.3.1611 ] || [ "$REDHAT_VERSION" = 7.4.1708 ] || [ "$REDHAT_VERSION" = 7.5.1804 ]; then
+if [ -f /var/spool/cron/root ]; then
+sed -i '/\/mnt\/china_only/d' /var/spool/cron/root
+fi
+else
 if [ -f /var/spool/cron/crontabs/root ]; then
 sed -i '/\/mnt\/china_only/d' /var/spool/cron/crontabs/root
+fi
 fi
 
 echo "@reboot sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/crontabs/root
