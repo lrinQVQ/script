@@ -95,9 +95,7 @@ sed -i '/\/mnt\/china_only/d' /var/spool/cron/root
 echo "@reboot sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/root
 echo "0 0 * * * sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/root
 fi
-fi
 else
-if [ -f /var/spool/cron/crontabs/root ]; then
 sed -i '/\/mnt\/china_only/d' /var/spool/cron/crontabs/root
 echo "@reboot sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/crontabs/root
 echo "0 0 * * * sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/crontabs/root
