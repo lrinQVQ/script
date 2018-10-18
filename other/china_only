@@ -75,6 +75,6 @@ sed -i '/\/mnt\/china_only/d' /var/spool/cron/crontabs/root
 iptabels -X CNONLY
 elif [ "$NUM" = 3 ]; then
 exit 0
-elif
+else
 choose
 fi
