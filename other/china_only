@@ -30,6 +30,10 @@ read -p "请输入数字: " NUM
 
 choose
 
+if [ "$NUM" -ne 1 ] || [ "$NUM" -ne 2 ] || [ "$NUM" -ne 3 ]; then
+choose
+fi
+
 if [ "$NUM" = 1 ]; then
 read -p "Telegram代理使用的端口: " PORT
 
@@ -122,6 +126,4 @@ iptables -F CNONLY
 fi
 elif [ "$NUM" = 3 ]; then
 exit 0
-else
-choose
 fi
