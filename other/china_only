@@ -72,7 +72,7 @@ echo "0 0 * * * sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/crontabs/
 elif [ "$NUM" = 2 ]; then
 rm -rf /mnt/china_only
 sed -i '/\/mnt\/china_only/d' /var/spool/cron/crontabs/root
-iptabels -X CNONLY
+iptables -F CNONLY
 elif [ "$NUM" = 3 ]; then
 exit 0
 else
