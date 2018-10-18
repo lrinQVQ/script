@@ -15,6 +15,16 @@ echo "请安装iptables"
 exit 1
 fi
 
+choose() {
+echo "1.安装"
+echo "2.卸载"
+echo "3.退出"
+read -p "请输入数字: " NUM
+}
+
+choose
+
+if [ "$NUM" = 1 ]; then
 read -p "Telegram代理使用的端口: " PORT
 
 # Download
@@ -53,5 +63,17 @@ echo "iptables -A CNONLY -s $IP -p TCP --dport $PORT -j ACCEPT" >> /mnt/china_on
 echo "iptables -A CNONLY -s $IP -p UDP --dport $PORT -j ACCEPT" >> /mnt/china_only
 echo "done" >> /mnt/china_only
 
+if [ -f /var/spool/cron/crontabs/root ]; then
+sed -i '/\/mnt\/china_only/d' /var/spool/cron/crontabs/root
+fi
+
 echo "@reboot sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/crontabs/root
 echo "0 0 * * * sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/crontabs/root
+elif [ "$NUM" = 2 ]; then
+rm -rf /mnt/china_only
+sed -i '/\/mnt\/china_only/d' /var/spool/cron/crontabs/root
+elif [ "$NUM" = 3 ]; then
+exit 0
+elif
+choose
+fi
