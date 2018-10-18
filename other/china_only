@@ -9,15 +9,16 @@ echo "请以root用户运行"
 exit 1
 fi
 
+# Check firewall-cmd
+if command -v firewall-cmd > /dev/null 2>&1; then
+export FIREWALLCMD=yes
+echo "使用Firewall-cmd"
+else
 # Check iptables
 if ! command -v iptables > /dev/null 2>&1; then
 echo "请安装iptables"
 exit 1
 fi
-
-# Check Redhat Base
-if [ -f /etc/redhat-release ]; then
-REDHAT_VERSION=`cat /etc/redhat-release | grep -oE  "[0-9.]+"`
 fi
 
 choose() {
@@ -41,6 +42,25 @@ if [ ! -f /tmp/cnip.txt ]; then
 echo "下载失败,请检查网络"
 fi
 
+if [ "$FIREWALLCMD" = "yes" ]; then
+for IP in `cat /tmp/cnip.txt`; do
+firewall-cmd --zone=public --permanent --add-rich-rule="rule family="ipv4" source address="$IP" port protocol="tcp" port="$PORT" accept"
+firewall-cmd --zone=public --permanent --add-rich-rule="rule family="ipv4" source address="$IP" port protocol="udp" port="$PORT" accept"
+done
+firewall-cmd --reload
+echo "#!""/bin/sh" > /mnt/china_only
+echo "export PORT=$PORT" >> /mnt/china_only
+echo "wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /tmp/cnip.txt" >> /mnt/china_only
+echo "firewall-cmd --zone=public --permanent --remove-port=$PORT/tcp" >> /mnt/china_only
+echo "firewall-cmd --zone=public --permanent --remove-port=$PORT/udp" >> /mnt/china_only
+echo "for IP in \`cat /tmp/cnip.txt\`; do" >> /mnt/china_only
+echo "firewall-cmd --zone=public --permanent --add-rich-rule=\"rule family=\"ipv4\" source address=\"$IP\" port protocol=\"tcp\" port=\"$PORT
+\" accept\"" >> /mnt/china_only
+echo "firewall-cmd --zone=public --permanent --add-rich-rule=\"rule family=\"ipv4\" source address=\"$IP\" port protocol=\"udp\" port=\"$PORT
+\" accept\"" >> /mnt/china_only
+echo "done" >> /mnt/china_only
+echo "firewall-cmd --reload" >> /mnt/china_only
+else
 # iptables start
 iptables -N CNONLY
 
@@ -67,24 +87,44 @@ echo "for IP in \`cat /tmp/cnip.txt\`; do" >> /mnt/china_only
 echo "iptables -A CNONLY -s $IP -p TCP --dport $PORT -j ACCEPT" >> /mnt/china_only
 echo "iptables -A CNONLY -s $IP -p UDP --dport $PORT -j ACCEPT" >> /mnt/china_only
 echo "done" >> /mnt/china_only
+fi
 
-if [ "$REDHAT_VERSION" = 7.0.1406 ] || [ "$REDHAT_VERSION" = 7.1.1503 ] || [ "$REDHAT_VERSION" = 7.2.1511 ] || [ "$REDHAT_VERSION" = 7.3.1611 ] || [ "$REDHAT_VERSION" = 7.4.1708 ] || [ "$REDHAT_VERSION" = 7.5.1804 ]; then
+if [ ! -f /var/spool/cron/crontabs/root ]; then
 if [ -f /var/spool/cron/root ]; then
 sed -i '/\/mnt\/china_only/d' /var/spool/cron/root
+echo "@reboot sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/root
+echo "0 0 * * * sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/root
+fi
 fi
 else
 if [ -f /var/spool/cron/crontabs/root ]; then
 sed -i '/\/mnt\/china_only/d' /var/spool/cron/crontabs/root
+echo "@reboot sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/crontabs/root
+echo "0 0 * * * sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/crontabs/root
+fi
+
+elif [ "$NUM" = 2 ]; then
+rm -rf /mnt/china_only
+
+if [ ! -f /var/spool/cron/crontabs/root ]; then
+if [ -f /var/spool/cron/root ]; then
+sed -i '/\/mnt\/china_only/d' /var/spool/cron/root
 fi
 fi
 
-echo "@reboot sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/crontabs/root
-echo "0 0 * * * sh /mnt/china_only >/dev/null 2>&1" >> /var/spool/cron/crontabs/root
-elif [ "$NUM" = 2 ]; then
-rm -rf /mnt/china_only
+if [ -f /var/spool/cron/crontabs/root ]; then
 sed -i '/\/mnt\/china_only/d' /var/spool/cron/crontabs/root
+fi
+
+if [ "$FIREWALLCMD" = "yes" ]; then
+read -p "请输入运行此脚本时填写的Telegram端口: " PORT
+firewall-cmd --zone=public --permanent --remove-port=$PORT/tcp
+firewall-cmd --zone=public --permanent --remove-port=$PORT/udp
+firewall-cmd --reload
+else
 iptables -F CNONLY
-elif [ "$NUM" = 3 ]; then
+fi
+elif [ "$NUM" = 3 ]; th--zone=public en
 exit 0
 else
 choose
