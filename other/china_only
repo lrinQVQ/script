@@ -108,9 +108,7 @@ if [ ! -f /var/spool/cron/crontabs/root ]; then
 if [ -f /var/spool/cron/root ]; then
 sed -i '/\/mnt\/china_only/d' /var/spool/cron/root
 fi
-fi
-
-if [ -f /var/spool/cron/crontabs/root ]; then
+else
 sed -i '/\/mnt\/china_only/d' /var/spool/cron/crontabs/root
 fi
 
@@ -122,7 +120,7 @@ firewall-cmd --reload
 else
 iptables -F CNONLY
 fi
-elif [ "$NUM" = 3 ]; th--zone=public en
+elif [ "$NUM" = 3 ];
 exit 0
 else
 choose
