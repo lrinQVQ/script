@@ -163,14 +163,14 @@ if [ "$OS" = "" ]; then
 exit 1
 fi
 
-export KERNEL_VERSION=`uname -r`
-if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-export VM=`echo $PASSWD | sudo -SE virt-what`
-encrytedpasswd
-elif [ "$SUDO" = "no" ]; then
-export VM=`virt-what`
-fi
+#export KERNEL_VERSION=`uname -r`
+#if [ "$SUDO" = "yes" ]; then
+#unencrytedpasswd
+#export VM=`echo $PASSWD | sudo -SE virt-what`
+#encrytedpasswd
+#elif [ "$SUDO" = "no" ]; then
+#export VM=`virt-what`
+#fi
 
 . $DEP/bbr
 
