@@ -54,6 +54,8 @@ read -p "如不开启Firewall-cmd,是否配置人畜无害的iptables?(yes/no): 
 fi
 if [ "$OS" = "redhat7" ] && [ "$IPTABLES_INSTALL" = "yes" ]; then
 yum install iptables-services -y
+systemctl start iptables
+systemctl enable iptables
 export IPTABLES=yes
 else
 echo "请先手动安装iptables"
