@@ -155,11 +155,11 @@ echo "$IPTABLES_WHICH -F CNONLY >/dev/null 2>&1" >> /mnt/china_only
 echo "$IPTABLES_WHICH -N CNONLY" >> /mnt/china_only
 echo "$IPTABLES_WHICH -I INPUT -p TCP --dport $PORT -j CNONLY" >> /mnt/china_only
 echo "$IPTABLES_WHICH -I INPUT -p UDP --dport $PORT -j CNONLY" >> /mnt/china_only
-echo "$IPTABLES_WHICH -A CNONLY -p TCP --dport $PORT -j DROP" >> /mnt/china_only
-echo "$IPTABLES_WHICH -A CNONLY -p UDP --dport $PORT -j DROP" >> /mnt/china_only
+echo "$IPTABLES_WHICH -I CNONLY -p TCP --dport $PORT -j DROP" >> /mnt/china_only
+echo "$IPTABLES_WHICH -I CNONLY -p UDP --dport $PORT -j DROP" >> /mnt/china_only
 echo "for IP in \`cat /tmp/cnip.txt\`; do" >> /mnt/china_only
-echo "$IPTABLES_WHICH -A CNONLY -s \$IP -p TCP --dport $PORT -j ACCEPT" >> /mnt/china_only
-echo "$IPTABLES_WHICH -A CNONLY -s \$IP -p UDP --dport $PORT -j ACCEPT" >> /mnt/china_only
+echo "$IPTABLES_WHICH -I CNONLY -s \$IP -p TCP --dport $PORT -j ACCEPT" >> /mnt/china_only
+echo "$IPTABLES_WHICH -I CNONLY -s \$IP -p UDP --dport $PORT -j ACCEPT" >> /mnt/china_only
 echo "done" >> /mnt/china_only
 fi
 
