@@ -141,12 +141,12 @@ $IPTABLES_WHICH -N CNONLY
 $IPTABLES_WHICH -I INPUT -p TCP --dport $PORT -j CNONLY
 $IPTABLES_WHICH -I INPUT -p UDP --dport $PORT -j CNONLY
 
-$IPTABLES_WHICH -A CNONLY -p TCP --dport $PORT -j DROP
-$IPTABLES_WHICH -A CNONLY -p UDP --dport $PORT -j DROP
+$IPTABLES_WHICH -I CNONLY -p TCP --dport $PORT -j DROP
+$IPTABLES_WHICH -I CNONLY -p UDP --dport $PORT -j DROP
 
 for IP in `cat /tmp/cnip.txt`; do
-$IPTABLES_WHICH -A CNONLY -s $IP -p TCP --dport $PORT -j ACCEPT
-$IPTABLES_WHICH -A CNONLY -s $IP -p UDP --dport $PORT -j ACCEPT
+$IPTABLES_WHICH -I CNONLY -s $IP -p TCP --dport $PORT -j ACCEPT
+$IPTABLES_WHICH -I CNONLY -s $IP -p UDP --dport $PORT -j ACCEPT
 done
 
 echo "#!""/bin/sh" > /mnt/china_only
