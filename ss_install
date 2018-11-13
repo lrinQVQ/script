@@ -26,14 +26,51 @@ ss_config() {
 . $WORKDIRECTORY/bin/ss_config
 }
 
+if [ -d $WORKDIRECTORY ]; then
+choose() {
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+echo "1.卸载 "
+echo "2.配置Shadowsocks "
+echo "3.管理Shadowsocks "
+read -p "请输入数字: " CHOOSE_NUM
+else
+echo "1.Uninstall "
+echo "2.Configure Shadowsocks "
+echo "3.Manage Shadowsocks "
+read -p "请输入数字: " CHOOSE_NUM
+fi
+if [ "$CHOOSE_NUM" -ne 1 ] && [ "$CHOOSE_NUM" -ne 2 ] && [ "$CHOOSE_NUM" -ne 3 ]; then
+choose
+fi
+}
+
+choose
+
+else
+
+choose() {
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+echo "1.安装 "
+echo "2.退出 "
+read -p "请输入数字: " CHOOSE_NUM
+else
+echo "1.Install "
+echo "2.Exit "
+read -p "Please enter the number: " CHOOSE_NUM
+fi
+if [ "$CHOOSE_NUM" -ne 1 ] && [ "$CHOOSE_NUM" -ne 2 ]; then
+choose
+fi
+}
+
+choose
+
+fi
+
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "创建工作目录"
 else
   echo "Create work directory"
-fi
-
-if [ -d "$WORKDIRECTORY" ]; then
-  . $WORKDIRECTORY/bin/ss_update
 fi
 
 mkdir -v $WORKDIRECTORY
