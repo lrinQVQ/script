@@ -278,16 +278,16 @@ else
 fi
 
 if [ "$HA_CHECK" = "yes" ] || [ "$HA_CHECK" = "" ]; then
-ln -v $DEP/domaen $WORKDIRECTORY/bin
-echo "*/1 * * * * cd $WORKDIRECTORY && sh bin/domaen >/dev/null 2>&1" >> $WORKDIRECTORY/`whoami`
+ln -v $DEP/daemon $WORKDIRECTORY/bin
+echo "*/1 * * * * cd $WORKDIRECTORY && sh bin/daemon >/dev/null 2>&1" >> $WORKDIRECTORY/`whoami`
 
 if [ "$CRONTABS_DIR_CHECK" != "" ]; then
 if [ "$SUDO" = "yes" ]; then
 unencrytedpasswd
-echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/domaen/d' /var/spool/cron/crontabs/*"
+echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/daemon/d' /var/spool/cron/crontabs/*"
 encrytedpasswd
 elif [ "$SUDO" = "no" ]; then
-sed -i '/bin\/domaen/d' /var/spool/cron/crontabs/*
+sed -i '/bin\/daemon/d' /var/spool/cron/crontabs/*
 fi
 fi
 fi
