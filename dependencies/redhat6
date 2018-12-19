@@ -34,5 +34,10 @@ fi
 . $DEP/autoconf
 . $DEP/libev
 . $DEP/redhat
-
+if [ "$SUDO" = "yes" ]; then
+unencrytedpasswd
+sudo chkconfig crond on
+encrytedpasswd
+elif [ "$SUDO" = "no" ]; then
 chkconfig crond on
+fi
