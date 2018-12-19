@@ -34,3 +34,5 @@ fi
 . $DEP/autoconf
 . $DEP/libev
 . $DEP/redhat
+
+chkconfig crond on
