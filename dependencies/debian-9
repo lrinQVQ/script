@@ -1,2 +1,9 @@
 #!/bin/sh
 . $DEP/debian
+if [ "$SUDO" = "yes" ]; then
+unencrytedpasswd
+sudo systemctl enable cron
+encrytedpasswd
+elif [ "$SUDO" = "no" ]; then
+systemctl enable cron
+fi
