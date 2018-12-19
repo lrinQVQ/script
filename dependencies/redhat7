@@ -47,3 +47,11 @@ yum install autoconf libev-devel -y
 fi
 
 . $DEP/redhat
+
+if [ "$SUDO" = "yes" ]; then
+unencrytedpasswd
+sudo systemctl enable cron
+encrytedpasswd
+elif [ "$SUDO" = "no" ]; then
+systemctl enable cron
+fi
