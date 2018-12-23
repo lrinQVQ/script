@@ -32,7 +32,7 @@ else
 fi
 else if [ "$VM" = "kvm" ] || [ "$VM" = "" ] ; then
 #  . $DEP/kernel
-  echo "Don't building kernel now"
+  echo "Not building kernel now"
 fi
 fi
 fi
