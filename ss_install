@@ -3,204 +3,208 @@
 export DEP=$PWD/dependencies
 
 # Get user id
-export USERID=`id -u`
+export USERID=$(id -u)
 
 # Assign work directory
 export WORKDIRECTORY=$PWD/shadowsocks
 
 # Get default shell
-export DEFAULTSHELL=`readlink -f /bin/sh`
+export DEFAULTSHELL=$(readlink -f /bin/sh)
 
 # Determine if the default shell is a dash
-export ISDASH=`echo $DEFAULTSHELL | grep dash`
+export ISDASH=$(echo $DEFAULTSHELL | grep dash)
 
 encrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -i`
+	export PASSWD=$(echo "$PASSWD" | base64 -i)
 }
 
 unencrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -d`
+	export PASSWD=$(echo "$PASSWD" | base64 -d)
 }
 
 ss_config() {
-. $WORKDIRECTORY/bin/ss_config
+	. $WORKDIRECTORY/bin/ss_config
 }
 
 if [ -d $WORKDIRECTORY ]; then
-choose() {
+	choose() {
+		if [ "$LANG" = "zh_CN.UTF-8" ]; then
+			echo "1. 卸载"
+			echo "2. 配置 Shadowsocks"
+			echo "3. 管理 Shadowsocks"
+			read -p "选择一个选项：" CHOOSE_NUM
+		else
+			echo "1. Uninstall"
+			echo "2. Configure Shadowsocks"
+			echo "3. Manage Shadowsocks"
+			read -p "Select an option: " CHOOSE_NUM
+		fi
+		if [ "$CHOOSE_NUM" -ne 1 ] && [ "$CHOOSE_NUM" -ne 2 ] && [ "$CHOOSE_NUM" -ne 3 ]; then
+			choose
+		fi
+	}
+
+	choose
+
+else
+
+	choose() {
+		if [ "$LANG" = "zh_CN.UTF-8" ]; then
+			echo "1. 安装"
+			echo "2. 退出"
+			read -p "选择一个选项：" CHOOSE_NUM
+		else
+			echo "1. Install"
+			echo "2. Exit"
+			read -p "Select an option: " CHOOSE_NUM
+		fi
+		if [ "$CHOOSE_NUM" -ne 1 ] && [ "$CHOOSE_NUM" -ne 2 ]; then
+			choose
+		fi
+	}
+
+	choose
+
+fi
+
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
-echo "1. 卸载"
-echo "2. 配置 Shadowsocks"
-echo "3. 管理 Shadowsocks"
-read -p "选择一个选项：" CHOOSE_NUM
+	echo "创建工作目录"
 else
-echo "1. Uninstall"
-echo "2. Configure Shadowsocks"
-echo "3. Manage Shadowsocks"
-read -p "Select an option: " CHOOSE_NUM
-fi
-if [ "$CHOOSE_NUM" -ne 1 ] && [ "$CHOOSE_NUM" -ne 2 ] && [ "$CHOOSE_NUM" -ne 3 ]; then
-choose
-fi
-}
-
-choose
-
-else
-
-choose() {
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-echo "1. 安装"
-echo "2. 退出"
-read -p "选择一个选项：" CHOOSE_NUM
-else
-echo "1. Install"
-echo "2. Exit"
-read -p "Select an option: " CHOOSE_NUM
-fi
-if [ "$CHOOSE_NUM" -ne 1 ] && [ "$CHOOSE_NUM" -ne 2 ]; then
-choose
-fi
-}
-
-choose
-
-fi
-
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "创建工作目录"
-else
-  echo "Creating work directory"
+	echo "Creating work directory"
 fi
 
 mkdir -v $WORKDIRECTORY
 
 mkdir -v $WORKDIRECTORY/src
 
-echo "export WORKDIRECTORY=$WORKDIRECTORY" >> $WORKDIRECTORY/envsetup.sh
-echo "export ISDASH=$ISDASH" >> $WORKDIRECTORY/envsetup.sh
-echo "export DEFAULTSHELL=$DEFAULTSHELL" >> $WORKDIRECTORY/envsetup.sh
+echo "export WORKDIRECTORY=$WORKDIRECTORY" >>$WORKDIRECTORY/envsetup.sh
+echo "export ISDASH=$ISDASH" >>$WORKDIRECTORY/envsetup.sh
+echo "export DEFAULTSHELL=$DEFAULTSHELL" >>$WORKDIRECTORY/envsetup.sh
 
 # Check ROOT Permissions
 if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
-  unset SUDO
-  export SUDO=yes
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
-  read -p "请输入当前用户密码：" PASSWD
-else
-  read -s -p "请输入当前用户密码：" PASSWD
-fi
-else
-if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
-  read -p "Enter password of current user: " PASSWD
-else
-  read -s -p "Enter password of current user: " PASSWD
-fi
-fi
+	unset SUDO
+	export SUDO=yes
+	if [ "$LANG" = "zh_CN.UTF-8" ]; then
+		if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
+			read -p "请输入当前用户密码：" PASSWD
+		else
+			read -s -p "请输入当前用户密码：" PASSWD
+		fi
+	else
+		if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
+			read -p "Enter password of current user: " PASSWD
+		else
+			read -s -p "Enter password of current user: " PASSWD
+		fi
+	fi
 
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  read -p "是否将密码用 base64 加密并存储到 $WORKDIRECTORY/envsetup.sh 中，以方便程序自动更新？(yes/no) [yes]：" SAVEPASSWORD
-else
-  read -p "Encrypt the password using base64 and store it in $WORKDIRECTORY/envsetup.sh for automatic updates? (yes/no) [yes]: " SAVEPASSWORD
-fi
-if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
-  export AUTOUPDATE_CHECK=yes
-elif [ "$SAVEPASSWORD" = "no" ]; then
-  export AUTOUPDATE_CHECK=no
-fi
-echo "export SAVEPASSWORD=$SAVEPASSWORD" >> $WORKDIRECTORY/envsetup.sh
-if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
-encrytedpasswd
-echo "export PASSWD=$PASSWD" >> $WORKDIRECTORY/envsetup.sh
-fi
+	if [ "$LANG" = "zh_CN.UTF-8" ]; then
+		read -p "是否将密码用 base64 加密并存储到 $WORKDIRECTORY/envsetup.sh 中，以方便程序自动更新？(yes/no) [yes]：" SAVEPASSWORD
+	else
+		read -p "Encrypt the password using base64 and store it in $WORKDIRECTORY/envsetup.sh for automatic updates? (yes/no) [yes]: " SAVEPASSWORD
+	fi
+	if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
+		export AUTOUPDATE_CHECK=yes
+	elif [ "$SAVEPASSWORD" = "no" ]; then
+		export AUTOUPDATE_CHECK=no
+	fi
+	echo "export SAVEPASSWORD=$SAVEPASSWORD" >>$WORKDIRECTORY/envsetup.sh
+	if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
+		encrytedpasswd
+		echo "export PASSWD=$PASSWD" >>$WORKDIRECTORY/envsetup.sh
+	fi
 
-else if [ "$USERID" = 0 ]; then
-  unset SUDO
-  export SUDO=no
-else if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "当前用户没有 root 权限，请安装 sudo 或使用 root 用户执行脚本"
-  exit 1
 else
-  echo "Current user doesn't have root access, make sure you have sudo installed or re-execute the script with the root user"
-  exit 1
-fi
-fi
+	if [ "$USERID" = 0 ]; then
+		unset SUDO
+		export SUDO=no
+	else
+		if [ "$LANG" = "zh_CN.UTF-8" ]; then
+			echo "当前用户没有 root 权限，请安装 sudo 或使用 root 用户执行脚本"
+			exit 1
+		else
+			echo "Current user doesn't have root access, make sure you have sudo installed or re-execute the script with the root user"
+			exit 1
+		fi
+	fi
 fi
 unset USERID
-echo "export SUDO=$SUDO" >> $WORKDIRECTORY/envsetup.sh
+echo "export SUDO=$SUDO" >>$WORKDIRECTORY/envsetup.sh
 
 # Check memsize
-MEM_CHECK=`cat /proc/meminfo | grep MemTotal | grep '[0-9]' -o | awk BEGIN{RS=EOF}'{gsub(/\n/,"");print}'`
+MEM_CHECK=$(cat /proc/meminfo | grep MemTotal | grep '[0-9]' -o | awk BEGIN{RS=EOF}'{gsub(/\n/,"");print}')
 # Preclude out of memory
 if [ "$MEM_CHECK" -ge "524288" ]; then
-  export CPU_NUM=`cat /proc/cpuinfo | grep processor | wc -l`
+	export CPU_NUM=$(cat /proc/cpuinfo | grep processor | wc -l)
 else
-  export CPU_NUM=1
+	export CPU_NUM=1
 fi
-echo "export CPU_NUM=$CPU_NUM" >> $WORKDIRECTORY/envsetup.sh
+echo "export CPU_NUM=$CPU_NUM" >>$WORKDIRECTORY/envsetup.sh
 chmod +x $WORKDIRECTORY/envsetup.sh
 
 # Check linux distribution
 #Debian Base
 if [ -f /etc/debian_version ]; then
-DEBIAN_VERSION=`cat /etc/debian_version`
+	DEBIAN_VERSION=$(cat /etc/debian_version)
 
-case "$DEBIAN_VERSION" in
-  7|7.0|7.1|7.2|7.3|7.4|7.5|7.6|7.7|7.8|7.9|7.10|7.11)
-    . $DEP/debian-7
-  ;;
-  8|8.0|8.1|8.2|8.3|8.4|8.5|8.6|8.7|8.8|8.9|8.10|8.11|jessie/sid)
-    . $DEP/debian-8
-  ;;
-  9|9.0|9.1|9.2|9.3|9.4|9.5|9.6|stretch/sid)
-    . $DEP/debian-9
-  ;;
-  buster/sid)
-    . $DEP/debian-sid
-  ;;
-  *)
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "暂不支持此 Debian 系统版本"
-  exit 1
-else
-  echo "Unsupported Debian release"
-  exit 1
-fi
-esac
+	case "$DEBIAN_VERSION" in
+	7 | 7.0 | 7.1 | 7.2 | 7.3 | 7.4 | 7.5 | 7.6 | 7.7 | 7.8 | 7.9 | 7.10 | 7.11)
+		. $DEP/debian-7
+		;;
+	8 | 8.0 | 8.1 | 8.2 | 8.3 | 8.4 | 8.5 | 8.6 | 8.7 | 8.8 | 8.9 | 8.10 | 8.11 | jessie/sid)
+		. $DEP/debian-8
+		;;
+	9 | 9.0 | 9.1 | 9.2 | 9.3 | 9.4 | 9.5 | 9.6 | stretch/sid)
+		. $DEP/debian-9
+		;;
+	buster/sid)
+		. $DEP/debian-sid
+		;;
+	*)
+		if [ "$LANG" = "zh_CN.UTF-8" ]; then
+			echo "暂不支持此 Debian 系统版本"
+			exit 1
+		else
+			echo "Unsupported Debian release"
+			exit 1
+		fi
+		;;
+	esac
 
 fi
 
 #Redhat Base
 if [ -f /etc/redhat-release ]; then
-REDHAT_VERSION=`cat /etc/redhat-release | grep -oE  "[0-9.]+"`
+	REDHAT_VERSION=$(cat /etc/redhat-release | grep -oE "[0-9.]+")
 elif [ -f /etc/system-release ]; then
-REDHAT_VERSION=`cat /etc/system-release | grep -oE "[0-9.]+"`
+	REDHAT_VERSION=$(cat /etc/system-release | grep -oE "[0-9.]+")
 
-case "$REDHAT_VERSION" in
-  7.0.1406|7.1.1503|7.2.1511|7.3.1611|7.4.1708|7.5.1804|2)
-    . $DEP/redhat7
-  ;;
-  6.0|6.1|6.2|6.3|6.4|6.5|6.6|6.7|6.8|6.9|2018.03)
-    . $DEP/redhat6
-  ;;
-  *)
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "暂不支持此 Red Hat 系统版本"
-  exit 1
-else
-  echo "Unsupported Red Hat release"
-  exit 1
-fi
-esac
+	case "$REDHAT_VERSION" in
+	7.0.1406 | 7.1.1503 | 7.2.1511 | 7.3.1611 | 7.4.1708 | 7.5.1804 | 2)
+		. $DEP/redhat7
+		;;
+	6.0 | 6.1 | 6.2 | 6.3 | 6.4 | 6.5 | 6.6 | 6.7 | 6.8 | 6.9 | 2018.03)
+		. $DEP/redhat6
+		;;
+	*)
+		if [ "$LANG" = "zh_CN.UTF-8" ]; then
+			echo "暂不支持此 Red Hat 系统版本"
+			exit 1
+		else
+			echo "Unsupported Red Hat release"
+			exit 1
+		fi
+		;;
+	esac
 
 fi
 
 #AcgLinux
 
 if [ "$OS" = "" ]; then
-echo "Unsupported operating system"
-exit 1
+	echo "Unsupported operating system"
+	exit 1
 fi
 
 #export KERNEL_VERSION=`uname -r`
@@ -216,93 +220,93 @@ fi
 
 # Crontabs directory empty check
 if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-CRONTABS_DIR_CHECK=`echo $PASSWD | sudo -SE sh -c "ls -A /var/spool/cron/crontabs/"`
-encrytedpasswd
+	unencrytedpasswd
+	CRONTABS_DIR_CHECK=$(echo $PASSWD | sudo -SE sh -c "ls -A /var/spool/cron/crontabs/")
+	encrytedpasswd
 elif [ "$SUDO" = "no" ]; then
-CRONTABS_DIR_CHECK=`ls -A /var/spool/cron/crontabs/`
+	CRONTABS_DIR_CHECK=$(ls -A /var/spool/cron/crontabs/)
 fi
 
 #Autoupdate requirement check
 if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  read -p "是否启用自动更新？(yes/no) [yes]：" AUTOUPDATE_CHECK
-else
-  read -p "Enable automatic updates? (yes/no) [yes]: " AUTOUPDATE_CHECK
-fi
-if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
-  ln -v $DEP/ss_update $WORKDIRECTORY/bin
-  ln -v $DEP/libsodium_update $WORKDIRECTORY/bin
-  ln -v $DEP/mbedtls_update $WORKDIRECTORY/bin
-  ln -v $DEP/shadowsocks_update $WORKDIRECTORY/bin
-  ln -v $DEP/simple-obfs_update $WORKDIRECTORY/bin
-  echo "0 0 * * * cd $WORKDIRECTORY && sh bin/ss_update >/dev/null 2>&1" >> $WORKDIRECTORY/`whoami`
-if [ "$CRONTABS_DIR_CHECK" != "" ]; then
-if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/ss_update/d' /var/spool/cron/crontabs/*"
-encrytedpasswd
-elif [ "$SUDO" = "no" ]; then
-sed -i '/bin\/ss_update/d' /var/spool/cron/crontabs/*
-fi
-fi
-fi
+	if [ "$LANG" = "zh_CN.UTF-8" ]; then
+		read -p "是否启用自动更新？(yes/no) [yes]：" AUTOUPDATE_CHECK
+	else
+		read -p "Enable automatic updates? (yes/no) [yes]: " AUTOUPDATE_CHECK
+	fi
+	if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
+		ln -v $DEP/ss_update $WORKDIRECTORY/bin
+		ln -v $DEP/libsodium_update $WORKDIRECTORY/bin
+		ln -v $DEP/mbedtls_update $WORKDIRECTORY/bin
+		ln -v $DEP/shadowsocks_update $WORKDIRECTORY/bin
+		ln -v $DEP/simple-obfs_update $WORKDIRECTORY/bin
+		echo "0 0 * * * cd $WORKDIRECTORY && sh bin/ss_update >/dev/null 2>&1" >>$WORKDIRECTORY/$(whoami)
+		if [ "$CRONTABS_DIR_CHECK" != "" ]; then
+			if [ "$SUDO" = "yes" ]; then
+				unencrytedpasswd
+				echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/ss_update/d' /var/spool/cron/crontabs/*"
+				encrytedpasswd
+			elif [ "$SUDO" = "no" ]; then
+				sed -i '/bin\/ss_update/d' /var/spool/cron/crontabs/*
+			fi
+		fi
+	fi
 fi
 
 ln -v $DEP/ss_config $WORKDIRECTORY/bin
 ss_config
 
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  read -p "是否开机自动运行 Shadowsocks 服务端？(yes/no) [yes]：" STARTUP_SERVER
+	read -p "是否开机自动运行 Shadowsocks 服务端？(yes/no) [yes]：" STARTUP_SERVER
 else
-  read -p "Start shadowsocks server on boot? (yes/no) [yes]: " STARTUP_SERVER
+	read -p "Start shadowsocks server on boot? (yes/no) [yes]: " STARTUP_SERVER
 fi
 
 if [ "$STARTUP_SERVER" = "yes" ] || [ "$STARTUP_SERVER" = "" ]; then
-ln -v $DEP/ss_startup $WORKDIRECTORY/bin
-echo "@reboot cd $WORKDIRECTORY && sh bin/ss_startup >/dev/null 2>&1" >> $WORKDIRECTORY/`whoami`
+	ln -v $DEP/ss_startup $WORKDIRECTORY/bin
+	echo "@reboot cd $WORKDIRECTORY && sh bin/ss_startup >/dev/null 2>&1" >>$WORKDIRECTORY/$(whoami)
 
-if [ "$CRONTABS_DIR_CHECK" != "" ]; then
-if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/ss_startup/d' /var/spool/cron/crontabs/*"
-encrytedpasswd
-elif [ "$SUDO" = "no" ]; then
-sed -i '/bin\/ss_startup/d' /var/spool/cron/crontabs/*
-fi
-fi
+	if [ "$CRONTABS_DIR_CHECK" != "" ]; then
+		if [ "$SUDO" = "yes" ]; then
+			unencrytedpasswd
+			echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/ss_startup/d' /var/spool/cron/crontabs/*"
+			encrytedpasswd
+		elif [ "$SUDO" = "no" ]; then
+			sed -i '/bin\/ss_startup/d' /var/spool/cron/crontabs/*
+		fi
+	fi
 fi
 
 # Domaen
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  read -p "是否部署 HA 检测？(yes/no) [yes]：" HA_CHECK
+	read -p "是否部署 HA 检测？(yes/no) [yes]：" HA_CHECK
 else
-  read -p "Deploy HA detection? (yes/no) [yes]: " HA_CHECK
+	read -p "Deploy HA detection? (yes/no) [yes]: " HA_CHECK
 fi
 
 if [ "$HA_CHECK" = "yes" ] || [ "$HA_CHECK" = "" ]; then
-ln -v $DEP/daemon $WORKDIRECTORY/bin
-echo "*/1 * * * * cd $WORKDIRECTORY && sh bin/daemon >/dev/null 2>&1" >> $WORKDIRECTORY/`whoami`
+	ln -v $DEP/daemon $WORKDIRECTORY/bin
+	echo "*/1 * * * * cd $WORKDIRECTORY && sh bin/daemon >/dev/null 2>&1" >>$WORKDIRECTORY/$(whoami)
 
-if [ "$CRONTABS_DIR_CHECK" != "" ]; then
-if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/daemon/d' /var/spool/cron/crontabs/*"
-encrytedpasswd
-elif [ "$SUDO" = "no" ]; then
-sed -i '/bin\/daemon/d' /var/spool/cron/crontabs/*
-fi
-fi
+	if [ "$CRONTABS_DIR_CHECK" != "" ]; then
+		if [ "$SUDO" = "yes" ]; then
+			unencrytedpasswd
+			echo $PASSWD | sudo -SE sh -c "sed -i '/bin\/daemon/d' /var/spool/cron/crontabs/*"
+			encrytedpasswd
+		elif [ "$SUDO" = "no" ]; then
+			sed -i '/bin\/daemon/d' /var/spool/cron/crontabs/*
+		fi
+	fi
 fi
 
 if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE sh -c "cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`"
-echo $PASSWD | sudo -SE sh -c "chown `whoami`:crontab /var/spool/cron/crontabs/`whoami`"
-encrytedpasswd
+	unencrytedpasswd
+	echo $PASSWD | sudo -SE sh -c "cat $WORKDIRECTORY/$(whoami) >> /var/spool/cron/crontabs/$(whoami)"
+	echo $PASSWD | sudo -SE sh -c "chown $(whoami):crontab /var/spool/cron/crontabs/$(whoami)"
+	encrytedpasswd
 elif [ "$SUDO" = "no" ]; then
-cat $WORKDIRECTORY/`whoami` >> /var/spool/cron/crontabs/`whoami`
-chown `whoami`:crontab /var/spool/cron/crontabs/`whoami`
+	cat $WORKDIRECTORY/$(whoami) >>/var/spool/cron/crontabs/$(whoami)
+	chown $(whoami):crontab /var/spool/cron/crontabs/$(whoami)
 fi
 
 unset DEP
