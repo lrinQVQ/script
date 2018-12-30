@@ -1,59 +1,59 @@
 #!/bin/sh
 if [ -f "$PWD/envsetup.sh" ]; then
-. $PWD/envsetup.sh
+  . $PWD/envsetup.sh
 else
-exit 1
+  exit 1
 fi
 
 encrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -i`
+  export PASSWD=$(echo "$PASSWD" | base64 -i)
 }
 
 unencrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -d`
+  export PASSWD=$(echo "$PASSWD" | base64 -d)
 }
 
 ss_run() {
-sh $WORKDIRECTORY/config/ss_run$PID_NUM
+  sh $WORKDIRECTORY/config/ss_run$PID_NUM
 }
 
 sudo_ss_run() {
-unencrytedpasswd
-echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run$PID_NUM
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run$PID_NUM
+  encrytedpasswd
 }
 
-if [ "$RUN_USER" != "`whoami`" ]; then
-if [ "$FIRST_RUN" = "yes" ]; then
-if [ "$SUDO" = "yes" ]; then
-  sudo_ss_run
-elif [ "$SUDO" = "no" ]; then
-  ss_run
-fi
-else
-if [ "$SUDO" = "yes" ]; then
-if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
-  sudo_ss_run
-elif [ "$SAVEPASSWORD" = "no" ]; then
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
-  read -p "请输入当前用户密码: " PASSWD
-else
-  read -s -p "请输入当前用户密码: " PASSWD
-fi
-else
-if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
-  read -p "Please enter the current user password: " PASSWD
-else
-  read -s -p "Please enter the current user password: " PASSWD
-fi
-fi
-  sudo_ss_run
-fi
-elif [ "$SUDO" = "no" ]; then
-  ss_run
-fi
-fi
+if [ "$RUN_USER" != "$(whoami)" ]; then
+  if [ "$FIRST_RUN" = "yes" ]; then
+    if [ "$SUDO" = "yes" ]; then
+      sudo_ss_run
+    elif [ "$SUDO" = "no" ]; then
+      ss_run
+    fi
+  else
+    if [ "$SUDO" = "yes" ]; then
+      if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
+        sudo_ss_run
+      elif [ "$SAVEPASSWORD" = "no" ]; then
+        if [ "$LANG" = "zh_CN.UTF-8" ]; then
+          if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
+            read -p "请输入当前用户密码: " PASSWD
+          else
+            read -s -p "请输入当前用户密码: " PASSWD
+          fi
+        else
+          if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
+            read -p "Please enter the current user password: " PASSWD
+          else
+            read -s -p "Please enter the current user password: " PASSWD
+          fi
+        fi
+        sudo_ss_run
+      fi
+    elif [ "$SUDO" = "no" ]; then
+      ss_run
+    fi
+  fi
 else
   ss_run
 fi

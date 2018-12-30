@@ -11,19 +11,19 @@ cd simple-obfs
 git submodule update --init --recursive
 ./autogen.sh
 if [ "$OS" = "redhat6" ]; then
-./configure --with-ev=$WORKDIRECTORY --prefix=$WORKDIRECTORY && make -j$CPU_NUM
+  ./configure --with-ev=$WORKDIRECTORY --prefix=$WORKDIRECTORY && make -j$CPU_NUM
 else
-./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
+  ./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
 fi
 
 make install
 
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/obfs-server
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/obfs-server
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/obfs-server
+  setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/obfs-server
 fi
 
 cd ../..

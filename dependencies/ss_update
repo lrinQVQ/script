@@ -1,16 +1,16 @@
 #!/bin/sh
 if [ -f "$PWD/envsetup.sh" ]; then
-. $PWD/envsetup.sh
+  . $PWD/envsetup.sh
 else
-exit 1
+  exit 1
 fi
 
 encrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -i`
+  export PASSWD=$(echo "$PASSWD" | base64 -i)
 }
 
 unencrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -d`
+  export PASSWD=$(echo "$PASSWD" | base64 -d)
 }
 
 cd $WORKDIRECTORY && cd .. && git pull

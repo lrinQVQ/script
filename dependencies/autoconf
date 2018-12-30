@@ -7,11 +7,11 @@ else
 fi
 
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE yum install curl tar openssl-devel -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE yum install curl tar openssl-devel -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-yum install curl tar openssl-devel -y
+  yum install curl tar openssl-devel -y
 fi
 
 curl -L -O http://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.gz

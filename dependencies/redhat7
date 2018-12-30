@@ -1,14 +1,14 @@
 #!/bin/sh
 encrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -i`
+  export PASSWD=$(echo "$PASSWD" | base64 -i)
 }
 
 unencrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -d`
+  export PASSWD=$(echo "$PASSWD" | base64 -d)
 }
 
 export OS=redhat7
-echo "export OS=$OS" >> $WORKDIRECTORY/envsetup.sh
+echo "export OS=$OS" >>$WORKDIRECTORY/envsetup.sh
 
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "进入$WORKDIRECTORY"
@@ -25,11 +25,11 @@ else
   echo "Update system"
 fi
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE yum update -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE yum update -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-yum update -y
+  yum update -y
 fi
 
 # Installation of basic build dependencies(Redhat 7)
@@ -39,19 +39,19 @@ else
   echo "Installation of basic Shadowsocks-libev build dependencies(Redhat 7)"
 fi
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE yum install autoconf libev-devel -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE yum install autoconf libev-devel -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-yum install autoconf libev-devel -y
+  yum install autoconf libev-devel -y
 fi
 
 . $DEP/redhat
 
 if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-sudo systemctl enable cron
-encrytedpasswd
+  unencrytedpasswd
+  sudo systemctl enable cron
+  encrytedpasswd
 elif [ "$SUDO" = "no" ]; then
-systemctl enable cron
+  systemctl enable cron
 fi

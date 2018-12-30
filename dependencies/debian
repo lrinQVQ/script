@@ -1,14 +1,14 @@
 #!/bin/sh
 encrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -i`
+  export PASSWD=$(echo "$PASSWD" | base64 -i)
 }
 
 unencrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -d`
+  export PASSWD=$(echo "$PASSWD" | base64 -d)
 }
 
 export OS=debian
-echo "export OS=$OS" >> $WORKDIRECTORY/envsetup.sh
+echo "export OS=$OS" >>$WORKDIRECTORY/envsetup.sh
 
 # Update system
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
@@ -17,15 +17,15 @@ else
   echo "Update system"
 fi
 if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE apt-get update -y
-echo $PASSWD | sudo -SE apt-get upgrade -y
-echo $PASSWD | sudo -SE apt-get autoremove -y
-echo $PASSWD | sudo -SE apt-get autoclean -y
-echo $PASSWD | sudo -SE apt-get clean -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE apt-get update -y
+  echo $PASSWD | sudo -SE apt-get upgrade -y
+  echo $PASSWD | sudo -SE apt-get autoremove -y
+  echo $PASSWD | sudo -SE apt-get autoclean -y
+  echo $PASSWD | sudo -SE apt-get clean -y
+  encrytedpasswd
 elif [ "$SUDO" = "no" ]; then
-apt-get update -y && apt-get upgrade -y && apt-get autoremove -y && apt-get autoclean -y && apt-get clean -y
+  apt-get update -y && apt-get upgrade -y && apt-get autoremove -y && apt-get autoclean -y && apt-get clean -y
 fi
 
 # Installation of basic build dependencies
@@ -35,11 +35,11 @@ else
   echo "Installation of basic Shadowsocks-libev build dependencies"
 fi
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl libcap2-bin -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl libcap2-bin -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl git -y
+  apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl git -y
 fi
 
 # Install virtual machine architecture check package
@@ -49,11 +49,11 @@ else
   echo "Install virtual machine architecture check package"
 fi
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE apt-get install virt-what -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE apt-get install virt-what -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-apt-get install virt-what -y
+  apt-get install virt-what -y
 fi
 
 # Install port occupancy detection tool
@@ -63,13 +63,12 @@ else
   echo "Install port occupancy detection tool"
 fi
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE apt-get install lsof -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE apt-get install lsof -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-apt-get install lsof -y
+  apt-get install lsof -y
 fi
-
 
 # Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels
 if [ $LANG=zh_CN.UTF-8 ]; then
@@ -78,11 +77,11 @@ else
   echo "Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels"
 fi
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE apt-get install libcap2-bin -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE apt-get install libcap2-bin -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-apt-get install libcap2-bin -y
+  apt-get install libcap2-bin -y
 fi
 
 if [ $LANG=zh_CN.UTF-8 ]; then

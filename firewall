@@ -1,5 +1,5 @@
 #!/bin/sh
-cat > /etc/iptables.test.rules << EOF
+cat >/etc/iptables.test.rules <<EOF
 *filter
 -A INPUT -p tcp -m tcp --dport 80 -j DROP
 -A INPUT -p udp -m udp --dport 80 -j DROP
@@ -20,17 +20,17 @@ cat > /etc/iptables.test.rules << EOF
 COMMIT
 EOF
 
-iptables-restore < /etc/iptables.test.rules
-iptables-save > /etc/iptables.up.rules
+iptables-restore </etc/iptables.test.rules
+iptables-save >/etc/iptables.up.rules
 
-cat > /etc/network/if-pre-up.d/iptables << EOF
+cat >/etc/network/if-pre-up.d/iptables <<EOF
 #!/bin/sh
 /sbin/iptables-restore < /etc/iptables.up.rules
 EOF
 
 chmod +x /etc/network/if-pre-up.d/iptables
 
-cat >> /etc/sysctl.conf << EOF
+cat >>/etc/sysctl.conf <<EOF
 net.ipv4.icmp_echo_ignore_all = 1
 EOF
 

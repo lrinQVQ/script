@@ -1,5 +1,6 @@
 #!/bin/sh
 #Check device driver
-cd /lib/modules/$(KERNEL_VERSION)/kernel/drivers
-$SUDO for driver in `ls -R|sed '/^\./d'`; do echo $driver;done > /tmp/driver_check
-cd ~/shadowsocks
+KERNEL_DRIVER=$(ls /lib/modules/$KERNEL_VERSION/kernel/drivers -R | sed '/^\./d' | sed '/\//d' | sed '/^$/d')
+for driver in $KERNEL_DRIVER; do
+  echo $driver >>/tmp/driver_check
+done

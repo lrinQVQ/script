@@ -1,40 +1,40 @@
 #!/bin/sh
 #BBR Check
-BBRCHECK=`lsmod | grep -o tcp_bbr`
+BBRCHECK=$(lsmod | grep -o tcp_bbr)
 if [ $BBRCHECK = tcp_bbr ]; then
-if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "BBR已经加载"
+  if [ $LANG=zh_CN.UTF-8 ]; then
+    echo "BBR已经加载"
+  else
+    echo "BBR has loaded"
+  fi
 else
-  echo "BBR has loaded"
-fi
-else
-if [ -f "/lib/modules/$KERNEL_VERSION/kernel/net/ipv4/tcp_bbr.ko" ]; then
-if [ $SUDO = yes ]; then
-  unencrytedpasswd
-  echo $PASSWD | sudo -SE modprobe tcp_bbr
-  echo $PASSWD | sudo -SE sh -c "echo 'tcp_bbr' >> /etc/modules-load.d/modules.conf"
-  echo $PASSWD | sudo -SE sh -c "echo 'net.core.default_qdisc=fq' >> /etc/sysctl.conf"
-  echo $PASSWD | sudo -SE sh -c "echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf"
-  echo $PASSWD | sudo -SE sysctl -p
-  encrytedpasswd
-elif [ $SUDO = no ]; then
-  modprobe tcp_bbr
-  echo 'tcp_bbr' >> /etc/modules-load.d/modules.conf
-  echo 'net.core.default_qdisc=fq' >> /etc/sysctl.conf
-  echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf
-  sysctl -p
-fi
-if [ $LANG=zh_CN.UTF-8 ];
-then
-  echo "开启BBR"
-else
-  echo "BBR ENABLED"
-fi
-else if [ "$VM" = "kvm" ] || [ "$VM" = "" ] ; then
-#  . $DEP/kernel
-  echo "Not building kernel now"
-fi
-fi
+  if [ -f "/lib/modules/$KERNEL_VERSION/kernel/net/ipv4/tcp_bbr.ko" ]; then
+    if [ $SUDO = yes ]; then
+      unencrytedpasswd
+      echo $PASSWD | sudo -SE modprobe tcp_bbr
+      echo $PASSWD | sudo -SE sh -c "echo 'tcp_bbr' >> /etc/modules-load.d/modules.conf"
+      echo $PASSWD | sudo -SE sh -c "echo 'net.core.default_qdisc=fq' >> /etc/sysctl.conf"
+      echo $PASSWD | sudo -SE sh -c "echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf"
+      echo $PASSWD | sudo -SE sysctl -p
+      encrytedpasswd
+    elif [ $SUDO = no ]; then
+      modprobe tcp_bbr
+      echo 'tcp_bbr' >>/etc/modules-load.d/modules.conf
+      echo 'net.core.default_qdisc=fq' >>/etc/sysctl.conf
+      echo 'net.ipv4.tcp_congestion_control=bbr' >>/etc/sysctl.conf
+      sysctl -p
+    fi
+    if [ $LANG=zh_CN.UTF-8 ]; then
+      echo "开启BBR"
+    else
+      echo "BBR ENABLED"
+    fi
+  else
+    if [ "$VM" = "kvm" ] || [ "$VM" = "" ]; then
+      #  . $DEP/kernel
+      echo "Not building kernel now"
+    fi
+  fi
 fi
 
 unset KERNEL_VERSION

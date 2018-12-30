@@ -1,10 +1,10 @@
 #!/bin/sh
 encrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -i`
+  export PASSWD=$(echo "$PASSWD" | base64 -i)
 }
 
 unencrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -d`
+  export PASSWD=$(echo "$PASSWD" | base64 -d)
 }
 
 # Installation of basic build dependencies
@@ -14,11 +14,11 @@ else
   echo "Installation of basic Shadowsocks-libev build dependencies"
 fi
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
+  yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
 fi
 
 # Install virtual machine architecture check package
@@ -28,11 +28,11 @@ else
   echo "Install virtual machine architecture check package"
 fi
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE yum install virt-what which -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE yum install virt-what which -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-yum install virt-what which -y
+  yum install virt-what which -y
 fi
 
 # Install port occupancy detection tool
@@ -42,11 +42,11 @@ else
   echo "Install port occupancy detection tool"
 fi
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE yum install lsof -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE yum install lsof -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-yum install lsof -y
+  yum install lsof -y
 fi
 
 # Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels
@@ -56,13 +56,12 @@ else
   echo "Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels"
 fi
 if [ $SUDO = yes ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE yum install libcap2 -y
-encrytedpasswd
+  unencrytedpasswd
+  echo $PASSWD | sudo -SE yum install libcap2 -y
+  encrytedpasswd
 elif [ $SUDO = no ]; then
-yum install libcap2 -y
+  yum install libcap2 -y
 fi
-
 
 . $DEP/libsodium
 . $DEP/mbedtls

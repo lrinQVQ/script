@@ -1,16 +1,16 @@
 #!/bin/sh
 encrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -i`
+  export PASSWD=$(echo "$PASSWD" | base64 -i)
 }
 
 unencrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -d`
+  export PASSWD=$(echo "$PASSWD" | base64 -d)
 }
 
 if [ -f "$PWD/envsetup.sh" ]; then
-. $PWD/envsetup.sh
+  . $PWD/envsetup.sh
 else
-exit 1
+  exit 1
 fi
 
 if [ ! -d "$WORKDIRECTORY/pid" ]; then
@@ -23,181 +23,180 @@ fi
 
 #TCP fast open check
 if [ -f "/proc/sys/net/ipv4/tcp_fastopen" ]; then
-FASTOPEN_CHECK=`cat /proc/sys/net/ipv4/tcp_fastopen`
-if [ "$FASTOPEN_CHECK" = "3" ]; then
-FASTOPEN=--fast-open
+  FASTOPEN_CHECK=$(cat /proc/sys/net/ipv4/tcp_fastopen)
+  if [ "$FASTOPEN_CHECK" = "3" ]; then
+    FASTOPEN=--fast-open
+  else
+    FASTOPEN=
+  fi
 else
-FASTOPEN=
-fi
-else
-if [ $LANG=zh_CN.UTF-8 ];
-then
-  echo "不支持TCP FASTOPEN"
-else
-  echo "Not support TCP FASTOPEN"
-fi
+  if [ $LANG=zh_CN.UTF-8 ]; then
+    echo "不支持TCP FASTOPEN"
+  else
+    echo "Not support TCP FASTOPEN"
+  fi
 fi
 
 read -p "Encryption(default:chacha20-ietf-poly1305): " ENCRYPTION
 
-if [ -z $ENCRYPTION ]
-then
-ENCRYPTION=chacha20-ietf-poly1305
+if [ -z $ENCRYPTION ]; then
+  ENCRYPTION=chacha20-ietf-poly1305
 fi
 
 read -p "Run User(default:nobody): " RUN_USER
 
-if [ -z $RUN_USER ]
-then
-RUN_USER=nobody
+if [ -z $RUN_USER ]; then
+  RUN_USER=nobody
 fi
 
 read -p "Enable udprelay mode(default:yes):(yes/no) " UDP
 
 if [ "$UDP" = "yes" ] || [ "$UDP" = "" ]; then
-UDP=-u
+  UDP=-u
 elif [ "$UDP" = "no" ]; then
-UDP=
+  UDP=
 fi
 
 read -p "Enable TCP_NODELAY(default:yes):(yes/no) " TCP_NODELAY
 
 if [ "$TCP_NODELAY" = "yes" ] || [ "$TCP_NODELAY" = "" ]; then
-TCP_NODELAY=--no-delay
+  TCP_NODELAY=--no-delay
 elif [ "$TCP_NODELAY" = "no" ]; then
-TCP_NODELAY=
+  TCP_NODELAY=
 fi
 
 read -p "Enable port reuse(default:yes):(yes/no) " PORT_REUSE
 
 if [ "$PORT_REUSE" = "yes" ] || [ "$PORT_REUSE" = "" ]; then
-PORT_REUSE=--reuse-port
+  PORT_REUSE=--reuse-port
 elif [ "$PORT_REUSE" = "no" ]; then
-PORT_REUSE=
+  PORT_REUSE=
 fi
 
 read -p "Enable SIP003 plugin. (Experimental)(default:yes):(yes/no) " PLUGIN_CHECK
 
 if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
-read -p "Select plugin: (1.simple-obfs ) " PLUGIN
-case "$PLUGIN" in
-  1|simple-obfs|"")
-read -p "Set SIP003 plugin options. (Experimental)(default:tls):(tls/http) " PLUGIN_OPTIONS
-if [ "$PLUGIN_OPTIONS" = "tls" ] || [ "$PLUGIN_OPTIONS" = "" ]; then
-PLUGIN_OPTIONS=tls
-elif [ "$PLUGIN_OPTIONS" = "http" ]; then
-PLUGIN_OPTIONS=http
-else if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "参数无效"
-else
-  echo "Invalid parameters"
-fi
-fi
-esac
+  read -p "Select plugin: (1.simple-obfs ) " PLUGIN
+  case "$PLUGIN" in
+    1 | simple-obfs | "")
+      read -p "Set SIP003 plugin options. (Experimental)(default:tls):(tls/http) " PLUGIN_OPTIONS
+      if [ "$PLUGIN_OPTIONS" = "tls" ] || [ "$PLUGIN_OPTIONS" = "" ]; then
+        PLUGIN_OPTIONS=tls
+      elif [ "$PLUGIN_OPTIONS" = "http" ]; then
+        PLUGIN_OPTIONS=http
+      else
+        if [ $LANG=zh_CN.UTF-8 ]; then
+          echo "参数无效"
+        else
+          echo "Invalid parameters"
+        fi
+      fi
+      ;;
+  esac
 elif [ "$PLUGIN_CHECK" = "no" ]; then
-PLUGIN_CHECK=no
+  PLUGIN_CHECK=no
 fi
 
 port_check() {
-read -p "port: " PORT
+  read -p "port: " PORT
 
-if [ "$PORT" = "" ]; then
-  port_check
-else
-if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-PORT_USE_CHECK=`echo $PASSWD | sudo -SE sh -c "lsof -i:$PORT"`
-encrytedpasswd
-elif [ "$SUDO" = "no" ]; then
-PORT_USE_CHECK=`lsof -i:$PORT`
-fi
-if [ "$PORT_USE_CHECK" != "" ] || [ "$PORT" = "" ]; then
-  port_check
-else
-if [ -f "$WORKDIRECTORY/config/ss_run1" ]; then
-PORT_EXIST=`grep -rwo "\-p $PORT" $WORKDIRECTORY/config`
-PID_NUM=`grep -ro 'ss-server' $WORKDIRECTORY/config | wc -l`
-PID_NUM=`expr $PID_NUM + 1`
-else
-PORT_EXIST=""
-PID_NUM=1
-FIRST_RUN=yes
-fi
-if [ "$PORT_EXIST" != "" ];then
-  port_check
-else
-if [ "$PORT" -lt 8300 ] || [ "$PORT" -gt 8400 ]; then
-read -p "passwd: " PASSWORD
+  if [ "$PORT" = "" ]; then
+    port_check
+  else
+    if [ "$SUDO" = "yes" ]; then
+      unencrytedpasswd
+      PORT_USE_CHECK=$(echo $PASSWD | sudo -SE sh -c "lsof -i:$PORT")
+      encrytedpasswd
+    elif [ "$SUDO" = "no" ]; then
+      PORT_USE_CHECK=$(lsof -i:$PORT)
+    fi
+    if [ "$PORT_USE_CHECK" != "" ] || [ "$PORT" = "" ]; then
+      port_check
+    else
+      if [ -f "$WORKDIRECTORY/config/ss_run1" ]; then
+        PORT_EXIST=$(grep -rwo "\-p $PORT" $WORKDIRECTORY/config)
+        PID_NUM=$(grep -ro 'ss-server' $WORKDIRECTORY/config | wc -l)
+        PID_NUM=$(expr $PID_NUM + 1)
+      else
+        PORT_EXIST=""
+        PID_NUM=1
+        FIRST_RUN=yes
+      fi
+      if [ "$PORT_EXIST" != "" ]; then
+        port_check
+      else
+        if [ "$PORT" -lt 8300 ] || [ "$PORT" -gt 8400 ]; then
+          read -p "passwd: " PASSWORD
 
-IPV6=`curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1`
-if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
-if [ "$IPV6" = "200" ]; then
-echo "#!""/bin/sh" >> $WORKDIRECTORY/config/ss_run$PID_NUM
-echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/config/ss_run$PID_NUM
-else
-echo "#!""/bin/sh" >> $WORKDIRECTORY/config/ss_run$PID_NUM
-echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/config/ss_run$PID_NUM
-fi
-elif [ "$PLUGIN_CHECK" = "no" ]; then
-if [ "$IPV6" = "200" ]; then
-echo "#!""/bin/sh" >> $WORKDIRECTORY/config/ss_run$PID_NUM
-echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/config/ss_run$PID_NUM
-else
-echo "#!""/bin/sh" >> $WORKDIRECTORY/config/ss_run$PID_NUM
-echo "ss-server -s 0.0.0.0 -p $PORT[$ELEMENTS_NUMBER] -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >> $WORKDIRECTORY/config/ss_run$PID_NUM
-fi
-fi
-elif [ $LANG=zh_CN.UTF-8 ]; then
-  echo "请使用小于8300或大于8400的端口"
-  port_check
-else
-  echo "Please use a port smaller than 8300 or larger than 8400"
-  port_check
-fi
-fi
-fi
-fi
+          IPV6=$(curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1)
+          if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
+            if [ "$IPV6" = "200" ]; then
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+            else
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin obfs-server --plugin-opts "obfs=$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+            fi
+          elif [ "$PLUGIN_CHECK" = "no" ]; then
+            if [ "$IPV6" = "200" ]; then
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+            else
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -p $PORT[$ELEMENTS_NUMBER] -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+            fi
+          fi
+        elif [ $LANG=zh_CN.UTF-8 ]; then
+          echo "请使用小于8300或大于8400的端口"
+          port_check
+        else
+          echo "Please use a port smaller than 8300 or larger than 8400"
+          port_check
+        fi
+      fi
+    fi
+  fi
 
-if [ "$OS" = "redhat7" ]; then
-if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE firewall-cmd --permanent --zone=public --add-port=$PORT/udp
-echo $PASSWD | sudo -SE firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
-echo $PASSWD | sudo -SE firewall-cmd --reload
-encrytedpasswd
-elif [ "$SUDO" = "no" ] || [ "$SUDO" = "" ]; then
-firewall-cmd --permanent --zone=public --add-port=$PORT/udp
-firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
-firewall-cmd --reload
-fi
-elif [ "$OS" = "redhat6" ]; then
-if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-echo $PASSWD | sudo -SE iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
-echo $PASSWD | sudo -SE iptables -I INPUT -p udp --dport $PORT -j ACCEPT
-echo $PASSWD | sudo -SE service iptables save
-encrytedpasswd
-elif [ "$SUDO" = "no" ] || [ "$SUDO" = "" ]; then
-iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
-iptables -I INPUT -p udp --dport $PORT -j ACCEPT
-service iptables save
-fi
-fi
+  if [ "$OS" = "redhat7" ]; then
+    if [ "$SUDO" = "yes" ]; then
+      unencrytedpasswd
+      echo $PASSWD | sudo -SE firewall-cmd --permanent --zone=public --add-port=$PORT/udp
+      echo $PASSWD | sudo -SE firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
+      echo $PASSWD | sudo -SE firewall-cmd --reload
+      encrytedpasswd
+    elif [ "$SUDO" = "no" ] || [ "$SUDO" = "" ]; then
+      firewall-cmd --permanent --zone=public --add-port=$PORT/udp
+      firewall-cmd --permanent --zone=public --add-port=$PORT/tcp
+      firewall-cmd --reload
+    fi
+  elif [ "$OS" = "redhat6" ]; then
+    if [ "$SUDO" = "yes" ]; then
+      unencrytedpasswd
+      echo $PASSWD | sudo -SE iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
+      echo $PASSWD | sudo -SE iptables -I INPUT -p udp --dport $PORT -j ACCEPT
+      echo $PASSWD | sudo -SE service iptables save
+      encrytedpasswd
+    elif [ "$SUDO" = "no" ] || [ "$SUDO" = "" ]; then
+      iptables -I INPUT -p tcp --dport $PORT -j ACCEPT
+      iptables -I INPUT -p udp --dport $PORT -j ACCEPT
+      service iptables save
+    fi
+  fi
 }
 
 port_check
 
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  read -p "是否运行Shadowsocks服务器?(yes/no) (默认:yes)" RUN_SERVER 
+  read -p "是否运行Shadowsocks服务器?(yes/no) (默认:yes)" RUN_SERVER
 else
   read -p "Running shadowsocks server?(yes/no) (default:yes)" RUN_SERVER
 fi
 
 if [ "$FIRST_RUN" = "yes" ]; then
-ln -v $DEP/run $WORKDIRECTORY/bin
+  ln -v $DEP/run $WORKDIRECTORY/bin
 fi
 if [ "$RUN_SERVER" = "yes" ] || [ "$RUN_SERVER" = "" ]; then
-. $WORKDIRECTORY/bin/run
+  . $WORKDIRECTORY/bin/run
 fi
 
 unset ENCRYPTION
@@ -213,4 +212,4 @@ unset PLUGIN
 unset PLUGIN_OPTIONS
 unset FASTOPEN_CHECK
 unset PORT_USE_CHECK
-unset RUN_SERVER 
+unset RUN_SERVER

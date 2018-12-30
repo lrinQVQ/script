@@ -12,5 +12,5 @@ cd libsodium
 ./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
 make install
 export PATH=$WORKDIRECTORY/bin:$PATH
-echo "export PATH=$WORKDIRECTORY/bin:\$PATH" >> $WORKDIRECTORY/envsetup.sh
+echo "export PATH=$WORKDIRECTORY/bin:\$PATH" >>$WORKDIRECTORY/envsetup.sh
 cd ..

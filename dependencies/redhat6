@@ -1,14 +1,14 @@
 #!/bin/sh
 encrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -i`
+  export PASSWD=$(echo "$PASSWD" | base64 -i)
 }
 
 unencrytedpasswd() {
-export PASSWD=`echo "$PASSWD" | base64 -d`
+  export PASSWD=$(echo "$PASSWD" | base64 -d)
 }
 
 export OS=redhat6
-echo "export OS=$OS" >> $WORKDIRECTORY/envsetup.sh
+echo "export OS=$OS" >>$WORKDIRECTORY/envsetup.sh
 
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "进入$WORKDIRECTORY/src"
@@ -25,9 +25,9 @@ else
   echo "Update system"
 fi
 if [ $SUDO = yes ]; then
-echo $PASSWD | sudo -SE yum update -y
+  echo $PASSWD | sudo -SE yum update -y
 elif [ $SUDO = no ]; then
-yum update -y
+  yum update -y
 fi
 
 #Install Redhat 6 and its derivative building dependencies
@@ -35,9 +35,9 @@ fi
 . $DEP/libev
 . $DEP/redhat
 if [ "$SUDO" = "yes" ]; then
-unencrytedpasswd
-sudo chkconfig crond on
-encrytedpasswd
+  unencrytedpasswd
+  sudo chkconfig crond on
+  encrytedpasswd
 elif [ "$SUDO" = "no" ]; then
-chkconfig crond on
+  chkconfig crond on
 fi
