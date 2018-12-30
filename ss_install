@@ -163,10 +163,10 @@ if [ -f /etc/debian_version ]; then
 		;;
 	*)
 		if [ "$LANG" = "zh_CN.UTF-8" ]; then
-			echo "暂不支持此 Debian 系统版本"
+			echo "暂不支持此 Debian 发行版"
 			exit 1
 		else
-			echo "Unsupported Debian release"
+			echo "Unsupported Debian distribution"
 			exit 1
 		fi
 		;;
@@ -189,10 +189,10 @@ elif [ -f /etc/system-release ]; then
 		;;
 	*)
 		if [ "$LANG" = "zh_CN.UTF-8" ]; then
-			echo "暂不支持此 Red Hat 系统版本"
+			echo "暂不支持此 Red Hat 发行版"
 			exit 1
 		else
-			echo "Unsupported Red Hat release"
+			echo "Unsupported Red Hat distribution"
 			exit 1
 		fi
 		;;
