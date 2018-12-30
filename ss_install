@@ -176,7 +176,7 @@ if [ -f /etc/redhat-release ]; then
 REDHAT_VERSION=`cat /etc/redhat-release | grep -oE  "[0-9.]+"`
 elif [ -f /etc/system-release ]; then
 REDHAT_VERSION=`cat /etc/system-release | grep -oE "[0-9.]+"`
-fi
+
 case "$REDHAT_VERSION" in
   7.0.1406|7.1.1503|7.2.1511|7.3.1611|7.4.1708|7.5.1804|2)
     . $DEP/redhat7
