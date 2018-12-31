@@ -11,7 +11,7 @@ else
   if [ -f "/proc/sys/net/ipv4/tcp_fastopen" ]; then
     if [ "$SUDO" = "yes" ]; then
       unencrytedpasswd
-      echo $PASSWD | sudo -SE sh -c "echo 'net.ipv4.tcp_fastopen = 3' >> /etc/modules-load.d/modules.conf"
+      echo $PASSWD | sudo -SE sh -c "echo 'net.ipv4.tcp_fastopen = 3' >> /etc/sysctl.conf"
       echo $PASSWD | sudo -SE sysctl -p
       encrytedpasswd
     elif [ "$SUDO" = "no" ]; then
