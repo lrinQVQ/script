@@ -299,6 +299,7 @@ if [ "$HA_CHECK" = "yes" ] || [ "$HA_CHECK" = "" ]; then
   fi
 fi
 
+if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$STARTUP_SERVER" = "yes" ] || [ "$HA_CHECK" = "yes" ]; then
 if [ "$SUDO" = "yes" ]; then
   unencrytedpasswd
   echo $PASSWD | sudo -SE sh -c "cat $WORKDIRECTORY/$(whoami) >> /var/spool/cron/crontabs/$(whoami)"
@@ -307,6 +308,7 @@ if [ "$SUDO" = "yes" ]; then
 elif [ "$SUDO" = "no" ]; then
   cat $WORKDIRECTORY/$(whoami) >>/var/spool/cron/crontabs/$(whoami)
   chown $(whoami):crontab /var/spool/cron/crontabs/$(whoami)
+fi
 fi
 
 unset DEP
