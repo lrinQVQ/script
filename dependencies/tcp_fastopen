@@ -1,0 +1,29 @@
+#!/bin/sh
+#fastopen_check
+FASTOPEN_CHECK=$(cat /proc/sys/net/ipv4/tcp_fastopen)
+if [ "$FASTOPEN_CHECK" = 3 ]; then
+  if [ "$LANG"="zh_CN.UTF-8" ]; then
+    echo "TCP FASTOPEN设置正常"
+  else
+    echo "TCP FASTOPEN Work"
+  fi
+else
+  if [ -f "/proc/sys/net/ipv4/tcp_fastopen" ]; then
+    if [ "$SUDO" = "yes" ]; then
+      unencrytedpasswd
+      echo $PASSWD | sudo -SE sh -c "echo 'net.ipv4.tcp_fastopen = 3' >> /etc/modules-load.d/modules.conf"
+      echo $PASSWD | sudo -SE sysctl -p
+      encrytedpasswd
+    elif [ "$SUDO" = "no" ]; then
+      echo 'net.ipv4.tcp_fastopen = 3' >> /etc/modules-load.d/modules.conf
+      sysctl -p
+    fi
+    if [ "$LANG"="zh_CN.UTF-8" ]; then
+      echo "成功设置TCP FASTOPEN"
+    else
+      echo "ENABLED TCP FASTOPEN"
+    fi
+  fi
+fi
+
+unset FASTOPEN_CHECK

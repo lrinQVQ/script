@@ -207,7 +207,7 @@ if [ "$OS" = "" ]; then
   exit 1
 fi
 
-#export KERNEL_VERSION=`uname -r`
+export KERNEL_VERSION=`uname -r`
 #if [ "$SUDO" = "yes" ]; then
 #unencrytedpasswd
 #export VM=`echo $PASSWD | sudo -SE virt-what`
@@ -217,6 +217,7 @@ fi
 #fi
 
 . $DEP/bbr
+. $DEP/tcp_fastopen
 
 # Crontabs directory empty check
 if [ "$SUDO" = "yes" ]; then
