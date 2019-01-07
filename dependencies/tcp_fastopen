@@ -15,7 +15,7 @@ else
 			echo $PASSWD | sudo -SE sysctl -p
 			encrytedpasswd
 		elif [ "$SUDO" = "no" ]; then
-			echo 'net.ipv4.tcp_fastopen = 3' >>/etc/modules-load.d/modules.conf
+			echo 'net.ipv4.tcp_fastopen = 3' >> /etc/sysctl.conf
 			sysctl -p
 		fi
 		if [ "$LANG"="zh_CN.UTF-8" ]; then
