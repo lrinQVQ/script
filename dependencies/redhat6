@@ -25,7 +25,9 @@ else
   echo "Update system"
 fi
 if [ $SUDO = yes ]; then
+  $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE yum update -y
+  $ENCRYTEDPASSWD
 elif [ $SUDO = no ]; then
   yum update -y
 fi
@@ -35,9 +37,9 @@ fi
 . $DEP/libev
 . $DEP/redhat
 if [ "$SUDO" = "yes" ]; then
-  unencrytedpasswd
+  $UNENCRYTEDPASSWD
   sudo chkconfig crond on
-  encrytedpasswd
+  $ENCRYTEDPASSWD
 elif [ "$SUDO" = "no" ]; then
   chkconfig crond on
 fi

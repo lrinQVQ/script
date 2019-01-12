@@ -1,9 +1,9 @@
 #!/bin/sh
 #Install simple-obfs
 if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "安装simple-obfs"
+  echo "安装simple-obfs插件"
 else
-  echo "Install simple-obfs"
+  echo "Install simple-obfs plugin"
 fi
 
 git clone https://github.com/shadowsocks/simple-obfs.git
@@ -19,11 +19,11 @@ fi
 make install
 
 if [ $SUDO = yes ]; then
-  unencrytedpasswd
+  $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/obfs-server
-  encrytedpasswd
+  $ENCRYTEDPASSWD
 elif [ $SUDO = no ]; then
   setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/obfs-server
 fi
 
-cd ../..
+cd ..

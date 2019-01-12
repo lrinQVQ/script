@@ -1,9 +1,9 @@
 #!/bin/sh
 . $DEP/debian
 if [ "$SUDO" = "yes" ]; then
-  unencrytedpasswd
+  $UNENCRYTEDPASSWD
   sudo systemctl enable cron
-  encrytedpasswd
+  $ENCRYTEDPASSWD
 elif [ "$SUDO" = "no" ]; then
   systemctl enable cron
 fi

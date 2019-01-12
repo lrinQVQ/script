@@ -2,9 +2,9 @@
 . $DEP/debian
 
 if [ "$SUDO" = "yes" ]; then
-  unencrytedpasswd
+  $UNENCRYTEDPASSWD
   sudo update-rc.d cron defaults
-  encrytedpasswd
+  $ENCRYTEDPASSWD
 elif [ "$SUDO" = "no" ]; then
   update-rc.d cron defaults
 fi

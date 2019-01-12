@@ -1,0 +1,19 @@
+#!/bin/sh
+#Install kcptun
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装kcptun插件"
+else
+  echo "Install kcptun plugin"
+fi
+
+if [ "$GOLANG_WORK" = "yes" ]; then
+mkdir kcptun
+cd kcptun
+go build github.com/shadowsocks/kcptun/server
+mv server $WORKDIRECTORY/bin/kcptun-server
+KCPTUN_INSTALL=yes
+else
+KCPTUN_INSTALL=no
+fi
+
+cd ..

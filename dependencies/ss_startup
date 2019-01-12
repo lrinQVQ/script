@@ -16,9 +16,9 @@ unencrytedpasswd() {
 for SSRUN in $WORKDIRECTORY/config/ss_run*; do
   if [ -f $SSRUN -a $SSRUN ]; then
     if [ "$SUDO" = "yes" ]; then
-      unencrytedpasswd
+      $UNENCRYTEDPASSWD
       echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $SSRUN
-      encrytedpasswd
+      $ENCRYTEDPASSWD
     elif [ "$SUDO" = "no" ]; then
       sh $SSRUN
     fi

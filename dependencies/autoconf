@@ -7,9 +7,9 @@ else
 fi
 
 if [ $SUDO = yes ]; then
-  unencrytedpasswd
+  $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE yum install curl tar openssl-devel -y
-  encrytedpasswd
+  $ENCRYTEDPASSWD
 elif [ $SUDO = no ]; then
   yum install curl tar openssl-devel -y
 fi

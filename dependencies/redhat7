@@ -25,9 +25,9 @@ else
   echo "Update system"
 fi
 if [ $SUDO = yes ]; then
-  unencrytedpasswd
+  $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE yum update -y
-  encrytedpasswd
+  $ENCRYTEDPASSWD
 elif [ $SUDO = no ]; then
   yum update -y
 fi
@@ -39,9 +39,9 @@ else
   echo "Installation of basic Shadowsocks-libev build dependencies(Redhat 7)"
 fi
 if [ $SUDO = yes ]; then
-  unencrytedpasswd
+  $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE yum install autoconf libev-devel -y
-  encrytedpasswd
+  $ENCRYTEDPASSWD
 elif [ $SUDO = no ]; then
   yum install autoconf libev-devel -y
 fi
@@ -49,9 +49,9 @@ fi
 . $DEP/redhat
 
 if [ "$SUDO" = "yes" ]; then
-  unencrytedpasswd
+  $UNENCRYTEDPASSWD
   sudo systemctl enable cron
-  encrytedpasswd
+  $ENCRYTEDPASSWD
 elif [ "$SUDO" = "no" ]; then
   systemctl enable cron
 fi

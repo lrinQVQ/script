@@ -18,9 +18,9 @@ ss_run() {
 }
 
 sudo_ss_run() {
-  unencrytedpasswd
+  $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run$PID_NUM
-  encrytedpasswd
+  $ENCRYTEDPASSWD
 }
 
 if [ "$RUN_USER" != "$(whoami)" ]; then

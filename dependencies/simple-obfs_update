@@ -14,7 +14,7 @@ fi
 make install
 
 if [ $SUDO = yes ]; then
-  unencrytedpasswd
+  
   echo $PASSWD | sudo -SE setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/obfs-server
   encrytedpasswd
 elif [ $SUDO = no ]; then

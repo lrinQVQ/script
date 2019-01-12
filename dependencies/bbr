@@ -10,13 +10,13 @@ if [ "$BBRCHECK" = "tcp_bbr" ]; then
 else
   if [ -f "/lib/modules/$KERNEL_VERSION/kernel/net/ipv4/tcp_bbr.ko" ]; then
     if [ "$SUDO" = "yes" ]; then
-      unencrytedpasswd
+      $UNENCRYTEDPASSWD
       echo $PASSWD | sudo -SE modprobe tcp_bbr
       echo $PASSWD | sudo -SE sh -c "echo 'tcp_bbr' >> /etc/modules-load.d/modules.conf"
       echo $PASSWD | sudo -SE sh -c "echo 'net.core.default_qdisc=fq' >> /etc/sysctl.conf"
       echo $PASSWD | sudo -SE sh -c "echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf"
       echo $PASSWD | sudo -SE sysctl -p
-      encrytedpasswd
+      $ENCRYTEDPASSWD
     elif [ "$SUDO" = "no" ]; then
       modprobe tcp_bbr
       echo 'tcp_bbr' >>/etc/modules-load.d/modules.conf

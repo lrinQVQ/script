@@ -1,0 +1,20 @@
+#!/bin/sh
+#Install kcptun
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装基于v2ray的插件"
+else
+  echo "Install v2ray based plugin"
+fi
+
+if [ "$GOLANG_WORK" = "yes" ]; then
+git clone https://github.com/madeye/v2ray-plugin.git
+cd v2ray-plugin
+go get
+go build
+mv v2ray-plugin $WORKDIRECTORY/bin/v2ray-plugin
+V2RAY_PLUGIN_INSTALL=yes
+else
+V2RAY_PLUGIN_INSTALL=no
+fi
+
+cd ../..
