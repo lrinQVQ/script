@@ -238,11 +238,11 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
     read -p "Enable automatic updates? (yes/no) [yes]: " AUTOUPDATE_CHECK
   fi
   if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
-    ln -v $DEP/ss_update $WORKDIRECTORY/bin
-    ln -v $DEP/libsodium_update $WORKDIRECTORY/bin
-    ln -v $DEP/mbedtls_update $WORKDIRECTORY/bin
-    ln -v $DEP/shadowsocks_update $WORKDIRECTORY/bin
-    ln -v $DEP/simple-obfs_update $WORKDIRECTORY/bin
+    ln -v $DEP/ss_update $WORKDIRECTORY/bin/ss_update
+    ln -v $DEP/libsodium_update $WORKDIRECTORY/bin/libsodium_update
+    ln -v $DEP/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
+    ln -v $DEP/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
+    ln -v $DEP/simple-obfs_update $WORKDIRECTORY/bin/simple-obfs_update
     echo "0 0 * * * cd $WORKDIRECTORY && sh bin/ss_update >/dev/null 2>&1" >>$WORKDIRECTORY/$(whoami)
     if [ "$CRONTABS_DIR_CHECK" != "" ]; then
       if [ "$SUDO" = "yes" ]; then
@@ -288,7 +288,7 @@ else
 fi
 
 if [ "$HA_CHECK" = "yes" ] || [ "$HA_CHECK" = "" ]; then
-  ln -v $DEP/daemon $WORKDIRECTORY/bin
+  ln -v $DEP/daemon $WORKDIRECTORY/bin/daemon
   echo "*/1 * * * * cd $WORKDIRECTORY && sh bin/daemon >/dev/null 2>&1" >>$WORKDIRECTORY/$(whoami)
 
   if [ "$CRONTABS_DIR_CHECK" != "" ]; then
