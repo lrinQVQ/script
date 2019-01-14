@@ -76,39 +76,19 @@ fi
 read -p "Enable SIP003 plugin. (Experimental)(default:yes):(yes/no) " PLUGIN_CHECK
 
 if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
-  if [ "$KCPTUN_INSTALL" = "no" && "$V2RAY_PLUGIN_INSTALL" = "no" ]; then
-    read -p "Select plugin: (1.simple-obfs )(default:simple-obfs) " PLUGIN
-  elif [ "$KCPTUN_INSTALL" = "yes" && "$V2RAY_PLUGIN_INSTALL" = "no" ]; then
-    read -p "Select plugin: (1.simple-obfs 2.kcptun )(default:simple-obfs) " PLUGIN
+  if [ "$KCPTUN_INSTALL" = "yes" && "$V2RAY_PLUGIN_INSTALL" = "no" ]; then
+    read -p "Select plugin: (1.kcptun )(default:kcptun) " PLUGIN
   elif [ "$V2RAY_PLUGIN_INSTALL" = "yes" && "$KCPTUN_INSTALL" = "no" ]; then
-    read -p "Select plugin: (1.simple-obfs 3.v2ray_plugin )(default:simple-obfs) " PLUGIN
+    read -p "Select plugin: (2.v2ray_plugin )(default:v2ray_plugin) " PLUGIN
   elif [ "$V2RAY_PLUGIN_INSTALL" = "yes" && "$KCPTUN_INSTALL" = "yes" ]; then
-    read -p "Select plugin: (1.simple-obfs 2.kcptun 3.v2ray_plugin )(default:simple-obfs) " PLUGIN
+    read -p "Select plugin: (1.kcptun 2.v2ray_plugin )(default:v2ray_plugin) " PLUGIN
   fi
 
   case "$PLUGIN" in
-    1 | simple-obfs | "")
-      PLUGIN=obfs-serve
-      obfs_plugin_options_check() {
-        read -p "Set SIP003 plugin options. (Experimental)(default:tls):(tls/http) " PLUGIN_OPTIONS
-      }
-      obfs_plugin_options_check
-      if [ "$PLUGIN_OPTIONS" = "tls" ] || [ "$PLUGIN_OPTIONS" = "" ]; then
-        PLUGIN_OPTIONS="obfs=tls"
-      elif [ "$PLUGIN_OPTIONS" = "http" ]; then
-        PLUGIN_OPTIONS="obfs=http"
-      else
-        if [ $LANG=zh_CN.UTF-8 ]; then
-          echo "参数无效"
-        else
-          echo "Invalid parameters"
-        fi
-        obfs_plugin_options_check
-      fi
-      fi
-    2 | kcptun)
+    1 | kcptun)
       read -p "Set SIP003 plugin options. (Experimental) "
-    3 | v2ray_plugin)
+      ;;
+    2 | v2ray_plugin)
       PLUGIN=v2ray-plugin
       v2ray_plugin_options_check() {
         read -p "Set SIP003 plugin options. (Experimental)(default:quic):(websocket/quic) " PLUGIN_OPTIONS
