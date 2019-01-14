@@ -86,7 +86,13 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
 
   case "$PLUGIN" in
     1 | kcptun)
-      read -p "Set SIP003 plugin options. (Experimental) "
+      kcptun_plugin_options_check() {
+      read -p "Set SIP003 plugin options. (Experimental)(default:"--crypt "salsa20" --mode "normal" --mtu 1200 --parityshard 0 --dscp 46 --nocomp")" PLUGIN_OPTIONS
+      }
+      kcptun_plugin_options_check
+      if [ "$PLUGIN_OPTIONS" = "" ]; then
+        PLUGIN_OPTIONS="--crypt "salsa20" --mode "normal" --mtu 1200 --parityshard 0 --dscp 46 --nocomp"
+      fi
       ;;
     2 | v2ray_plugin)
       PLUGIN=v2ray-plugin
