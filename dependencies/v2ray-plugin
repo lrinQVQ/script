@@ -7,7 +7,7 @@ else
 fi
 
 if [ "$GOLANG_WORK" = "yes" ]; then
-git clone https://github.com/madeye/v2ray-plugin.git
+git clone https://github.com/shadowsocks/v2ray-plugin.git
 cd v2ray-plugin
 go get
 go build
