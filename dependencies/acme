@@ -1,0 +1,29 @@
+#!/bin/sh
+#Install
+curl https://get.acme.sh | sh
+echo "alias acme.sh=~/.acme.sh/acme.sh" >> .profile
+source ~/.profile
+
+HTTP_CHECK=$(lsof -i:80)
+if [ "$HTTP_CHECK" != "" ]; then
+  if [ "$LANG"="zh_CN.UTF-8" ]; then
+    echo "80端口被占用无法使用此方式生成证书"
+  else
+    echo "80 port is occupied. Can't be used this method to generate a certificate."
+  fi
+  if [ "$LANG"="zh_CN.UTF-8" ]; then
+    read -p "您是否使用或安装了Apche2/Nginx服务器?如果是,请确保您没有对80端口进行强制https跳转.如果没有,请检查占用80端口的程序. (no/apache2/nginx)" WEB_SERVER
+  else
+    read -p "Are you using or installing the Apche2/Nginx server? If so, make sure you don't force a https jump on port 80. If not, check the program that occupies port 80. (no/apache2/nginx)" WEB_SERVER
+  fi
+else
+  acme.sh --issue -d $HOSTNAME --standalone
+fi
+
+if [ "$WEB_SERVER" = "no" ]; then
+  v2ray_plugin
+elif [ "$WEB_SERVER" = "apache2" ]; then
+  acme.sh --issue -d $HOSTNAME --apache
+elif [ "$WEB_SERVER" = "nginx" ]; then
+  acme.sh --issue -d $HOSTNAME --nginx
+fi

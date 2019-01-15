@@ -4,6 +4,7 @@ ARCH=$(uname -m)
 if [ -d $WORKDIRECTORY/src/go ] && [ -z $GOROOT ]; then
 PATH=$WORKDIRECTORY/src/go/bin:$PATH
 GOROOT=$WORKDIRECTORY/src/go
+GOPATH=$WORKDIRECTORY/src/go1.x
 GOLANG_WORK=yes
 else
 if [ -z $GOROOT ];then
