@@ -5,10 +5,20 @@ else
   exit 1
 fi
 
-for PIDFILE in $WORKDIRECTORY/pid/shadowsocks-*.pid; do
+for PIDFILE in $WORKDIRECTORY/pid/shadowsocks-*-four.pid; do
   PIDNUM=$(cat $PIDFILE)
   if [ ! -d /proc/$PIDNUM ]; then
     PID_NUM=$(echo $PIDFILE | grep -oE "[0-9]")
+    IS_IPV4=yes
+    . bin/run
+  fi
+done
+
+for PIDFILE in $WORKDIRECTORY/pid/shadowsocks-*-six.pid; do
+  PIDNUM=$(cat $PIDFILE)
+  if [ ! -d /proc/$PIDNUM ]; then
+    PID_NUM=$(echo $PIDFILE | grep -oE "[0-9]")
+    IS_IPV6=yes
     . bin/run
   fi
 done
