@@ -156,6 +156,11 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
         v2ray_plugin
       fi
       elif [ "$PLUGIN_OPTIONS" = "websocket_http" ]; then
+          if [ "$LANG"="zh_CN.UTF-8" ]; then
+            read -p "请输入域名: " HOSTNAME
+          else
+            read -p "Please enter the domain name: " HOSTNAME
+          fi
         PLUGIN_OPTIONS="server;host=$HOSTNAME"
       elif [ "$PLUGIN_OPTIONS" = "websocket_https" ]; then
         tls_cert
