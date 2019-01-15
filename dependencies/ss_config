@@ -184,7 +184,7 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
         v2ray_plugin_options_check
       fi
       }
-      export -f v2ray_plugin
+      typeset -fx v2ray_plugin
       v2ray_plugin
       ;;
   esac
