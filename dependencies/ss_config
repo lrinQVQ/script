@@ -296,7 +296,7 @@ else
 fi
 
 if [ "$FIRST_RUN" = "yes" ]; then
-  ln -vf $DEP/run $WORKDIRECTORY/bin
+  ln -vf $DEP/run $WORKDIRECTORY/bin/run
 fi
 if [ "$RUN_SERVER" = "yes" ] || [ "$RUN_SERVER" = "" ]; then
   . $WORKDIRECTORY/bin/run
