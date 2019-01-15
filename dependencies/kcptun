@@ -9,6 +9,7 @@ fi
 if [ "$GOLANG_WORK" = "yes" ]; then
 mkdir kcptun
 cd kcptun
+go get -u github.com/shadowsocks/kcptun
 go build github.com/shadowsocks/kcptun/server
 mv server $WORKDIRECTORY/bin/kcptun-server
 KCPTUN_INSTALL=yes
