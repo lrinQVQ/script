@@ -5,7 +5,7 @@ else
   echo "Installation MbedTLS in $WORKDIRECTORY"
 fi
 
-git clone https://github.com/ARMmbed/mbedtls.git
+git clone --depth 1 https://github.com/ARMmbed/mbedtls.git
 cd mbedtls
 make SHARED=1 CFLAGS=-fPIC -j$CPU_NUM
 make DESTDIR=$WORKDIRECTORY install

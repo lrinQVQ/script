@@ -6,7 +6,7 @@ else
   echo "Installation of Shadowsocks-libev"
 fi
 
-git clone https://github.com/shadowsocks/shadowsocks-libev.git
+git clone --depth 1 https://github.com/shadowsocks/shadowsocks-libev.git
 cd shadowsocks-libev
 git submodule update --init --recursive
 ./autogen.sh

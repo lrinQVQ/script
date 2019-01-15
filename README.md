@@ -13,7 +13,7 @@ For Redhat/Centos user
 
 Start install
 ```bash
-git clone https://github.com/lrinQVQ/script.git
+git clone --depth 1 https://github.com/lrinQVQ/script.git
 cd script
 ./ss_install
 ```
