@@ -95,7 +95,6 @@ cd $WORKDIRECTORY/src
 . $DEP/libsodium
 . $DEP/mbedtls
 . $DEP/shadowsocks
-. $DEP/simple-obfs
 . $DEP/golang
 . $DEP/kcptun
 . $DEP/v2ray-plugin

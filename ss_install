@@ -242,7 +242,6 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
     ln -v $DEP/libsodium_update $WORKDIRECTORY/bin/libsodium_update
     ln -v $DEP/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
     ln -v $DEP/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
-    ln -v $DEP/simple-obfs_update $WORKDIRECTORY/bin/simple-obfs_update
     echo "0 0 * * * cd $WORKDIRECTORY && sh bin/ss_update >/dev/null 2>&1" >>$WORKDIRECTORY/$(whoami)
     if [ "$CRONTABS_DIR_CHECK" != "" ]; then
       if [ "$SUDO" = "yes" ]; then

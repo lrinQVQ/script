@@ -20,4 +20,3 @@ cd $WORKDIRECTORY/src
 . $WORKDIRECTORY/bin/libsodium_update
 . $WORKDIRECTORY/bin/mbedtls_update
 . $WORKDIRECTORY/bin/shadowsocks_update
-. $WORKDIRECTORY/bin/simple-obfs_update
