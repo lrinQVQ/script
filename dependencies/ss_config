@@ -184,7 +184,6 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
         v2ray_plugin_options_check
       fi
       }
-      export -f v2ray_plugin
       v2ray_plugin
       ;;
   esac
@@ -314,4 +313,3 @@ unset KCPTUN_INSTALL
 unset HAVE_CERT
 unset CERT
 unset MODE
-unset HOSTNAME

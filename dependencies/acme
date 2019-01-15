@@ -21,9 +21,13 @@ else
 fi
 
 if [ "$WEB_SERVER" = "no" ]; then
-  v2ray_plugin
+  . $DEP/ss_config
 elif [ "$WEB_SERVER" = "apache2" ]; then
   acme.sh --issue -d $HOSTNAME --apache
 elif [ "$WEB_SERVER" = "nginx" ]; then
   acme.sh --issue -d $HOSTNAME --nginx
 fi
+
+unset HTTP_CHECK
+unset WEB_SERVER
+unset HOSTNAME
