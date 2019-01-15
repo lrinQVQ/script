@@ -1,0 +1,10 @@
+#!/bin/sh
+#update kcptun
+
+if [ "$KCPTUN_INSTALL" = "yes" ]; then
+cd kcptun
+go build github.com/shadowsocks/kcptun/server
+mv server $WORKDIRECTORY/bin/kcptun-server
+fi
+
+cd ..

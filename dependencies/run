@@ -14,7 +14,7 @@ unencrytedpasswd() {
 }
 
 ss_run() {
-  sh $WORKDIRECTORY/config/ss_run$PID_NUM
+  export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run$PID_NUM
 }
 
 sudo_ss_run() {

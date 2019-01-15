@@ -1,5 +1,5 @@
 #!/bin/sh
-#Install kcptun
+#Install v2ray-plugin
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "安装基于v2ray的插件"
 else
@@ -15,6 +15,16 @@ mv v2ray-plugin $WORKDIRECTORY/bin/v2ray-plugin
 V2RAY_PLUGIN_INSTALL=yes
 else
 V2RAY_PLUGIN_INSTALL=no
+fi
+
+echo "export V2RAY_PLUGIN_INSTALL=$V2RAY_PLUGIN_INSTALL" >>$WORKDIRECTORY/envsetup.sh
+
+if [ $SUDO = yes ]; then
+  $UNENCRYTEDPASSWD
+  echo $PASSWD | sudo -SE setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/v2ray-plugin
+  $ENCRYTEDPASSWD
+elif [ $SUDO = no ]; then
+  setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/v2ray-plugin
 fi
 
 cd ../..

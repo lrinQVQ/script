@@ -63,9 +63,19 @@ elif [ $SUDO = no ]; then
   yum install libcap2 -y
 fi
 
+if [ ! -f $WORKDIRECTORY/lib/libsodium.so ]; then
 . $DEP/libsodium
+fi
+if [ ! -f $WORKDIRECTORY/lib/libmbedtls.so ]; then
 . $DEP/mbedtls
+fi
+if [ ! -f $WORKDIRECTORY/bin/ss-server ]; then
 . $DEP/shadowsocks
+fi
 . $DEP/golang
+if [ ! -f $WORKDIRECTORY/bin/kcptun-server ]; then
 . $DEP/kcptun
+fi
+if [ ! -f $WORKDIRECTORY/bin/v2ray-plugin ]; then
 . $DEP/v2ray-plugin
+fi

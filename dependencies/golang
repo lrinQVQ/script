@@ -1,9 +1,9 @@
 #!/bin/sh
 #Check golang
 ARCH=$(uname -m)
-if [ -d $WORKDIRECTORY/go ] && [ -z $GOROOT ]; then
-PATH=$WORKDIRECTORY/go/bin:$PATH
-GOROOT=$WORKDIRECTORY/go
+if [ -d $WORKDIRECTORY/src/go ] && [ -z $GOROOT ]; then
+PATH=$WORKDIRECTORY/src/go/bin:$PATH
+GOROOT=$WORKDIRECTORY/src/go
 GOLANG_WORK=yes
 else
 if [ -z $GOROOT ];then
@@ -22,18 +22,19 @@ fi
 if [ "$ARCH" = "" ]; then
 GOLANG_WORK=no
 if [ $LANG=zh_CN.UTF-8 ]; then
-  echo "由于golang不支持您的架构,您将无法使用部分插件"
+  echo "由于golang不支持您的架构,您将无法使用插件"
 else
-  echo "Since golang doesn't support your architecture,you won't be able to use some plugins"
+  echo "Since golang doesn't support your architecture,you won't be able to use plugins"
 fi
 fi
 echo "Downloading golang"
-curl -so $WORKDIRECTORY/go.tar.gz $GOURL
-if [ -f $WORKDIRECTORY/go.tar.gz ]; then
-tar -xzf $WORKDIRECTORY/go.tar.gz
-rm -rf $WORKDIRECTORY/go.tar.gz
-PATH=$WORKDIRECTORY/go/bin:$PATH
-GOROOT=$WORKDIRECTORY/go
+curl -so $WORKDIRECTORY/src/go.tar.gz $GOURL
+if [ -f $WORKDIRECTORY/src/go.tar.gz ]; then
+tar -xzf $WORKDIRECTORY/src/go.tar.gz
+rm -rf $WORKDIRECTORY/src/go.tar.gz
+PATH=$WORKDIRECTORY/src/go/bin:$PATH
+GOROOT=$WORKDIRECTORY/src/go
+GOPATH=$WORKDIRECTORY/src/go1.x
 GOLANG_WORK=yes
 else
 GOLANG_WORK=no

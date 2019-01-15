@@ -23,10 +23,10 @@ unencrytedpasswd() {
 }
 
 ss_config() {
-  . $WORKDIRECTORY/bin/ss_config
+  cd $WORKDIRECTORY && . bin/ss_config
 }
 
-if [ -d $WORKDIRECTORY ]; then
+if [ -f $WORKDIRECTORY/finish ]; then
   choose() {
     if [ "$LANG" = "zh_CN.UTF-8" ]; then
       echo "1. 卸载"
@@ -67,6 +67,7 @@ else
 
 fi
 
+if [ ! -d $WORKDIRECTORY ]; then
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "创建工作目录"
 else
@@ -80,11 +81,29 @@ mkdir -v $WORKDIRECTORY/src
 echo "export WORKDIRECTORY=$WORKDIRECTORY" >>$WORKDIRECTORY/envsetup.sh
 echo "export ISDASH=$ISDASH" >>$WORKDIRECTORY/envsetup.sh
 echo "export DEFAULTSHELL=$DEFAULTSHELL" >>$WORKDIRECTORY/envsetup.sh
+else
+if [ $(grep -c "WORKDIRECTORY" $WORKDIRECTORY/envsetup.sh) -eq 0 ]; then
+echo "export WORKDIRECTORY=$WORKDIRECTORY" >>$WORKDIRECTORY/envsetup.sh
+fi
+if [ $(grep -c "ISDASH" $WORKDIRECTORY/envsetup.sh) -eq 0 ]; then
+echo "export ISDASH=$ISDASH" >>$WORKDIRECTORY/envsetup.sh
+else
+sed -i '/ISDASH/d' $WORKDIRECTORY/envsetup.sh
+echo "export ISDASH=$ISDASH" >>$WORKDIRECTORY/envsetup.sh
+fi
+if [ $(grep -c "DEFAULTSHELL" $WORKDIRECTORY/envsetup.sh) -eq 0 ]; then
+echo "export DEFAULTSHELL=$DEFAULTSHELL" >>$WORKDIRECTORY/envsetup.sh
+else
+sed -i '/DEFAULTSHELL/d' $WORKDIRECTORY/envsetup.sh
+echo "export DEFAULTSHELL=$DEFAULTSHELL" >>$WORKDIRECTORY/envsetup.sh
+fi
+fi
 
 # Check ROOT Permissions
 if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
   unset SUDO
   export SUDO=yes
+  user_password() {
   if [ "$LANG" = "zh_CN.UTF-8" ]; then
     if [ "$DEFAULTSHELL" = "$ISDASH" ]; then
       read -p "请输入当前用户密码：" PASSWD
@@ -99,24 +118,42 @@ if [ "$USERID" != 0 ] && [ -f /etc/sudoers ]; then
     fi
   fi
 
+  echo $PASSWD | sudo -S touch root_check
+  if [ "$?" != 0 ]; then
+    if [ "$LANG" = "zh_CN.UTF-8" ]; then
+       echo "密码错误,请重新输入"
+    else
+       echo "Wrong password,please re-enter"
+    fi
+    user_password
+  else
+    echo $PASSWD | sudo -S rm -rf root_check
+  fi
+  }
+
+  user_password
+
+  sed -i '/SAVEPASSWORD/d' $WORKDIRECTORY/envsetup.sh
+  sed -i '/PASSWD/d' $WORKDIRECTORY/envsetup.sh
   if [ "$LANG" = "zh_CN.UTF-8" ]; then
     read -p "是否将密码用 base64 加密并存储到 $WORKDIRECTORY/envsetup.sh 中，以方便程序自动更新？(yes/no) [yes]：" SAVEPASSWORD
   else
     read -p "Encrypt the password using base64 and store it in $WORKDIRECTORY/envsetup.sh for automatic updates? (yes/no) [yes]: " SAVEPASSWORD
   fi
-  if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
-    export AUTOUPDATE_CHECK=yes
-  elif [ "$SAVEPASSWORD" = "no" ]; then
-    export AUTOUPDATE_CHECK=no
-  fi
-  echo "export SAVEPASSWORD=$SAVEPASSWORD" >>$WORKDIRECTORY/envsetup.sh
-  if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
-    ENCRYTEDPASSWD=encrytedpasswd
-    UNENCRYTEDPASSWD=unencrytedpasswd
-    $ENCRYTEDPASSWD
-    echo "export PASSWD=$PASSWD" >>$WORKDIRECTORY/envsetup.sh
-  fi
-
+    if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
+      export AUTOUPDATE_CHECK=yes
+    elif [ "$SAVEPASSWORD" = "no" ]; then
+      export AUTOUPDATE_CHECK=no
+    fi
+    echo "export SAVEPASSWORD=$SAVEPASSWORD" >>$WORKDIRECTORY/envsetup.sh
+    if [ "$SAVEPASSWORD" = "yes" ] || [ "$SAVEPASSWORD" = "" ]; then
+      ENCRYTEDPASSWD=encrytedpasswd
+      UNENCRYTEDPASSWD=unencrytedpasswd
+      $ENCRYTEDPASSWD
+      echo "export PASSWD=$PASSWD" >>$WORKDIRECTORY/envsetup.sh
+      echo "export ENCRYTEDPASSWD=encrytedpasswd" >>$WORKDIRECTORY/envsetup.sh
+      echo "export UNENCRYTEDPASSWD=unencrytedpasswd" >>$WORKDIRECTORY/envsetup.sh
+    fi
 else
   if [ "$USERID" = 0 ]; then
     unset SUDO
@@ -238,11 +275,14 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
     read -p "Enable automatic updates? (yes/no) [yes]: " AUTOUPDATE_CHECK
   fi
   if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
-    ln -v $DEP/ss_update $WORKDIRECTORY/bin/ss_update
-    ln -v $DEP/libsodium_update $WORKDIRECTORY/bin/libsodium_update
-    ln -v $DEP/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
-    ln -v $DEP/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
-    ln -v $DEP/simple-obfs_update $WORKDIRECTORY/bin/simple-obfs_update
+    ln -vf $DEP/ss_update $WORKDIRECTORY/bin/ss_update
+    ln -vf $DEP/libsodium_update $WORKDIRECTORY/bin/libsodium_update
+    ln -vf $DEP/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
+    ln -vf $DEP/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
+    ln -vf $DEP/simple-obfs_update $WORKDIRECTORY/bin/simple-obfs_update
+    ln -vf $DEP/golang $WORKDIRECTORY/bin/golang
+    ln -vf $DEP/kcptun_update $WORKDIRECTORY/bin/kcptun_update
+    ln -vf $DEP/v2ray-plugin_update $WORKDIRECTORY/bin/v2ray-plugin_update
     echo "0 0 * * * cd $WORKDIRECTORY && sh bin/ss_update >/dev/null 2>&1" >>$WORKDIRECTORY/$(whoami)
     if [ "$CRONTABS_DIR_CHECK" != "" ]; then
       if [ "$SUDO" = "yes" ]; then
@@ -256,7 +296,7 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
   fi
 fi
 
-ln -v $DEP/ss_config $WORKDIRECTORY/bin
+ln -vf $DEP/ss_config $WORKDIRECTORY/bin/ss_config
 ss_config
 
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
@@ -313,6 +353,8 @@ elif [ "$SUDO" = "no" ]; then
   chown $(whoami):crontab /var/spool/cron/crontabs/$(whoami)
 fi
 fi
+
+touch $WORKDIRECTORY/finish
 
 unset DEP
 unset MEM_CHECK

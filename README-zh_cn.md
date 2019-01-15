@@ -1,21 +1,21 @@
-# shadowsocks-libev autoinstall script
-## How to use
+# shadowsocks-libev 自动安装脚本
+## 使用说明
 
-For Debian/Ubuntu user
+使用 Debian/Ubuntu 的用户
 ```bash
 (sudo) apt-get install git
 ```
 
-For Redhat/Centos user
+使用 Redhat/Centos 的用户
 ```bash
 (sudo) yum install git
 ```
 
-Start install
+开始安装
 ```bash
 git clone https://github.com/lrinQVQ/script.git
 cd script
 ./ss_install
 ```
 
-## feature
+## 特性

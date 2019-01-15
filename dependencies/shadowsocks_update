@@ -13,9 +13,9 @@ fi
 make install
 
 if [ $SUDO = yes ]; then
-  
+  $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/ss-server
-  encrytedpasswd
+  $ENCRYTEDPASSWD
 elif [ $SUDO = no ]; then
   setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/ss-server
 fi

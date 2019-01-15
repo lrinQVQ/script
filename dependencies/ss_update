@@ -20,4 +20,6 @@ cd $WORKDIRECTORY/src
 . $WORKDIRECTORY/bin/libsodium_update
 . $WORKDIRECTORY/bin/mbedtls_update
 . $WORKDIRECTORY/bin/shadowsocks_update
-. $WORKDIRECTORY/bin/simple-obfs_update
+. $WORKDIRECTORY/bin/golang
+. $WORKDIRECTORY/bin/kcptun_update
+. $WORKDIRECTORY/bin/v2ray-plugin_update

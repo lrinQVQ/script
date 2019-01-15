@@ -76,34 +76,36 @@ fi
 read -p "Enable SIP003 plugin. (Experimental)(default:yes):(yes/no) " PLUGIN_CHECK
 
 if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
-  if [ "$KCPTUN_INSTALL" = "yes" && "$V2RAY_PLUGIN_INSTALL" = "no" ]; then
+  if [ "$KCPTUN_INSTALL" = "yes" ] && [ "$V2RAY_PLUGIN_INSTALL" = "no" ]; then
     read -p "Select plugin: (1.kcptun )(default:kcptun) " PLUGIN
-  elif [ "$V2RAY_PLUGIN_INSTALL" = "yes" && "$KCPTUN_INSTALL" = "no" ]; then
+  elif [ "$V2RAY_PLUGIN_INSTALL" = "yes" ] && [ "$KCPTUN_INSTALL" = "no" ]; then
     read -p "Select plugin: (2.v2ray_plugin )(default:v2ray_plugin) " PLUGIN
-  elif [ "$V2RAY_PLUGIN_INSTALL" = "yes" && "$KCPTUN_INSTALL" = "yes" ]; then
+  elif [ "$V2RAY_PLUGIN_INSTALL" = "yes" ] && [ "$KCPTUN_INSTALL" = "yes" ]; then
     read -p "Select plugin: (1.kcptun 2.v2ray_plugin )(default:v2ray_plugin) " PLUGIN
   fi
 
   case "$PLUGIN" in
     1 | kcptun)
       kcptun_plugin_options_check() {
-      read -p "Set SIP003 plugin options. (Experimental)(default:"--crypt "salsa20" --mode "normal" --mtu 1200 --parityshard 0 --dscp 46 --nocomp")" PLUGIN_OPTIONS
+        read -p "Set SIP003 plugin options. (Experimental)(default:"--crypt "salsa20" --mode "normal" --mtu 1200 --parityshard 0 --dscp 46 --nocomp") " PLUGIN_OPTIONS
       }
       kcptun_plugin_options_check
       if [ "$PLUGIN_OPTIONS" = "" ]; then
         PLUGIN_OPTIONS="--crypt "salsa20" --mode "normal" --mtu 1200 --parityshard 0 --dscp 46 --nocomp"
       fi
       ;;
-    2 | v2ray_plugin)
+    2 | v2ray_plugin | "")
       PLUGIN=v2ray-plugin
       v2ray_plugin_options_check() {
-        read -p "Set SIP003 plugin options. (Experimental)(default:quic):(websocket/quic) " PLUGIN_OPTIONS
+        read -p "Set SIP003 plugin options. (Experimental)(default:quic):(websocket_http/websocket_https/quic) " PLUGIN_OPTIONS
       }
       v2ray_plugin_options_check
       if [ "$PLUGIN_OPTIONS" = "quic" ] || [ "$PLUGIN_OPTIONS" = "" ]; then
         PLUGIN_OPTIONS="server;mode=quic"
-      elif [ "$PLUGIN_OPTIONS" = "websocket" ]; then
+      elif [ "$PLUGIN_OPTIONS" = "websocket_http" ]; then
         PLUGIN_OPTIONS="server"
+      elif [ "$PLUGIN_OPTIONS" = "websocket_https" ]; then
+        PLUGIN_OPTIONS="server;tls"
       else
         if [ $LANG=zh_CN.UTF-8 ]; then
           echo "参数无效"
@@ -111,7 +113,6 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
           echo "Invalid parameters"
         fi
         v2ray_plugin_options_check
-      fi
       fi
       ;;
   esac
@@ -154,10 +155,10 @@ port_check() {
           if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
             if [ "$IPV6" = "200" ]; then
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
-              echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts "$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             else
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
-              echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts "$PLUGIN_OPTIONS" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             fi
           elif [ "$PLUGIN_CHECK" = "no" ]; then
             if [ "$IPV6" = "200" ]; then
@@ -215,7 +216,7 @@ else
 fi
 
 if [ "$FIRST_RUN" = "yes" ]; then
-  ln -v $DEP/run $WORKDIRECTORY/bin
+  ln -vf $DEP/run $WORKDIRECTORY/bin
 fi
 if [ "$RUN_SERVER" = "yes" ] || [ "$RUN_SERVER" = "" ]; then
   . $WORKDIRECTORY/bin/run
@@ -236,3 +237,5 @@ unset FASTOPEN_CHECK
 unset PORT_EXIST
 unset PORT_USE_CHECK
 unset RUN_SERVER
+unset V2RAY_PLUGIN_INSTALL
+unset KCPTUN_INSTALL
