@@ -4,8 +4,7 @@
 if [ "$V2RAY_PLUGIN_INSTALL" = "yes" ]; then
 cd v2ray-plugin
 git pull
-go get
-go build
+go build -ldflags "-s -w"
 mv v2ray-plugin $WORKDIRECTORY/bin/v2ray-plugin
 fi
 

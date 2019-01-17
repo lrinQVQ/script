@@ -84,6 +84,20 @@ elif [ $SUDO = no ]; then
   apt-get install libcap2-bin -y
 fi
 
+# Install UPX to compress the size of golang generated files
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装upx用于压缩golang生成文件的大小"
+else
+  echo "Install UPX to compress the size of golang generated files"
+fi
+if [ $SUDO = yes ]; then
+  $UNENCRYTEDPASSWD
+  echo $PASSWD | sudo -SE apt-get install upx -y
+  $ENCRYTEDPASSWD
+elif [ $SUDO = no ]; then
+  apt-get install upx -y
+fi
+
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "进入$WORKDIRECTORY/src"
 else
