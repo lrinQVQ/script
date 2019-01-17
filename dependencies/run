@@ -14,32 +14,12 @@ unencrytedpasswd() {
 }
 
 ss_run() {
-  if [ "$IPV6" = "200" ]; then
-    export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run${PID_NUM}-four
-    export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run${PID_NUM}-six
-  else
-    export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run${PID_NUM}-four
-  fi
-  if [ "$IS_IPV4" = "yes" ]; then
-    export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run${PID_NUM}-four
-  elif [ "$IS_IPV6" = "yes" ]; then
-    export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run${PID_NUM}-six
-  fi
+  export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run$PID_NUM
 }
 
 sudo_ss_run() {
   $UNENCRYTEDPASSWD
-  if [ "$IPV6" = "200" ]; then
-    echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run${PID_NUM}-four
-    echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run${PID_NUM}-six
-  else
-    echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run${PID_NUM}-four
-  fi
-  if [ "$IS_IPV4" = "yes" ]; then
-    echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run${PID_NUM}-four
-  elif [ "$IS_IPV6" = "yes" ]; then
-    echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run${PID_NUM}-six
-  fi
+  echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run$PID_NUM
   $ENCRYTEDPASSWD
 }
 

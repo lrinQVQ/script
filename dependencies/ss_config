@@ -230,23 +230,19 @@ port_check() {
           IPV6=$(curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1)
           if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
             if [ "$IPV6" = "200" ]; then
-              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-four
-              echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" -f $WORKDIRECTORY/pid/shadowsocks-${PID_NUM}-four.pid" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-four
-              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-six
-              echo "ss-server -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" -f $WORKDIRECTORY/pid/shadowsocks-${PID_NUM}-six.pid" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-six
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             else
-              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-four
-              echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" -f $WORKDIRECTORY/pid/shadowsocks-${PID_NUM}-four.pid" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-four
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             fi
           elif [ "$PLUGIN_CHECK" = "no" ]; then
             if [ "$IPV6" = "200" ]; then
-              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-four
-              echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-${PID_NUM}-four.pid" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-four
-              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-six
-              echo "ss-server -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-${PID_NUM}-six.pid" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-six
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             else
-              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-four
-              echo "ss-server -s 0.0.0.0 -p $PORT[$ELEMENTS_NUMBER] -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-${PID_NUM}-four.pid" >>$WORKDIRECTORY/config/ss_run${PID_NUM}-four
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -p $PORT[$ELEMENTS_NUMBER] -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             fi
           fi
         elif [ $LANG=zh_CN.UTF-8 ]; then
