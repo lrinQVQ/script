@@ -230,7 +230,7 @@ port_check() {
           IPV6=$(curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1)
           if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
-              echo "nohup ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" >/dev/null 2>&1 & echo $! >$WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "nohup ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" >/dev/null 2>&1 & echo \$! >$WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
           elif [ "$PLUGIN_CHECK" = "no" ]; then
             if [ "$IPV6" = "200" ]; then
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
