@@ -249,6 +249,7 @@ port_check() {
             else
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
               echo "nohup ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+            fi
           fi
         elif [ $LANG=zh_CN.UTF-8 ]; then
           echo "请使用小于8300或大于8400的端口"
