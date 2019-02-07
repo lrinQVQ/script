@@ -341,7 +341,7 @@ if [ "$HA_CHECK" = "yes" ] || [ "$HA_CHECK" = "" ]; then
   fi
 fi
 
-if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$STARTUP_SERVER" = "yes" ] || [ "$HA_CHECK" = "yes" ]; then
+if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ] || [ "$STARTUP_SERVER" = "yes" ] || [ "$STARTUP_SERVER" = "" ] || [ "$HA_CHECK" = "yes" ] || [ "$HA_CHECK" = "" ]; then
 if [ "$SUDO" = "yes" ]; then
   $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE sh -c "cat $WORKDIRECTORY/$(whoami) >> /var/spool/cron/crontabs/$(whoami)"
