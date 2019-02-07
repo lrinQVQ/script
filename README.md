@@ -1,4 +1,5 @@
 # shadowsocks-libev autoinstall script
+## [中文说明](https://github.com/lrinQVQ/script/blob/master/README-zh_cn.md)  
 ## How to use
 
 For Debian/Ubuntu user
