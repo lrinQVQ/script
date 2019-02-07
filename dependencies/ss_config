@@ -241,7 +241,7 @@ port_check() {
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
               echo "nohup ss-server -s $IPV4 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" >/dev/null 2>&1 & echo \$! >$WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
               PID_NUM_EXTRA=$(expr $PID_NUM + 1)
-              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM_EXTRA
               echo "nohup ss-server -s $IPV6 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" >/dev/null 2>&1 & echo \$! >$WORKDIRECTORY/pid/shadowsocks-$PID_NUM_EXTRA.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM_EXTRA
             else
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
