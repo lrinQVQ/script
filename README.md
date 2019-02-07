@@ -25,4 +25,4 @@ Support [kcptun](https://github.com/shadowsocks/kcptun)
 
 Support Google BBR tcp congestion control algorithm auto check and enable  
 Support TCP Fast Open auto check and enable  
-Support autoupdate startup and HA check  
+Support autoupdate startup and Pid-based HA check  
