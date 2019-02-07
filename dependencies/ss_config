@@ -148,6 +148,8 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
       v2ray_plugin_options_check
       if [ "$PLUGIN_OPTIONS" = "quic" ] || [ "$PLUGIN_OPTIONS" = "" ]; then
         UDP=
+        TCP_NODELAY=
+        FASTOPEN=
         tls_cert
         if [ "$HAVE_CERT" = "yes" ]; then
           PLUGIN_OPTIONS="server;mode=quic;host=$HOSTNAME;cert=$CERT;key=$CERT_KEY"
