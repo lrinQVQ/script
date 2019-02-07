@@ -235,7 +235,12 @@ port_check() {
           read -p "passwd: " PASSWORD
 
           IPV4=$(curl -s v4.ident.me)
-          IPV6=$(curl -s v6.ident.me)
+          if [ "$PLUGIN" = "kcptun-server" ]; then
+            IPV6=$(curl -s v6.ident.me)
+            IPV6="[$IPV6]"
+          else
+            IPV6=$(curl -s v6.ident.me)
+          fi
           if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
             if [ "$IPV6" != "" ]; then
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
