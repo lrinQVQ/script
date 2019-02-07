@@ -279,7 +279,6 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
     ln -vf $DEP/libsodium_update $WORKDIRECTORY/bin/libsodium_update
     ln -vf $DEP/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
     ln -vf $DEP/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
-    ln -vf $DEP/simple-obfs_update $WORKDIRECTORY/bin/simple-obfs_update
     ln -vf $DEP/golang $WORKDIRECTORY/bin/golang
     ln -vf $DEP/kcptun_update $WORKDIRECTORY/bin/kcptun_update
     ln -vf $DEP/v2ray-plugin_update $WORKDIRECTORY/bin/v2ray-plugin_update

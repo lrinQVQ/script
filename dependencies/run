@@ -14,12 +14,22 @@ unencrytedpasswd() {
 }
 
 ss_run() {
-  export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run$PID_NUM
+  if [ "$PID_NUM_EXTRA" != "" ]; then
+    export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run$PID_NUM
+    export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run$PID_NUM_EXTRA
+  else
+    export PATH=$WORKDIRECTORY/bin:$PATH && sh $WORKDIRECTORY/config/ss_run$PID_NUM
+  fi
 }
 
 sudo_ss_run() {
   $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run$PID_NUM
+  if [ "$PID_NUM_EXTRA" != "" ]; then
+    echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run$PID_NUM
+    echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run$PID_NUM_EXTRA
+  else
+    echo $PASSWD | sudo -SE env "PATH=$WORKDIRECTORY/bin:$PATH" sh $WORKDIRECTORY/config/ss_run$PID_NUM
+  fi
   $ENCRYTEDPASSWD
 }
 

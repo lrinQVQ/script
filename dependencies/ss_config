@@ -229,18 +229,26 @@ port_check() {
         if [ "$PORT" -lt 8300 ] || [ "$PORT" -gt 8400 ]; then
           read -p "passwd: " PASSWORD
 
-          IPV6=$(curl -I -s --connect-timeout 5 ipv6.google.com -w %{http_code} | tail -n1)
+          IPV4=$(curl v4.ident.me)
+          IPV6=$(curl v6.ident.me)
           if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
+            if [ "$IPV6" != "" ]; then
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
-              echo "nohup ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" >/dev/null 2>&1 & echo \$! >$WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
-          elif [ "$PLUGIN_CHECK" = "no" ]; then
-            if [ "$IPV6" = "200" ]; then
+              echo "nohup ss-server -s $IPV4 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" >/dev/null 2>&1 & echo \$! >$WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              PID_NUM_EXTRA=$(expr $PID_NUM + 1)
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
-              echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "nohup ss-server -s $IPV6 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" >/dev/null 2>&1 & echo \$! >$WORKDIRECTORY/pid/shadowsocks-$PID_NUM_EXTRA.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM_EXTRA
             else
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
-              echo "ss-server -s 0.0.0.0 -p $PORT[$ELEMENTS_NUMBER] -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "nohup ss-server -s $IPV4 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE --plugin $PLUGIN --plugin-opts \"$PLUGIN_OPTIONS\" >/dev/null 2>&1 & echo \$! >$WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             fi
+          elif [ "$PLUGIN_CHECK" = "no" ]; then
+            if [ "$IPV6" != "" ]; then
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "nohup ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+            else
+              echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "nohup ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
           fi
         elif [ $LANG=zh_CN.UTF-8 ]; then
           echo "请使用小于8300或大于8400的端口"
