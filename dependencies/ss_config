@@ -229,8 +229,8 @@ port_check() {
         if [ "$PORT" -lt 8300 ] || [ "$PORT" -gt 8400 ]; then
           read -p "passwd: " PASSWORD
 
-          IPV4=$(curl v4.ident.me)
-          IPV6=$(curl v6.ident.me)
+          IPV4=$(curl -s v4.ident.me)
+          IPV6=$(curl -s v6.ident.me)
           if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
             if [ "$IPV6" != "" ]; then
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
