@@ -19,3 +19,10 @@ cd script
 ```
 
 ## feature
+Shadowsocks interactive configuration
+Support [v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)
+Support [kcptun](https://github.com/shadowsocks/kcptun)
+
+Support Google BBR tcp congestion control algorithm auto check and enable
+Support TCP Fast Open auto check and enable
+Support autoupdate startup and HA check
