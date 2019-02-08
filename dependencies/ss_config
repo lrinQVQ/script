@@ -255,10 +255,10 @@ port_check() {
           elif [ "$PLUGIN_CHECK" = "no" ]; then
             if [ "$IPV6" != "" ]; then
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
-              echo "nohup ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -s :: -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP -6 $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             else
               echo "#!""/bin/sh" >>$WORKDIRECTORY/config/ss_run$PID_NUM
-              echo "nohup ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
+              echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             fi
           fi
         elif [ $LANG=zh_CN.UTF-8 ]; then
