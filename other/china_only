@@ -14,6 +14,7 @@ fi
 if [ -f /etc/debian_version ]; then
   export OS=debian
   export FIREWALL=iptables
+  systemctl enable cron
 fi
 
 # Redhat base
@@ -24,10 +25,12 @@ if [ -f /etc/redhat-release ]; then
     7.0.1406 | 7.1.1503 | 7.2.1511 | 7.3.1611 | 7.4.1708 | 7.5.1804)
       export OS=redhat7
       export FIREWALL=firewall-cmd
+      systemctl enable cron
       ;;
     6.0 | 6.1 | 6.2 | 6.3 | 6.4 | 6.5 | 6.6 | 6.7 | 6.8 | 6.9)
       export OS=redhat6
       export FIREWALL=iptables
+      service cron enable
       ;;
   esac
 
@@ -35,8 +38,7 @@ fi
 
 # Other
 if [ "$OS" = "" ]; then
-  read -p "请手动输入您的发行版所使用的防火墙,目前仅支持iptables(iptables):" FIREWALL
-#read -p "请手动输入您的发行版所使用的防火墙,目前仅支持iptables和firewall-cmd(iptables/firewall-cmd): " FIREWALL
+  read -p "请手动输入您的发行版所使用的防火墙,目前仅支持iptables和firewall-cmd(iptables/firewall-cmd): " FIREWALL
 fi
 
 choose() {
@@ -61,15 +63,15 @@ if [ "$NUM" = 1 ]; then
       if [ "$FIREWALL_RUNTIME" = "running" ]; then
         export FIREWALLCMD=yes
       else
-        #read -p "Firewall-cmd已被关闭是否启用?(yes/no): " FIREWALLCMD_START
-        #fi
-        #if [ "$FIREWALLCMD_START" = "yes" ]; then
-        #systemctl start firewalld
-        #systemctl enable firewalld
-        #else
-        #read -p "如不开启Firewall-cmd,是否配置人畜无害的iptables?(yes/no): " IPTABLES_INSTALL
-        read -p "是否配置人畜无害的iptables?(yes/no): " IPTABLES_INSTALL
+        read -p "Firewall-cmd已被关闭是否启用?(yes/no): " FIREWALLCMD_START
       fi
+        if [ "$FIREWALLCMD_START" = "yes" ]; then
+          systemctl start firewalld
+          systemctl enable firewalld
+        else
+          read -p "如不开启Firewall-cmd,是否配置人畜无害的iptables?(yes/no): " IPTABLES_INSTALL
+          #read -p "是否配置人畜无害的iptables?(yes/no): " IPTABLES_INSTALL
+        fi
     else
       if command -v iptables >/dev/null 2>&1; then
         export IPTABLES_INSTALL=yes
@@ -84,8 +86,10 @@ if [ "$NUM" = 1 ]; then
       export IPTABLES=yes
       IPTABLES_WHICH=$(which iptables)
     else
-      echo "请先在Telegram/Github上联系lrinQVQ"
-      exit 0
+      export FIREWALLCMD=yes
+      FIREWALLCMD_WHICH=$(which firewall-cmd)
+      #echo "请先在Telegram/Github上联系lrinQVQ"
+      #exit 0
     fi
   elif [ "$FIREWALL" = "iptables" ]; then
     # Check iptables
@@ -119,29 +123,25 @@ if [ "$NUM" = 1 ]; then
     echo "下载失败,请检查网络"
   fi
 
-  #if [ "$FIREWALLCMD" = "yes" ]; then
-  #echo "\"<?xml version=\"1.0\" encoding=\"utf-8\"?>\"" > /usr/lib/firewalld/services/cnonly.xml
-  #echo "<service>" >> /usr/lib/firewalld/services/cnonly.xml
-  #echo "  <short>Proxy CNONLY</short>" >> /usr/lib/firewalld/services/cnonly.xml
-  #echo "  <description>Proxy China Only.</description>" >> /usr/lib/firewalld/services/cnonly.xml
-  #echo "  <port protocol=\"tcp\" port=\"$PORT\"/>" >> /usr/lib/firewalld/services/cnonly.xml
-  #for IP in `cat /tmp/cnip.txt`; do
-  #echo "  <destination ipv4=\"$IP\"/>" >> /usr/lib/firewalld/services/cnonly.xml
-  #done
-  #echo "</service>" >> /usr/lib/firewalld/services/cnonly.xml
-  #firewall-cmd --zone=public --add-service=cnonly --permanent
-  #firewall-cmd --reload
-  #echo "#!""/bin/sh" > /mnt/china_only
-  #echo "export PORT=$PORT" >> /mnt/china_only
-  #echo "wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf(\"%s/%d\\n\", \$4, 32-log(\$5)/log(2)) }' > /tmp/cnip.txt" >> /mnt/china_only
-  #echo "rm -rf /usr/lib/firewalld/services/cnonly.xml"
-  #echo "echo \"\\"<?xml version=\\"1.0\\" encoding=\\"utf-8\\"?>\\"\" > /usr/lib/firewalld/services/cnonly.xml" >> /mnt/china_only
-  #echo "for IP in \`cat /tmp/cnip.txt\`; do" >> /mnt/china_only
-
-  #echo "done" >> /mnt/china_only
-  #echo "firewall-cmd --reload" >> /mnt/china_only
-  #elif [ "$IPTABLES" = "yes" ]; then
-  if [ "$IPTABLES" = "yes" ]; then
+  if [ "$FIREWALLCMD" = "yes" ]; then
+  echo "\"<?xml version=\"1.0\" encoding=\"utf-8\"?>\"" > /usr/lib/firewalld/services/cnonly.xml
+  echo "<service>" >> /usr/lib/firewalld/services/cnonly.xml
+  echo "  <short>Proxy CNONLY</short>" >> /usr/lib/firewalld/services/cnonly.xml
+  echo "  <description>Proxy China Only.</description>" >> /usr/lib/firewalld/services/cnonly.xml
+  echo "  <port protocol=\"tcp\" port=\"$PORT\"/>" >> /usr/lib/firewalld/services/cnonly.xml
+  wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /tmp/cnip.txt
+  echo "</service>" >> /usr/lib/firewalld/services/cnonly.xml
+  $FIREWALLCMD_WHICH --zone=public --add-service=cnonly --permanent
+  for IP in `cat /tmp/cnip.txt`; do
+  $FIREWALLCMD_WHICH --add-rich-rule 'rule family="ipv4" source address="$IP" service name="cnonly" accept'
+  done
+  echo "#!""/bin/sh" > /mnt/china_only
+  echo "$FIREWALLCMD_WHICH --reload" >> /mnt/china_only
+  echo "wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf(\"%s/%d\\n\", \$4, 32-log(\$5)/log(2)) }' > /tmp/cnip.txt" >> /mnt/china_only
+  echo "for IP in \`cat /tmp/cnip.txt\`; do" >>/mnt/china_only
+  echo "$FIREWALLCMD_WHICH --add-rich-rule 'rule family=\"ipv4\" source address=\"$IP\" service name=\"cnonly\" accept'" >>/mnt/china_only
+  echo "done" >>/mnt/china_only
+  elif [ "$IPTABLES" = "yes" ]; then
     # iptables start
     $IPTABLES_WHICH -N CNONLY
 
@@ -193,11 +193,11 @@ elif [ "$NUM" = 2 ]; then
     sed -i '/\/mnt\/china_only/d' /var/spool/cron/crontabs/root
   fi
 
-  #if [ "$FIREWALLCMD" = "yes" ]; then
-  #firewall-cmd --reload
-  #else
+  if [ "$FIREWALLCMD" = "yes" ]; then
+  firewall-cmd --reload
+  else
   iptables -F CNONLY
-#fi
+  fi
 elif [ "$NUM" = 3 ]; then
   exit 0
 fi
