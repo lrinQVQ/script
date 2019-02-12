@@ -68,7 +68,7 @@ if [ "$NUM" = 1 ]; then
         if [ "$FIREWALLCMD_START" = "yes" ]; then
           systemctl start firewalld
           systemctl enable firewalld
-        else
+        elif [ "$FIREWALLCMD" != "yes" ]; then
           read -p "如不开启Firewall-cmd,是否配置人畜无害的iptables?(yes/no): " IPTABLES_INSTALL
           #read -p "是否配置人畜无害的iptables?(yes/no): " IPTABLES_INSTALL
         fi
