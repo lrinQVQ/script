@@ -129,11 +129,10 @@ if [ "$NUM" = 1 ]; then
   echo "  <short>Proxy CNONLY</short>" >> /usr/lib/firewalld/services/cnonly.xml
   echo "  <description>Proxy China Only.</description>" >> /usr/lib/firewalld/services/cnonly.xml
   echo "  <port protocol=\"tcp\" port=\"$PORT\"/>" >> /usr/lib/firewalld/services/cnonly.xml
-  wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > /tmp/cnip.txt
   echo "</service>" >> /usr/lib/firewalld/services/cnonly.xml
   $FIREWALLCMD_WHICH --zone=public --add-service=cnonly --permanent
   for IP in `cat /tmp/cnip.txt`; do
-  echo "$FIREWALLCMD_WHICH --add-rich-rule 'rule family=\"ipv4\" source address=\"$IP\" service name=\"cnonly\" accept' >> /tmp/firewall-cmd.sh
+  echo "$FIREWALLCMD_WHICH --add-rich-rule 'rule family=\"ipv4\" source address=\"$IP\" service name=\"cnonly\" accept'" >> /tmp/firewall-cmd.sh
   sh /tmp/firewall-cmd.sh
   done
   echo "#!""/bin/sh" > /mnt/china_only
