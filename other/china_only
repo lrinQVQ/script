@@ -124,7 +124,7 @@ if [ "$NUM" = 1 ]; then
   fi
 
   if [ "$FIREWALLCMD" = "yes" ]; then
-  echo "\"<?xml version=\"1.0\" encoding=\"utf-8\"?>\"" > /usr/lib/firewalld/services/cnonly.xml
+  echo "<?xml version=\"1.0\" encoding=\"utf-8\"?>" > /usr/lib/firewalld/services/cnonly.xml
   echo "<service>" >> /usr/lib/firewalld/services/cnonly.xml
   echo "  <short>Proxy CNONLY</short>" >> /usr/lib/firewalld/services/cnonly.xml
   echo "  <description>Proxy China Only.</description>" >> /usr/lib/firewalld/services/cnonly.xml
@@ -133,13 +133,15 @@ if [ "$NUM" = 1 ]; then
   echo "</service>" >> /usr/lib/firewalld/services/cnonly.xml
   $FIREWALLCMD_WHICH --zone=public --add-service=cnonly --permanent
   for IP in `cat /tmp/cnip.txt`; do
-  $FIREWALLCMD_WHICH --add-rich-rule 'rule family="ipv4" source address="$IP" service name="cnonly" accept'
+  echo "$FIREWALLCMD_WHICH --add-rich-rule 'rule family=\"ipv4\" source address=\"$IP\" service name=\"cnonly\" accept' >> /tmp/firewall-cmd.sh
+  sh /tmp/firewall-cmd.sh
   done
   echo "#!""/bin/sh" > /mnt/china_only
   echo "$FIREWALLCMD_WHICH --reload" >> /mnt/china_only
   echo "wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf(\"%s/%d\\n\", \$4, 32-log(\$5)/log(2)) }' > /tmp/cnip.txt" >> /mnt/china_only
   echo "for IP in \`cat /tmp/cnip.txt\`; do" >>/mnt/china_only
-  echo "$FIREWALLCMD_WHICH --add-rich-rule 'rule family=\"ipv4\" source address=\"$IP\" service name=\"cnonly\" accept'" >>/mnt/china_only
+  echo "$FIREWALLCMD_WHICH --add-rich-rule 'rule family=\"ipv4\" source address=\"$IP\" service name=\"cnonly\" accept' >> /tmp/firewall-cmd.sh" >>/mnt/china_only
+  echo "sh /tmp/firewall-cmd.sh"
   echo "done" >>/mnt/china_only
   elif [ "$IPTABLES" = "yes" ]; then
     # iptables start
