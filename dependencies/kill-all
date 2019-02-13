@@ -5,7 +5,6 @@ else
   exit 1
 fi
 
-for PIDFILE in $WORKDIRECTORY/pid/shadowsocks-*.pid; do
-  PIDNUM=$(cat $PIDFILE)
-  kill $PIDNUM
-done
+killall v2ray-plugin
+killall kcptun-server
+killall ss-server
