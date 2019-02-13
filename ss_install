@@ -282,6 +282,7 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
     ln -vf $DEP/golang $WORKDIRECTORY/bin/golang
     ln -vf $DEP/kcptun_update $WORKDIRECTORY/bin/kcptun_update
     ln -vf $DEP/v2ray-plugin_update $WORKDIRECTORY/bin/v2ray-plugin_update
+    ln -vf $DEP/kill-all $WORKDIRECTORY/bin/kill-all
     echo "0 0 * * * cd $WORKDIRECTORY && sh bin/ss_update >/dev/null 2>&1" >>$WORKDIRECTORY/$(whoami)
     if [ "$CRONTABS_DIR_CHECK" != "" ]; then
       if [ "$SUDO" = "yes" ]; then

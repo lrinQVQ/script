@@ -1,0 +1,11 @@
+#!/bin/sh
+if [ -f "$PWD/envsetup.sh" ]; then
+  . $PWD/envsetup.sh
+else
+  exit 1
+fi
+
+for PIDFILE in $WORKDIRECTORY/pid/shadowsocks-*.pid; do
+  PIDNUM=$(cat $PIDFILE)
+  kill $PIDNUM
+done
