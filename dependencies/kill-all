@@ -5,6 +5,6 @@ else
   exit 1
 fi
 
-killall v2ray-plugin
-killall kcptun-server
-killall ss-server
+killall v2ray-plugin >/dev/null 2>&1
+killall kcptun-server >/dev/null 2>&1
+killall ss-server >/dev/null 2>&1
