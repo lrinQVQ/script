@@ -19,17 +19,17 @@ tls_cert() {
     if [ "$HAVE_CERT" = "" ]; then
       have_cert_ask
     elif [ "$HAVE_CERT" = "yes" ]; then
-       if [ $LANG=zh_CN.UTF-8 ]; then
+       if [ "$LANG"="zh_CN.UTF-8" ]; then
          read -p "请输入TLS证书的位置: " CERT
        else
          read -p "Please enter the location of the TLS certificate: " CERT
        fi
-       if [ $LANG=zh_CN.UTF-8 ]; then
+       if [ "$LANG"="zh_CN.UTF-8" ]; then
          read -p "请输入TLS证书密钥的位置: " CERT_KEY
        else
          read -p "Please enter the location of the TLS certificate key: " CERT_KEY
        fi
-       if [ $LANG=zh_CN.UTF-8 ]; then
+       if [ "$LANG"="zh_CN.UTF-8" ]; then
          read -p "请输入您的TLS证书域名: " HOSTNAME
        else
          read -p "Please enter your TLS certificate domain name: " HOSTNAME
@@ -188,7 +188,7 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
         v2ray_plugin
       fi
       else
-        if [ $LANG=zh_CN.UTF-8 ]; then
+        if [ "$LANG"="zh_CN.UTF-8" ]; then
           echo "参数无效"
         else
           echo "Invalid parameters"
@@ -261,7 +261,7 @@ port_check() {
               echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             fi
           fi
-        elif [ $LANG=zh_CN.UTF-8 ]; then
+        elif [ "$LANG"="zh_CN.UTF-8" ]; then
           echo "请使用小于8300或大于8400的端口"
           port_check
         else
