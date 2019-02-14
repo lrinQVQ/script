@@ -46,6 +46,7 @@ tls_cert() {
           else
             read -p "In this mode, you need to generate a certificate. Please parse your IP to your domain name. Please enter the domain name: " HOSTNAME
           fi
+          ln -sf $DEP/acme $WORKDIRECTORY/bin/acme
           . $WORKDIRECTORY/bin/acme
        fi
     fi
