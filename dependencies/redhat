@@ -77,6 +77,34 @@ elif [ $SUDO = no ]; then
   yum install upx -y
 fi
 
+# Install psmisc for service restart after ss_update
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装psmisc用于ss_update后的服务重启"
+else
+  echo "Install psmisc for service restart after ss_update"
+fi
+if [ $SUDO = yes ]; then
+  $UNENCRYTEDPASSWD
+  echo $PASSWD | sudo -SE yum install psmisc -y
+  $ENCRYTEDPASSWD
+elif [ $SUDO = no ]; then
+  yum install psmisc -y
+fi
+
+# Install coreutils to provide nohup
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装coreutils用于提供nohup"
+else
+  echo "Install coreutils to provide nohup"
+fi
+if [ $SUDO = yes ]; then
+  $UNENCRYTEDPASSWD
+  echo $PASSWD | sudo -SE yum install coreutils -y
+  $ENCRYTEDPASSWD
+elif [ $SUDO = no ]; then
+  yum install coreutils -y
+fi
+
 if [ ! -f $WORKDIRECTORY/lib/libsodium.so ]; then
 . $DEP/libsodium
 fi
