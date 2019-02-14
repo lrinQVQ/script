@@ -2,7 +2,7 @@
 #Install
 curl https://get.acme.sh | sh
 echo "alias acme.sh=~/.acme.sh/acme.sh" >> .profile
-source ~/.profile
+. ~/.profile
 
 HTTP_CHECK=$(lsof -i:80)
 if [ "$HTTP_CHECK" != "" ]; then
