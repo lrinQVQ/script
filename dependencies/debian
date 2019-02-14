@@ -98,6 +98,34 @@ elif [ $SUDO = no ]; then
   apt-get install upx -y
 fi
 
+# Install psmisc for service restart after ss_update
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装psmisc用于ss_update后的服务重启"
+else
+  echo "Install psmisc for service restart after ss_update"
+fi
+if [ $SUDO = yes ]; then
+  $UNENCRYTEDPASSWD
+  echo $PASSWD | sudo -SE apt-get install psmisc -y
+  $ENCRYTEDPASSWD
+elif [ $SUDO = no ]; then
+  apt-get install psmisc -y
+fi
+
+# Install coreutils to provide nohup
+if [ $LANG=zh_CN.UTF-8 ]; then
+  echo "安装coreutils用于提供nohup"
+else
+  echo "Install coreutils to provide nohup"
+fi
+if [ $SUDO = yes ]; then
+  $UNENCRYTEDPASSWD
+  echo $PASSWD | sudo -SE apt-get install coreutils -y
+  $ENCRYTEDPASSWD
+elif [ $SUDO = no ]; then
+  apt-get install coreutils -y
+fi
+
 if [ $LANG=zh_CN.UTF-8 ]; then
   echo "进入$WORKDIRECTORY/src"
 else
