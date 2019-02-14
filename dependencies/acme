@@ -29,4 +29,3 @@ fi
 
 unset HTTP_CHECK
 unset WEB_SERVER
-unset HOSTNAME
