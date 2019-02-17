@@ -23,5 +23,5 @@ cd $WORKDIRECTORY/src
 . $WORKDIRECTORY/bin/golang
 . $WORKDIRECTORY/bin/kcptun_update
 . $WORKDIRECTORY/bin/v2ray-plugin_update
-cd $WORKDIRECTORY/bin && sh kill-all
+cd $WORKDIRECTORY && . bin/kill-all
 cd $WORKDIRECTORY/bin && sh ss_startup
