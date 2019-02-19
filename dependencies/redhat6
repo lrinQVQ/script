@@ -10,7 +10,7 @@ unencrytedpasswd() {
 export OS=redhat6
 echo "export OS=$OS" >>$WORKDIRECTORY/envsetup.sh
 
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "进入$WORKDIRECTORY/src"
 else
   echo "work in $WORKDIRECTORY/src"
@@ -19,7 +19,7 @@ fi
 cd $WORKDIRECTORY/src
 
 # Update system
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "更新系统"
 else
   echo "Update system"

@@ -1,6 +1,6 @@
 #!/bin/sh
 #Installation of Shadowsocks-libev
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装Shadowsocks-libev"
 else
   echo "Installation of Shadowsocks-libev"

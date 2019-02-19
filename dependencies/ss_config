@@ -9,7 +9,7 @@ unencrytedpasswd() {
 
 tls_cert() {
   have_cert_ask() {
-    if [ "$LANG"="zh_CN.UTF-8" ]; then
+    if [ "$LANG" = "zh_CN.UTF-8" ]; then
       read -p "此模式下需要TLS证书,您的服务器上是否有TLS证书?(yes/no) " HAVE_CERT
     else
       read -p "A TLS certificate is required in this mode. Is there a TLS certificate on your server?(yes/no) " HAVE_CERT
@@ -19,29 +19,29 @@ tls_cert() {
     if [ "$HAVE_CERT" = "" ]; then
       have_cert_ask
     elif [ "$HAVE_CERT" = "yes" ]; then
-       if [ "$LANG"="zh_CN.UTF-8" ]; then
+       if [ "$LANG" = "zh_CN.UTF-8" ]; then
          read -p "请输入TLS证书的位置: " CERT
        else
          read -p "Please enter the location of the TLS certificate: " CERT
        fi
-       if [ "$LANG"="zh_CN.UTF-8" ]; then
+       if [ "$LANG" = "zh_CN.UTF-8" ]; then
          read -p "请输入TLS证书密钥的位置: " CERT_KEY
        else
          read -p "Please enter the location of the TLS certificate key: " CERT_KEY
        fi
-       if [ "$LANG"="zh_CN.UTF-8" ]; then
+       if [ "$LANG" = "zh_CN.UTF-8" ]; then
          read -p "请输入您的TLS证书域名: " HOSTNAME
        else
          read -p "Please enter your TLS certificate domain name: " HOSTNAME
        fi
     elif [ "$HAVE_CERT" = "no" ]; then
-       if [ "$LANG"="zh_CN.UTF-8" ]; then
+       if [ "$LANG" = "zh_CN.UTF-8" ]; then
          read -p "是否需要更换模式或根据提示生成证书? (change/yes): " MODE
        else
          read -p "Do you want to change the mode or generate a certificate based on the prompts? (change/yes): " MODE
        fi
        if [ "$MODE" = "yes" ]; then
-          if [ "$LANG"="zh_CN.UTF-8" ]; then
+          if [ "$LANG" = "zh_CN.UTF-8" ]; then
             read -p "此模式下需要生成证书,请将您的IP解析到您的域名上,请输入域名: " HOSTNAME
           else
             read -p "In this mode, you need to generate a certificate. Please parse your IP to your domain name. Please enter the domain name: " HOSTNAME
@@ -77,26 +77,38 @@ if [ -f "/proc/sys/net/ipv4/tcp_fastopen" ]; then
     FASTOPEN=
   fi
 else
-  if [ "$LANG"="zh_CN.UTF-8" ]; then
-    echo "不支持TCP FASTOPEN"
+  if [ "$LANG" = "zh_CN.UTF-8" ]; then
+    echo "当前平台不支持 TCP fast open（需要 Linux 内核版本 > 3.7.0）"
   else
-    echo "Not support TCP FASTOPEN"
+    echo "TCP fast open is not supported on this platform (requires Linux kernel > 3.7.0)"
   fi
 fi
 
-read -p "Encryption(default:chacha20-ietf-poly1305): " ENCRYPTION
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "加密 [chacha20-ietf-poly1305]：" ENCRYPTION
+else
+  read -p "Encryption [chacha20-ietf-poly1305]: " ENCRYPTION
+fi
 
 if [ -z $ENCRYPTION ]; then
   ENCRYPTION=chacha20-ietf-poly1305
 fi
 
-read -p "Run User(default:nobody): " RUN_USER
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "运行用户 [nobody]：" RUN_USER
+else
+  read -p "Run as user [nobody]: " RUN_USER
+fi
 
 if [ -z $RUN_USER ]; then
   RUN_USER=nobody
 fi
 
-read -p "Enable udprelay mode(default:yes):(yes/no) " UDP
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "启用 UDP relay (yes/no) [yes]：" UDP
+else
+  read -p "Enable UDP relay (yes/no) [yes]: " UDP
+fi
 
 if [ "$UDP" = "yes" ] || [ "$UDP" = "" ]; then
   UDP=-u
@@ -104,7 +116,11 @@ elif [ "$UDP" = "no" ]; then
   UDP=
 fi
 
-read -p "Enable TCP_NODELAY(default:yes):(yes/no) " TCP_NODELAY
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "启用 TCP_NODELAY (yes/no) [yes]：" TCP_NODELAY
+else
+  read -p "Enable TCP_NODELAY (yes/no) [yes]: " TCP_NODELAY
+fi
 
 if [ "$TCP_NODELAY" = "yes" ] || [ "$TCP_NODELAY" = "" ]; then
   TCP_NODELAY=--no-delay
@@ -112,7 +128,11 @@ elif [ "$TCP_NODELAY" = "no" ]; then
   TCP_NODELAY=
 fi
 
-read -p "Enable port reuse(default:yes):(yes/no) " PORT_REUSE
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "启用端口复用（需要 Linux 内核版本 > 3.9.0）(yes/no) [yes]：" PORT_REUSE
+else
+  read -p "Enable port reuse (requires Linux kernel > 3.9.0) (yes/no) [yes]: " PORT_REUSE
+fi
 
 if [ "$PORT_REUSE" = "yes" ] || [ "$PORT_REUSE" = "" ]; then
   PORT_REUSE=--reuse-port
@@ -120,7 +140,11 @@ elif [ "$PORT_REUSE" = "no" ]; then
   PORT_REUSE=
 fi
 
-read -p "Enable SIP003 plugin. (Experimental)(default:yes):(yes/no) " PLUGIN_CHECK
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "启用 SIP003 插件（实验性功能）(yes/no) [yes]：" PLUGIN_CHECK
+else
+  read -p "Enable SIP003 plugin (experimental) (yes/no) [yes]: " PLUGIN_CHECK
+fi
 
 if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
   if [ "$KCPTUN_INSTALL" = "yes" ] && [ "$V2RAY_PLUGIN_INSTALL" = "no" ]; then
@@ -166,7 +190,7 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
         v2ray_plugin
       fi
       elif [ "$PLUGIN_OPTIONS" = "websocket_http" ]; then
-          if [ "$LANG"="zh_CN.UTF-8" ]; then
+          if [ "$LANG" = "zh_CN.UTF-8" ]; then
             read -p "请输入域名: " HOSTNAME
           else
             read -p "Please enter the domain name: " HOSTNAME
@@ -191,7 +215,7 @@ if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
         v2ray_plugin
       fi
       else
-        if [ "$LANG"="zh_CN.UTF-8" ]; then
+        if [ "$LANG" = "zh_CN.UTF-8" ]; then
           echo "参数无效"
         else
           echo "Invalid parameters"
@@ -264,7 +288,7 @@ port_check() {
               echo "ss-server -s 0.0.0.0 -p $PORT -k $PASSWORD -m $ENCRYPTION -a $RUN_USER $UDP $TCP_NODELAY $FASTOPEN $PORT_REUSE -f $WORKDIRECTORY/pid/shadowsocks-$PID_NUM.pid" >>$WORKDIRECTORY/config/ss_run$PID_NUM
             fi
           fi
-        elif [ "$LANG"="zh_CN.UTF-8" ]; then
+        elif [ "$LANG" = "zh_CN.UTF-8" ]; then
           echo "请使用小于8300或大于8400的端口"
           port_check
         else
@@ -305,9 +329,9 @@ port_check() {
 port_check
 
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  read -p "是否运行Shadowsocks服务器?(yes/no) (默认:yes)" RUN_SERVER
+  read -p "是否立即启动 Shadowsocks 服务端？(yes/no) [yes]：" RUN_SERVER
 else
-  read -p "Running shadowsocks server?(yes/no) (default:yes)" RUN_SERVER
+  read -p "Start Shadowsocks server now? (yes/no) [yes]: " RUN_SERVER
 fi
 
 if [ "$FIRST_RUN" = "yes" ]; then
