@@ -1,5 +1,5 @@
 #!/bin/sh
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "在$WORKDIRECTORY安装MbedTLS"
 else
   echo "Installation MbedTLS in $WORKDIRECTORY"

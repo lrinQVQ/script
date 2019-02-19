@@ -1,6 +1,6 @@
 #!/bin/sh
 #Install v2ray-plugin
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装基于v2ray的插件"
 else
   echo "Install v2ray based plugin"

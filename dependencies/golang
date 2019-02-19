@@ -22,7 +22,7 @@ GOURL=`curl -so- https://golang.org/dl/ | grep -oP 'https:\/\/dl\.google\.com\/g
 fi
 if [ "$ARCH" = "" ]; then
 GOLANG_WORK=no
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "由于golang不支持您的架构,您将无法使用插件"
 else
   echo "Since golang doesn't support your architecture,you won't be able to use plugins"
@@ -39,7 +39,7 @@ GOPATH=$WORKDIRECTORY/src/go1.x
 GOLANG_WORK=yes
 else
 GOLANG_WORK=no
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "无法下载golang,请检查您的网络"
 else
   echo "Unable to download golang, please check your network"

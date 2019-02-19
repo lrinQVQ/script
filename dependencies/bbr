@@ -2,7 +2,7 @@
 #BBR Check
 BBRCHECK=$(lsmod | grep -o tcp_bbr)
 if [ "$BBRCHECK" = "tcp_bbr" ]; then
-  if [ "$LANG"="zh_CN.UTF-8" ]; then
+  if [ "$LANG" = "zh_CN.UTF-8" ]; then
     echo "BBR已经加载"
   else
     echo "BBR has loaded"
@@ -24,7 +24,7 @@ else
       echo 'net.ipv4.tcp_congestion_control=bbr' >>/etc/sysctl.conf
       sysctl -p
     fi
-    if [ "$LANG"="zh_CN.UTF-8" ]; then
+    if [ "$LANG" = "zh_CN.UTF-8" ]; then
       echo "开启BBR"
     else
       echo "BBR ENABLED"

@@ -1,6 +1,6 @@
 #!/bin/sh
 #Install kcptun
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装kcptun插件"
 else
   echo "Install kcptun plugin"

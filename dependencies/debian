@@ -29,7 +29,7 @@ elif [ "$SUDO" = "no" ]; then
 fi
 
 # Installation of basic build dependencies
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装编译Shadowsocks-libev时需要的依赖包"
 else
   echo "Installation of basic Shadowsocks-libev build dependencies"
@@ -43,7 +43,7 @@ elif [ "$SUDO" = "no" ]; then
 fi
 
 # Install virtual machine architecture check package
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装虚拟机架构检测包"
 else
   echo "Install virtual machine architecture check package"
@@ -57,7 +57,7 @@ elif [ "$SUDO" = "no" ]; then
 fi
 
 # Install port occupancy detection tool
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装端口占用检测工具"
 else
   echo "Install port occupancy detection tool"
@@ -71,7 +71,7 @@ elif [ "$SUDO" = "no" ]; then
 fi
 
 # Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装与Linux内核中POSIX 1003.1e功能接口的实现"
 else
   echo "Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels"
@@ -85,7 +85,7 @@ elif [ "$SUDO" = "no" ]; then
 fi
 
 # Install UPX to compress the size of golang generated files
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装upx用于压缩golang生成文件的大小"
 else
   echo "Install UPX to compress the size of golang generated files"
@@ -99,7 +99,7 @@ elif [ "$SUDO" = "no" ]; then
 fi
 
 # Install psmisc for service restart after ss_update
-if [ "$LANG"="zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8 ]; then
   echo "安装psmisc用于ss_update后的服务重启"
 else
   echo "Install psmisc for service restart after ss_update"
@@ -113,7 +113,7 @@ elif [ "$SUDO" = "no" ]; then
 fi
 
 # Install coreutils to provide nohup
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装coreutils用于提供nohup"
 else
   echo "Install coreutils to provide nohup"
@@ -126,7 +126,7 @@ elif [ "$SUDO" = "no" ]; then
   apt-get install coreutils -y
 fi
 
-if [ "$LANG"="zh_CN.UTF-8" ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "进入$WORKDIRECTORY/src"
 else
   echo "work in $WORKDIRECTORY/src"

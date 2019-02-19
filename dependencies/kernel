@@ -1,6 +1,6 @@
 #!/bin/sh
 #Install Need Dep
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装编译内核时需要的依赖包"
 else
   echo "Installation of kernel basic build dependencies"
@@ -14,7 +14,7 @@ else
   fi
 fi
 
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "下载Linux内核源码"
 else
   echo "Dowload Linux kernel Source"
@@ -31,7 +31,7 @@ echo $PASSWD | sudo -SE make install
 cd ..
 
 #Enable BBR
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "开启BBR"
 else
   echo "BBR ENABLED"

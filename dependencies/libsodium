@@ -1,6 +1,6 @@
 #!/bin/sh
 #Installation of Libsodium
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "在$WORKDIRECTORY安装Libsodium"
 else
   echo "Installation Libsodium in $WORKDIRECTORY"
