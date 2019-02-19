@@ -99,7 +99,7 @@ elif [ "$SUDO" = "no" ]; then
 fi
 
 # Install psmisc for service restart after ss_update
-if [ "$LANG" = "zh_CN.UTF-8 ]; then
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装psmisc用于ss_update后的服务重启"
 else
   echo "Install psmisc for service restart after ss_update"
