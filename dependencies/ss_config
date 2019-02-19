@@ -78,25 +78,37 @@ if [ -f "/proc/sys/net/ipv4/tcp_fastopen" ]; then
   fi
 else
   if [ "$LANG" = "zh_CN.UTF-8" ]; then
-    echo "不支持TCP FASTOPEN"
+    echo "当前平台不支持 TCP fast open（需要 Linux 内核版本 > 3.7.0）"
   else
-    echo "Not support TCP FASTOPEN"
+    echo "TCP fast open is not supported on this platform (requires Linux kernel > 3.7.0)"
   fi
 fi
 
-read -p "Encryption(default:chacha20-ietf-poly1305): " ENCRYPTION
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "加密 [chacha20-ietf-poly1305]：" ENCRYPTION
+else
+  read -p "Encryption [chacha20-ietf-poly1305]: " ENCRYPTION
+fi
 
 if [ -z $ENCRYPTION ]; then
   ENCRYPTION=chacha20-ietf-poly1305
 fi
 
-read -p "Run User(default:nobody): " RUN_USER
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "运行用户 [nobody]：" RUN_USER
+else
+  read -p "Run as user [nobody]: " RUN_USER
+fi
 
 if [ -z $RUN_USER ]; then
   RUN_USER=nobody
 fi
 
-read -p "Enable udprelay mode(default:yes):(yes/no) " UDP
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "启用 UDP relay (yes/no) [yes]：" UDP
+else
+  read -p "Enable UDP relay (yes/no) [yes]: " UDP
+fi
 
 if [ "$UDP" = "yes" ] || [ "$UDP" = "" ]; then
   UDP=-u
@@ -104,7 +116,11 @@ elif [ "$UDP" = "no" ]; then
   UDP=
 fi
 
-read -p "Enable TCP_NODELAY(default:yes):(yes/no) " TCP_NODELAY
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "启用 TCP_NODELAY (yes/no) [yes]：" TCP_NODELAY
+else
+  read -p "Enable TCP_NODELAY (yes/no) [yes]: " TCP_NODELAY
+fi
 
 if [ "$TCP_NODELAY" = "yes" ] || [ "$TCP_NODELAY" = "" ]; then
   TCP_NODELAY=--no-delay
@@ -112,7 +128,11 @@ elif [ "$TCP_NODELAY" = "no" ]; then
   TCP_NODELAY=
 fi
 
-read -p "Enable port reuse(default:yes):(yes/no) " PORT_REUSE
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "启用端口复用（需要 Linux 内核版本 > 3.9.0）(yes/no) [yes]：" PORT_REUSE
+else
+  read -p "Enable port reuse (requires Linux kernel > 3.9.0) (yes/no) [yes]: " PORT_REUSE
+fi
 
 if [ "$PORT_REUSE" = "yes" ] || [ "$PORT_REUSE" = "" ]; then
   PORT_REUSE=--reuse-port
@@ -120,7 +140,11 @@ elif [ "$PORT_REUSE" = "no" ]; then
   PORT_REUSE=
 fi
 
-read -p "Enable SIP003 plugin. (Experimental)(default:yes):(yes/no) " PLUGIN_CHECK
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  read -p "启用 SIP003 插件（实验性功能）(yes/no) [yes]：" PLUGIN_CHECK
+else
+  read -p "Enable SIP003 plugin (experimental) (yes/no) [yes]: " PLUGIN_CHECK
+fi
 
 if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
   if [ "$KCPTUN_INSTALL" = "yes" ] && [ "$V2RAY_PLUGIN_INSTALL" = "no" ]; then
@@ -305,9 +329,9 @@ port_check() {
 port_check
 
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  read -p "是否运行Shadowsocks服务器?(yes/no) (默认:yes)" RUN_SERVER
+  read -p "是否立即启动 Shadowsocks 服务端？(yes/no) [yes]：" RUN_SERVER
 else
-  read -p "Running shadowsocks server?(yes/no) (default:yes)" RUN_SERVER
+  read -p "Start Shadowsocks server now? (yes/no) [yes]: " RUN_SERVER
 fi
 
 if [ "$FIRST_RUN" = "yes" ]; then
