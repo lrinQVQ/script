@@ -1,6 +1,6 @@
 #!/bin/sh
 #Install kcptun
-if [ $LANG=zh_CN.UTF-8 ]; then
+if [ "$LANG"="zh_CN.UTF-8" ]; then
   echo "安装kcptun插件"
 else
   echo "Install kcptun plugin"
@@ -22,11 +22,11 @@ fi
 
 echo "export KCPTUN_INSTALL=$KCPTUN_INSTALL" >>$WORKDIRECTORY/envsetup.sh
 
-if [ $SUDO = yes ]; then
+if [ "$SUDO" = "yes" ]; then
   $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/kcptun-server
   $ENCRYTEDPASSWD
-elif [ $SUDO = no ]; then
+elif [ "$SUDO" = "no" ]; then
   setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/kcptun-server
 fi
 
