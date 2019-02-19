@@ -16,7 +16,17 @@ if [ "$HTTP_CHECK" != "" ]; then
     read -p "Are you using or installing the Apche2/Nginx server? If so, make sure you don't force a https jump on port 80. If not, check the program that occupies port 80. (no/apache2/nginx)" WEB_SERVER
   fi
 else
-  acme.sh --issue -d $HOSTNAME --standalone
+  if [ "$LANG" = "zh_CN.UTF-8" ]; then
+    read -p "是否通过 IPv6 完成域名认证？这适用于使用共享 IPv4 地址但有独立 IPv6 地址的用户。(yes/no) [yes]：" ACMESH_IPv6
+  else
+    read -p "Do you want to validate domain over IPv6? This is useful to users using shared IPv4 address but with dedicated IPv6 address available to them. (yes/no) [yes]: " ACMESH_IPv6
+  fi
+  if [ "$ACMESH_IPv6" = "yes" ] || [ "$ACMESH_IPv6" = "" ]; then
+    ACMESH_IPv6=--listen-v6
+  elif [ "$ACMESH_IPv6" = "no" ]; then
+    ACMESH_IPv6=
+  fi
+  acme.sh --issue -d $HOSTNAME --standalone $ACMESH_IPv6
 fi
 
 if [ "$WEB_SERVER" = "no" ]; then
