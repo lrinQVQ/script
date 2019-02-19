@@ -38,4 +38,5 @@ elif [ "$WEB_SERVER" = "nginx" ]; then
 fi
 
 unset HTTP_CHECK
+unset ACMESH_IPv6
 unset WEB_SERVER
