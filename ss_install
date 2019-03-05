@@ -26,6 +26,27 @@ ss_config() {
   cd $WORKDIRECTORY && . bin/ss_config
 }
 
+export PASSCODE=$(git rev-parse --verify -q HEAD)
+if [ "$?" = 0 ]; then
+  noobtest() {
+    if [ "$LANG" = "zh_CN.UTF-8" ]; then
+      echo "此脚本尚未完善。您可能会遇到部分功能不可用或不稳定的情况，因此我们强烈建议您具备一定的运维知识后再使用此脚本。"
+      read -p "请输入通行码以继续：" I_AM_NOT_A_NOOB
+    else
+      echo "如需切换中文，请将 LANG 环境变量设置为 zh_CN.UTF-8。"
+      echo
+      echo "This script is far from complete. Some functions may be unavailable or unstable. We strongly recommended you to learn some sysadmin basics before proceeding."
+      read -p "Enter passcode to continue: " I_AM_NOT_A_NOOB
+    fi
+    if [ "$I_AM_NOT_A_NOOB" != "$PASSCODE" ]; then
+      noobtest
+    fi
+  }
+
+  noobtest
+
+fi
+
 if [ -f $WORKDIRECTORY/finish ]; then
   choose() {
     if [ "$LANG" = "zh_CN.UTF-8" ]; then
@@ -369,3 +390,5 @@ unset ISDASH
 unset SUDO
 unset STARTUP_SERVER
 unset CRONTABS_DIR_CHECK
+unset PASSCODE
+unset I_AM_NOT_A_NOOB
