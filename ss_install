@@ -318,6 +318,7 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
 fi
 
 ln -vf $DEP/ss_config $WORKDIRECTORY/bin/ss_config
+ln -vf $DEP/acme $WORKDIRECTORY/bin/acme
 ss_config
 
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
