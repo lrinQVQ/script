@@ -112,6 +112,20 @@ elif [ "$SUDO" = "no" ]; then
   apt-get install psmisc -y
 fi
 
+# Install socat
+if [ "$LANG" = "zh_CN.UTF-8" ]; then
+  echo "安装socat"
+else
+  echo "Install socat"
+fi
+if [ "$SUDO" = "yes" ]; then
+  $UNENCRYTEDPASSWD
+  echo $PASSWD | sudo -SE apt-get install socat -y
+  $ENCRYTEDPASSWD
+elif [ "$SUDO" = "no" ]; then
+  apt-get install socat -y
+fi
+
 # Install coreutils to provide nohup
 if [ "$LANG" = "zh_CN.UTF-8" ]; then
   echo "安装coreutils用于提供nohup"
