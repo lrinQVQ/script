@@ -6,7 +6,7 @@ else
   echo "Installation Libsodium in $WORKDIRECTORY"
 fi
 
-git clone https://github.com/jedisct1/libsodium.git
+git clone -b stable https://github.com/jedisct1/libsodium.git
 cd libsodium
 ./autogen.sh
 ./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
