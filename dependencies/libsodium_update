@@ -3,6 +3,7 @@
 cd libsodium
 make distclean
 git pull
+git checkout stable
 ./autogen.sh
 ./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
 make install
