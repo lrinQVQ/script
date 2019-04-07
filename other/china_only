@@ -133,8 +133,8 @@ if [ "$NUM" = 1 ]; then
   $FIREWALLCMD_WHICH --zone=public --add-service=cnonly --permanent
   for IP in `cat /tmp/cnip.txt`; do
   echo "$FIREWALLCMD_WHICH --add-rich-rule 'rule family=\"ipv4\" source address=\"$IP\" service name=\"cnonly\" accept'" >> /tmp/firewall-cmd.sh
-  sh /tmp/firewall-cmd.sh
   done
+  sh /tmp/firewall-cmd.sh
   echo "#!""/bin/sh" > /mnt/china_only
   echo "$FIREWALLCMD_WHICH --reload" >> /mnt/china_only
   echo "wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf(\"%s/%d\\n\", \$4, 32-log(\$5)/log(2)) }' > /tmp/cnip.txt" >> /mnt/china_only
