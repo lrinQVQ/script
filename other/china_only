@@ -140,8 +140,8 @@ if [ "$NUM" = 1 ]; then
   echo "wget -O- 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | awk -F\| '/CN\|ipv4/ { printf(\"%s/%d\\n\", \$4, 32-log(\$5)/log(2)) }' > /tmp/cnip.txt" >> /mnt/china_only
   echo "for IP in \`cat /tmp/cnip.txt\`; do" >>/mnt/china_only
   echo "$FIREWALLCMD_WHICH --add-rich-rule 'rule family=\"ipv4\" source address=\"$IP\" service name=\"cnonly\" accept' >> /tmp/firewall-cmd.sh" >>/mnt/china_only
-  echo "sh /tmp/firewall-cmd.sh"
   echo "done" >>/mnt/china_only
+  echo "sh /tmp/firewall-cmd.sh” >>/mnt/china_only
   elif [ "$IPTABLES" = "yes" ]; then
     # iptables start
     $IPTABLES_WHICH -N CNONLY
