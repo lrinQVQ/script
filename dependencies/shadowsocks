@@ -6,9 +6,8 @@ else
   echo "Installation of Shadowsocks-libev"
 fi
 
-git clone https://github.com/shadowsocks/shadowsocks-libev.git
+git clone --recursive https://github.com/shadowsocks/shadowsocks-libev.git
 cd shadowsocks-libev
-git submodule update --init --recursive
 ./autogen.sh
 if [ "$OS" = "redhat6" ]; then
   ./configure --with-mbedtls=$WORKDIRECTORY --with-sodium=$WORKDIRECTORY --with-ev=$WORKDIRECTORY --prefix=$WORKDIRECTORY && make -j$CPU_NUM
