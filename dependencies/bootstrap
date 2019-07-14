@@ -1,0 +1,26 @@
+#!/bin/sh
+
+##############################################################
+#
+# Congratulations!
+# Looks like you've found the passcode. If you are able to
+# found this file on your own, we believe you have the
+# required knowledge to use this script.
+#
+# You are free to share this solution to anyone; however, if
+# you ever decided to share it with someone who can't handle
+# the basics, you are the one responsible for all of their 
+# issues. We can't teach everyone Linux 101, since this script
+# is not really ready for the newcomers yet.
+#
+# Think twice, and choose your "friend" wisely.
+# Sometimes it's just impossible to be friendly to everyone.
+#
+###############################################################
+
+export SUM=0
+for number in $GRPID
+do
+  SUM=$((SUM + number))
+done
+export PASSCODE=$((SUM * USERID))
