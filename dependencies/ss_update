@@ -13,7 +13,7 @@ unencrytedpasswd() {
   export PASSWD=$(echo "$PASSWD" | base64 -d)
 }
 
-cd $WORKDIRECTORY && cd .. && git pull
+cd $WORKDIRECTORY && cd .. && git pull --force
 
 cd $WORKDIRECTORY/src
 
