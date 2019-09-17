@@ -1,0 +1,20 @@
+#!/bin/sh
+# Block China Mobile,China Telecom,China Unicom and CNCERT attack server
+cat >/etc/iptables.test.rules <<EOF
+*filter
+-I INPUT -s 2409:8880:3e01:200:100::/128 -j DROP
+-I INPUT -s 240e:58:2:200:100::/128 -j DROP
+-I INPUT -s 2408:8000:10fe:200:100::/128 -j DROP
+-I INPUT -s 2001:da8:20b:200:100::/128 -j DROP
+COMMIT
+EOF
+
+iptables-restore </etc/iptables.test.rules
+iptables-save >/etc/iptables.up.rules
+
+cat >/etc/network/if-pre-up.d/iptables <<EOF
+#!/bin/sh
+/sbin/iptables-restore < /etc/iptables.up.rules
+EOF
+
+chmod x /etc/network/if-pre-up.d/iptables
