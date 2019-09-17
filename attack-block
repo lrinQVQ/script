@@ -1,6 +1,6 @@
 #!/bin/sh
 # Block China Mobile,China Telecom,China Unicom and CNCERT attack server
-cat >/etc/iptables.test.rules <<EOF
+cat >/etc/ip6tables.test.rules <<EOF
 *filter
 -I INPUT -s 2409:8880:3e01:200:100::/128 -j DROP
 -I INPUT -s 240e:58:2:200:100::/128 -j DROP
@@ -9,12 +9,12 @@ cat >/etc/iptables.test.rules <<EOF
 COMMIT
 EOF
 
-iptables-restore </etc/iptables.test.rules
-iptables-save >/etc/iptables.up.rules
+ip6tables-restore </etc/ip6tables.test.rules
+ip6tables-save >/etc/ip6tables.up.rules
 
-cat >/etc/network/if-pre-up.d/iptables <<EOF
+cat >/etc/network/if-pre-up.d/ip6tables <<EOF
 #!/bin/sh
-/sbin/iptables-restore < /etc/iptables.up.rules
+/sbin/ip6tables-restore < /etc/ip6tables.up.rules
 EOF
 
-chmod x /etc/network/if-pre-up.d/iptables
+chmod +x /etc/network/if-pre-up.d/ip6tables
