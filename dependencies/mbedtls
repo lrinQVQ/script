@@ -7,6 +7,6 @@ fi
 
 git clone --recursive https://github.com/ARMmbed/mbedtls.git
 cd mbedtls
-make SHARED=1 CFLAGS=-fPIC -j$CPU_NUM
+make SHARED=1 CFLAGS=-fPIC
 make DESTDIR=$WORKDIRECTORY install
 cd ..
