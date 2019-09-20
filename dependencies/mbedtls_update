@@ -3,6 +3,6 @@
 cd mbedtls
 make clean
 git pull
-make SHARED=1 CFLAGS=-fPIC -j$CPU_NUM
+make SHARED=1 CFLAGS=-fPIC
 make DESTDIR=$WORKDIRECTORY install
 cd ..
