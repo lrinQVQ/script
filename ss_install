@@ -218,7 +218,7 @@ if [ -f /etc/debian_version ]; then
     9 | 9.0 | 9.1 | 9.2 | 9.3 | 9.4 | 9.5 | 9.6 | 9.7 | 9.8 | 9.9 | 9.10 | 9.11| stretch/sid)
       . $DEP/debian-9
       ;;
-    10 | 10.0 | 10.1 | buster/sid | bullseye/sid)
+    10 | 10.0 | 10.1 | 10.2| 10.3 | 10.4 | 10.5 | 10.6 | 10.7 | buster/sid | bullseye/sid)
       . $DEP/debian-sid
       ;;
     *)
