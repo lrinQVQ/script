@@ -214,7 +214,7 @@ if [ -f /etc/debian_version ]; then
     7 )
       . $DEP/debian-7
       ;;
-    8 jessie/sid)
+    8 | jessie/sid)
       . $DEP/debian-8
       ;;
     9 | stretch/sid)
