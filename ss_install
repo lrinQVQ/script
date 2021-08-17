@@ -220,8 +220,11 @@ if [ -f /etc/debian_version ]; then
     9 | stretch/sid)
       . $DEP/debian-9
       ;;
-    10 | buster/sid | bullseye/sid)
-      . $DEP/debian-sid
+    10 | buster/sid)
+      . $DEP/debian-10
+      ;;
+    11 | bullseye/sid)
+      . $DEP/debian-11
       ;;
     *)
       if [ "$LANG" = "zh_CN.UTF-8" ]; then
