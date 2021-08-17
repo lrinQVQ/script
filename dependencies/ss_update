@@ -24,11 +24,7 @@ ln -f $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/mbedtls_u
 ln -f $WORKDIRECTORY/../dependencies/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
 . $WORKDIRECTORY/bin/shadowsocks_update
 ln -f $WORKDIRECTORY/../dependencies/golang $WORKDIRECTORY/bin/golang
-. $WORKDIRECTORY/bin/golang
-ln -f $WORKDIRECTORY/../dependencies/kcptun_update $WORKDIRECTORY/bin/kcptun_update
-. $WORKDIRECTORY/bin/kcptun_update
-ln -f $WORKDIRECTORY/../dependencies/v2ray-plugin_update $WORKDIRECTORY/bin/v2ray-plugin_update
-. $WORKDIRECTORY/bin/v2ray-plugin_update
+#. $WORKDIRECTORY/bin/golang
 ln -f $WORKDIRECTORY/../dependencies/kill-all $WORKDIRECTORY/bin/kill-all
 cd $WORKDIRECTORY/bin && sh kill-all
 ln -f $WORKDIRECTORY/../dependencies/ss_startup $WORKDIRECTORY/bin/ss_startup
