@@ -3,6 +3,7 @@
 cd mbedtls
 make clean
 git pull
+git reset --hard origin mbedtls-2.16
 make SHARED=1 CFLAGS=-fPIC
 make DESTDIR=$WORKDIRECTORY install
 cd ..
