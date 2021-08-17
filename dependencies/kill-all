@@ -1,4 +1,2 @@
 #!/bin/sh
-killall v2ray-plugin >/dev/null 2>&1
-killall kcptun-server >/dev/null 2>&1
 killall ss-server >/dev/null 2>&1
