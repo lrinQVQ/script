@@ -140,95 +140,95 @@ elif [ "$PORT_REUSE" = "no" ]; then
   PORT_REUSE=
 fi
 
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  read -p "启用 SIP003 插件（实验性功能）(yes/no) [yes]：" PLUGIN_CHECK
-else
-  read -p "Enable SIP003 plugin (experimental) (yes/no) [yes]: " PLUGIN_CHECK
-fi
+#if [ "$LANG" = "zh_CN.UTF-8" ]; then
+#  read -p "启用 SIP003 插件（实验性功能）(yes/no) [yes]：" PLUGIN_CHECK
+#else
+#  read -p "Enable SIP003 plugin (experimental) (yes/no) [yes]: " PLUGIN_CHECK
+#fi
 
-if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
-  if [ "$KCPTUN_INSTALL" = "yes" ] && [ "$V2RAY_PLUGIN_INSTALL" = "no" ]; then
-    read -p "Select plugin: (1.kcptun )(default:kcptun) " PLUGIN
-  elif [ "$V2RAY_PLUGIN_INSTALL" = "yes" ] && [ "$KCPTUN_INSTALL" = "no" ]; then
-    read -p "Select plugin: (2.v2ray_plugin )(default:v2ray_plugin) " PLUGIN
-  elif [ "$V2RAY_PLUGIN_INSTALL" = "yes" ] && [ "$KCPTUN_INSTALL" = "yes" ]; then
-    read -p "Select plugin: (1.kcptun 2.v2ray_plugin )(default:v2ray_plugin) " PLUGIN
-  fi
+#if [ "$PLUGIN_CHECK" = "yes" ] || [ "$PLUGIN_CHECK" = "" ]; then
+#  if [ "$KCPTUN_INSTALL" = "yes" ] && [ "$V2RAY_PLUGIN_INSTALL" = "no" ]; then
+#    read -p "Select plugin: (1.kcptun )(default:kcptun) " PLUGIN
+#  elif [ "$V2RAY_PLUGIN_INSTALL" = "yes" ] && [ "$KCPTUN_INSTALL" = "no" ]; then
+#    read -p "Select plugin: (2.v2ray_plugin )(default:v2ray_plugin) " PLUGIN
+#  elif [ "$V2RAY_PLUGIN_INSTALL" = "yes" ] && [ "$KCPTUN_INSTALL" = "yes" ]; then
+#    read -p "Select plugin: (1.kcptun 2.v2ray_plugin )(default:v2ray_plugin) " PLUGIN
+#  fi
 
-  case "$PLUGIN" in
-    1 | kcptun)
-      PLUGIN=kcptun-server
-      UDP=
-      TCP_NODELAY=
-      FASTOPEN=
-      kcptun_plugin_options_check() {
-        read -p "Set SIP003 plugin options. (Experimental)(default:crypt is salsa20 mode is normal mtu is 1200 parityshard is 0 dscp is 46 nocomp) " PLUGIN_OPTIONS
-      }
-      kcptun_plugin_options_check
-      if [ "$PLUGIN_OPTIONS" = "" ]; then
-        PLUGIN_OPTIONS="crypt=salsa20;mode=normal;mtu=1200;parityshard=0;dscp=46;nocomp"
-      fi
-      ;;
-    2 | v2ray_plugin | "")
-      v2ray_plugin() {
-      PLUGIN=v2ray-plugin
-      v2ray_plugin_options_check() {
-        read -p "Set SIP003 plugin options. (Experimental)(default:quic):(websocket_http/websocket_https/quic) " PLUGIN_OPTIONS
-      }
-      v2ray_plugin_options_check
-      if [ "$PLUGIN_OPTIONS" = "quic" ] || [ "$PLUGIN_OPTIONS" = "" ]; then
-        UDP=
-        TCP_NODELAY=
-        FASTOPEN=
-        tls_cert
-        if [ "$HAVE_CERT" = "yes" ]; then
-          PLUGIN_OPTIONS="server;mode=quic;host=$HOSTNAME;cert=$CERT;key=$CERT_KEY"
-        else
-          PLUGIN_OPTIONS="server;mode=quic;host=$HOSTNAME"
-        fi
-      if [ "$MODE" = "change" ]; then
-        v2ray_plugin
-      fi
-      elif [ "$PLUGIN_OPTIONS" = "websocket_http" ]; then
-          if [ "$LANG" = "zh_CN.UTF-8" ]; then
-            read -p "请输入域名: " HOSTNAME
-          else
-            read -p "Please enter the domain name: " HOSTNAME
-          fi
-        PLUGIN_OPTIONS="server;host=$HOSTNAME"
-      elif [ "$PLUGIN_OPTIONS" = "websocket_https" ]; then
-        tls_cert
-        if [ "$FASTOPEN_CHECK" = 3 ]; then
-          if [ "$HAVE_CERT" = "yes" ]; then
-            PLUGIN_OPTIONS="server;tls;host=$HOSTNAME;fast-open;cert=$CERT;key=$CERT_KEY"
-          else
-            PLUGIN_OPTIONS="server;tls;host=$HOSTNAME;fast-open"
-          fi
-        else
-          if [ "$HAVE_CERT" = "yes" ]; then
-            PLUGIN_OPTIONS="server;tls;host=$HOSTNAME;cert=$CERT;key=$CERT_KEY"
-          else
-            PLUGIN_OPTIONS="server;tls;host=$HOSTNAME"
-          fi
-        fi
-      if [ "$MODE" = "change" ]; then
-        v2ray_plugin
-      fi
-      else
-        if [ "$LANG" = "zh_CN.UTF-8" ]; then
-          echo "参数无效"
-        else
-          echo "Invalid parameters"
-        fi
-        v2ray_plugin_options_check
-      fi
-      }
-      v2ray_plugin
-      ;;
-  esac
-elif [ "$PLUGIN_CHECK" = "no" ]; then
+#  case "$PLUGIN" in
+#    1 | kcptun)
+#      PLUGIN=kcptun-server
+#      UDP=
+#      TCP_NODELAY=
+#      FASTOPEN=
+#      kcptun_plugin_options_check() {
+#        read -p "Set SIP003 plugin options. (Experimental)(default:crypt is salsa20 mode is normal mtu is 1200 parityshard is 0 dscp is 46 nocomp) " PLUGIN_OPTIONS
+#      }
+#      kcptun_plugin_options_check
+#      if [ "$PLUGIN_OPTIONS" = "" ]; then
+#        PLUGIN_OPTIONS="crypt=salsa20;mode=normal;mtu=1200;parityshard=0;dscp=46;nocomp"
+#      fi
+#      ;;
+#    2 | v2ray_plugin | "")
+#      v2ray_plugin() {
+#      PLUGIN=v2ray-plugin
+#      v2ray_plugin_options_check() {
+#        read -p "Set SIP003 plugin options. (Experimental)(default:quic):(websocket_http/websocket_https/quic) " PLUGIN_OPTIONS
+#      }
+#      v2ray_plugin_options_check
+#      if [ "$PLUGIN_OPTIONS" = "quic" ] || [ "$PLUGIN_OPTIONS" = "" ]; then
+#        UDP=
+#        TCP_NODELAY=
+#        FASTOPEN=
+#        tls_cert
+#        if [ "$HAVE_CERT" = "yes" ]; then
+#          PLUGIN_OPTIONS="server;mode=quic;host=$HOSTNAME;cert=$CERT;key=$CERT_KEY"
+#        else
+#          PLUGIN_OPTIONS="server;mode=quic;host=$HOSTNAME"
+#        fi
+#      if [ "$MODE" = "change" ]; then
+#        v2ray_plugin
+#      fi
+#      elif [ "$PLUGIN_OPTIONS" = "websocket_http" ]; then
+#          if [ "$LANG" = "zh_CN.UTF-8" ]; then
+#            read -p "请输入域名: " HOSTNAME
+#          else
+#            read -p "Please enter the domain name: " HOSTNAME
+#          fi
+#        PLUGIN_OPTIONS="server;host=$HOSTNAME"
+#      elif [ "$PLUGIN_OPTIONS" = "websocket_https" ]; then
+#        tls_cert
+#        if [ "$FASTOPEN_CHECK" = 3 ]; then
+#          if [ "$HAVE_CERT" = "yes" ]; then
+#            PLUGIN_OPTIONS="server;tls;host=$HOSTNAME;fast-open;cert=$CERT;key=$CERT_KEY"
+#          else
+#            PLUGIN_OPTIONS="server;tls;host=$HOSTNAME;fast-open"
+#          fi
+#        else
+#          if [ "$HAVE_CERT" = "yes" ]; then
+#            PLUGIN_OPTIONS="server;tls;host=$HOSTNAME;cert=$CERT;key=$CERT_KEY"
+#          else
+#            PLUGIN_OPTIONS="server;tls;host=$HOSTNAME"
+#          fi
+#        fi
+#      if [ "$MODE" = "change" ]; then
+#        v2ray_plugin
+#      fi
+#      else
+#        if [ "$LANG" = "zh_CN.UTF-8" ]; then
+#          echo "参数无效"
+#        else
+#          echo "Invalid parameters"
+#        fi
+#        v2ray_plugin_options_check
+#     fi
+#      }
+#      v2ray_plugin
+#      ;;
+#  esac
+#elif [ "$PLUGIN_CHECK" = "no" ]; then
   PLUGIN_CHECK=no
-fi
+#fi
 
 port_check() {
   read -p "port: " PORT
@@ -356,8 +356,8 @@ unset FASTOPEN_CHECK
 unset PORT_EXIST
 unset PORT_USE_CHECK
 unset RUN_SERVER
-unset V2RAY_PLUGIN_INSTALL
-unset KCPTUN_INSTALL
+#unset V2RAY_PLUGIN_INSTALL
+#unset KCPTUN_INSTALL
 unset HAVE_CERT
 unset CERT
 unset MODE
