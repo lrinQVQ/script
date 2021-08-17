@@ -1,2 +1,2 @@
 #!/bin/sh
-. $DEP/debian-9
+. $DEP/debian-11
