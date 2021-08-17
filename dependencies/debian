@@ -157,10 +157,10 @@ fi
 if [ ! -f $WORKDIRECTORY/bin/ss-server ]; then
 . $DEP/shadowsocks
 fi
-. $DEP/golang
-if [ ! -f $WORKDIRECTORY/bin/kcptun-server ]; then
-. $DEP/kcptun
-fi
-if [ ! -f $WORKDIRECTORY/bin/v2ray-plugin ]; then
-. $DEP/v2ray-plugin
-fi
+#. $DEP/golang
+#if [ ! -f $WORKDIRECTORY/bin/kcptun-server ]; then
+#. $DEP/kcptun
+#fi
+#if [ ! -f $WORKDIRECTORY/bin/v2ray-plugin ]; then
+#. $DEP/v2ray-plugin
+#fi
