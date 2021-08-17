@@ -20,8 +20,8 @@ cd script
 
 ## 特性
 Shadowsocks 交互式配置  
-支持 [v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)  
-支持 [kcptun](https://github.com/shadowsocks/kcptun)  
+暂不支持 [v2ray-plugin](https://github.com/shadowsocks/v2ray-plugin)  
+暂不支持 [kcptun](https://github.com/shadowsocks/kcptun)  
 
 支持 Google BBR TCP拥塞算法的自动检测和开启  
 支持 TCP Fast Open的自动检测和开启  
