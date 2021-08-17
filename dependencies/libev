@@ -6,9 +6,9 @@ else
   echo "Redhat 6 and derivatives require building of libev"
 fi
 
-curl -L -O http://dist.schmorp.de/libev/libev-4.24.tar.gz
-tar zxf libev-4.24.tar.gz
-cd libev-4.24
+curl -L -O http://dist.schmorp.de/libev/libev-4.33.tar.gz
+tar zxf libev-4.33.tar.gz
+cd libev-4.33
 ./configure --prefix=$WORKDIRECTORY
 make -j$CPU_NUM
 make install
