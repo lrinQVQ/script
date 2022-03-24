@@ -226,6 +226,9 @@ if [ -f /etc/debian_version ]; then
     11 | bullseye/sid)
       . $DEP/debian-11
       ;;
+    12 | bookworm/sid)
+      . $DEP/debian-sid
+      ;;
     *)
       if [ "$LANG" = "zh_CN.UTF-8" ]; then
         echo "暂不支持此 Debian 发行版"
