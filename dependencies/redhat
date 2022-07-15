@@ -15,10 +15,10 @@ else
 fi
 if [ $SUDO = yes ]; then
   $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
+  echo $PASSWD | sudo -SE yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git python-jinja2 -y
   $ENCRYTEDPASSWD
 elif [ $SUDO = no ]; then
-  yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git -y
+  yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git python-jinja2 -y
 fi
 
 # Install virtual machine architecture check package
