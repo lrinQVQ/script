@@ -1,0 +1,9 @@
+[shadowsocks-libev]
+enabled = true
+filter = shadowsocks-libev
+port = $PORT
+logpath = /var/log/syslog
+
+maxretry = 3
+findtime = 3600
+bantime = 3600
