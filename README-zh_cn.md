@@ -26,4 +26,5 @@ Shadowsocks 交互式配置
 支持 Google BBR TCP拥塞算法的自动检测和开启  
 支持 TCP Fast Open的自动检测和开启  
 支持 自动更新 开机启动 和 基于进程的可用性检测  
-支持 IPv4/IPv6 监听
+支持 IPv4/IPv6 监听  
+基于 Fail2ban 的重放攻击缓解示例

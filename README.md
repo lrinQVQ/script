@@ -27,4 +27,5 @@ Not support [kcptun](https://github.com/shadowsocks/kcptun)
 Support Google BBR tcp congestion control algorithm auto check and enable  
 Support TCP Fast Open auto check and enable  
 Support autoupdate startup and pid-based HA check  
-Support IPv4/IPv6 listen
+Support IPv4/IPv6 listen  
+Example of replay attacks mitigated based on Fail2ban
