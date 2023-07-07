@@ -227,6 +227,9 @@ if [ -f /etc/debian_version ]; then
       . $DEP/debian-11
       ;;
     12 | bookworm/sid)
+      . $DEP/debian-12
+      ;;
+    13 | trixie/sid)
       . $DEP/debian-sid
       ;;
     *)
