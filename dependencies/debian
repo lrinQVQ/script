@@ -36,10 +36,10 @@ else
 fi
 if [ "$SUDO" = "yes" ]; then
   $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl libcap2-bin pkg-config -y
+  echo $PASSWD | sudo -SE apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl libcap2-bin pkg-config python3-jsonschema python3-jinja2 -y
   $ENCRYTEDPASSWD
 elif [ "$SUDO" = "no" ]; then
-  apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl git pkg-config -y
+  apt-get install --no-install-recommends gettext build-essential autoconf libtool libpcre3-dev asciidoc xmlto libev-dev automake asciidoc xmlto git libc-ares-dev curl git pkg-config python3-jsonschema python3-jinja2 -y
 fi
 
 # Install virtual machine architecture check package
