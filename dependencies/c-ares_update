@@ -1,0 +1,9 @@
+#!/bin/sh
+#Update c-ares
+cd c-ares
+make distclean
+git fetch
+git reset --hard origin/v1.34.5
+./configure --prefix=$WORKDIRECTORY --disable-shared && make -j$CPU_NUM
+make install
+cd ..

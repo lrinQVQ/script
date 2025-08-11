@@ -1,2 +1,22 @@
 #!/bin/sh
-killall ss-server >/dev/null 2>&1
+if [ -f "$PWD/envsetup.sh" ]; then
+  . $PWD/envsetup.sh
+else
+  exit 1
+fi
+
+encrytedpasswd() {
+  export PASSWD=$(echo "$PASSWD" | base64 -i)
+}
+
+unencrytedpasswd() {
+  export PASSWD=$(echo "$PASSWD" | base64 -d)
+}
+
+if [ "$SUDO" = "yes" ]; then
+  $UNENCRYTEDPASSWD
+  echo $PASSWD | sudo -SE sh -c "killall ss-server >/dev/null 2>&1"
+  $ENCRYTEDPASSWD
+elif [ "$SUDO" = "no" ]; then
+  killall ss-server >/dev/null 2>&1
+fi

@@ -2,8 +2,8 @@
 #Update Libsodium
 cd libsodium
 make distclean
-git pull
-git reset --hard origin 1.0.19
+git fetch
+git reset --hard origin/1.0.20-RELEASE
 ./autogen.sh
 ./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
 make install

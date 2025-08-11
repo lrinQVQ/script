@@ -1,20 +1,11 @@
 #!/bin/sh
-#Installation of Shadowsocks-libev
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "安装Shadowsocks-libev"
-else
-  echo "Installation of Shadowsocks-libev"
-fi
+#Shadowsocks-libev static
+echo "$MSG_SS"
 
 git clone --recursive https://github.com/shadowsocks/shadowsocks-libev.git
 cd shadowsocks-libev
 ./autogen.sh
-if [ "$OS" = "redhat6" ]; then
-  ./configure --with-mbedtls=$WORKDIRECTORY --with-sodium=$WORKDIRECTORY --with-ev=$WORKDIRECTORY --prefix=$WORKDIRECTORY && make -j$CPU_NUM
-else
-  ./configure --with-mbedtls=$WORKDIRECTORY --with-sodium=$WORKDIRECTORY --prefix=$WORKDIRECTORY && make -j$CPU_NUM
-fi
-
+CFLAGS="$CFLAGS -I${WORKDIRECTORY}/include" LDFLAGS="$LDFLAGS -L${WORKDIRECTORY}/lib --static" ./configure --prefix=$WORKDIRECTORY --disable-shared --disable-silent-rules && make -j$CPU_NUM
 make install
 
 if [ "$SUDO" = "yes" ]; then

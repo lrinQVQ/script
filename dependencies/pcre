@@ -1,0 +1,11 @@
+#!/bin/sh
+#Building libev
+echo "$MSG_PCRE"
+
+curl -L -O "https://sourceforge.net/projects/pcre/files/pcre/8.45/pcre-8.45.tar.gz"
+tar zxf pcre-8.45.tar.gz
+cd pcre-8.45
+./configure --prefix=$WORKDIRECTORY --disable-shared --disable-cpp --enable-unicode-properties --enable-pcre16 --enable-pcre32 --enable-jit
+make -j$CPU_NUM
+make install
+cd ..

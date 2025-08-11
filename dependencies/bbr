@@ -1,42 +1,25 @@
 #!/bin/sh
 #BBR Check
-BBRCHECK=$(lsmod | grep -o tcp_bbr)
-if [ "$BBRCHECK" = "tcp_bbr" ]; then
-  if [ "$LANG" = "zh_CN.UTF-8" ]; then
-    echo "BBR已经加载"
-  else
-    echo "BBR has loaded"
-  fi
+if [ "$(cat /proc/sys/net/ipv4/tcp_congestion_control)" = "bbr" ]; then
+  echo "$MSG_BBRLOAD"
 else
-  if [ -f "/lib/modules/$KERNEL_VERSION/kernel/net/ipv4/tcp_bbr.ko" ]; then
+  sysctl_config
+  if [ -n "$(find /lib/modules/$(uname -r)/kernel/net/ipv4 -name 'tcp_bbr.ko*' -print -quit)" ]; then
     if [ "$SUDO" = "yes" ]; then
       $UNENCRYTEDPASSWD
       echo $PASSWD | sudo -SE modprobe tcp_bbr
       echo $PASSWD | sudo -SE sh -c "echo 'tcp_bbr' >> /etc/modules-load.d/modules.conf"
-      echo $PASSWD | sudo -SE sh -c "echo 'net.core.default_qdisc=fq' >> /etc/sysctl.conf"
-      echo $PASSWD | sudo -SE sh -c "echo 'net.ipv4.tcp_congestion_control=bbr' >> /etc/sysctl.conf"
-      echo $PASSWD | sudo -SE sysctl -p
+      echo $PASSWD | sudo -SE sh -c "echo 'net.core.default_qdisc=fq' >> ${FILE}"
+      echo $PASSWD | sudo -SE sh -c "echo 'net.ipv4.tcp_congestion_control=bbr' >> ${FILE}"
+      echo $PASSWD | sudo -SE sysctl --system
+    fi
       $ENCRYTEDPASSWD
-    elif [ "$SUDO" = "no" ]; then
+  elif [ "$SUDO" = "no" ]; then
       modprobe tcp_bbr
       echo 'tcp_bbr' >>/etc/modules-load.d/modules.conf
-      echo 'net.core.default_qdisc=fq' >>/etc/sysctl.conf
-      echo 'net.ipv4.tcp_congestion_control=bbr' >>/etc/sysctl.conf
-      sysctl -p
-    fi
-    if [ "$LANG" = "zh_CN.UTF-8" ]; then
-      echo "开启BBR"
-    else
-      echo "BBR ENABLED"
-    fi
-  else
-    if [ "$VM" = "kvm" ] || [ "$VM" = "" ]; then
-      #  . $DEP/kernel
-      echo "Not building kernel now"
-    fi
+      echo 'net.core.default_qdisc=fq' >>${FILE}
+      echo 'net.ipv4.tcp_congestion_control=bbr' >>${FILE}
+      sysctl --system
   fi
+  echo "$MSG_BBRENABLE"
 fi
-
-unset KERNEL_VERSION
-unset VM
-unset BBRCHECK

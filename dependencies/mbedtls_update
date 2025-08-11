@@ -2,8 +2,8 @@
 #Update Mbedtls
 cd mbedtls
 make clean
-git pull
-git reset --hard origin mbedtls-3.6
-make SHARED=1 CFLAGS=-fPIC
+git fetch
+git reset --hard origin/mbedtls-3.6
+make CFLAGS=-fPIC
 make DESTDIR=$WORKDIRECTORY install
 cd ..
