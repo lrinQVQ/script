@@ -1,46 +1,16 @@
 #!/bin/sh
-encrytedpasswd() {
-  export PASSWD=$(echo "$PASSWD" | base64 -i)
-}
-
-unencrytedpasswd() {
-  export PASSWD=$(echo "$PASSWD" | base64 -d)
-}
-
 # Installation of basic build dependencies
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "安装编译Shadowsocks-libev时需要的依赖包"
-else
-  echo "Installation of basic Shadowsocks-libev build dependencies"
-fi
+echo "$MSG_BUILDDEP"
 if [ $SUDO = yes ]; then
   $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git python-jinja2 -y
+  echo $PASSWD | sudo -SE yum install gettext gcc autoconf libtool automake make asciidoc xmlto curl git python3-jinja2 -y
   $ENCRYTEDPASSWD
 elif [ $SUDO = no ]; then
-  yum install gettext gcc autoconf libtool automake make asciidoc xmlto c-ares-devel pcre-devel curl git python-jinja2 -y
-fi
-
-# Install virtual machine architecture check package
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "安装虚拟机架构检测包"
-else
-  echo "Install virtual machine architecture check package"
-fi
-if [ $SUDO = yes ]; then
-  $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE yum install virt-what which -y
-  $ENCRYTEDPASSWD
-elif [ $SUDO = no ]; then
-  yum install virt-what which -y
+  yum install gettext gcc autoconf libtool automake make asciidoc xmlto curl git python3-jinja2 -y
 fi
 
 # Install port occupancy detection tool
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "安装端口占用检测工具"
-else
-  echo "Install port occupancy detection tool"
-fi
+echo "$MSG_PORT_CHECK"
 if [ $SUDO = yes ]; then
   $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE yum install lsof -y
@@ -50,11 +20,7 @@ elif [ $SUDO = no ]; then
 fi
 
 # Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "安装与Linux内核中POSIX 1003.1e功能接口的实现"
-else
-  echo "Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels"
-fi
+echo "$MSG_CAP2"
 if [ $SUDO = yes ]; then
   $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE yum install libcap2 -y
@@ -63,26 +29,8 @@ elif [ $SUDO = no ]; then
   yum install libcap2 -y
 fi
 
-# Install UPX to compress the size of golang generated files
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "安装upx用于压缩golang生成文件的大小"
-else
-  echo "Install UPX to compress the size of golang generated files"
-fi
-if [ $SUDO = yes ]; then
-  $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE yum install upx -y
-  $ENCRYTEDPASSWD
-elif [ $SUDO = no ]; then
-  yum install upx -y
-fi
-
 # Install psmisc for service restart after ss_update
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "安装psmisc用于ss_update后的服务重启"
-else
-  echo "Install psmisc for service restart after ss_update"
-fi
+echo "$MSG_PSMISC"
 if [ $SUDO = yes ]; then
   $UNENCRYTEDPASSWD
   echo $PASSWD | sudo -SE yum install psmisc -y
@@ -91,47 +39,24 @@ elif [ $SUDO = no ]; then
   yum install psmisc -y
 fi
 
-# Install coreutils to provide nohup
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "安装coreutils用于提供nohup"
-else
-  echo "Install coreutils to provide nohup"
-fi
-if [ $SUDO = yes ]; then
-  $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE yum install coreutils -y
-  $ENCRYTEDPASSWD
-elif [ $SUDO = no ]; then
-  yum install coreutils -y
-fi
-
-# Install socat
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "安装socat"
-else
-  echo "Install socat"
-fi
-if [ $SUDO = yes ]; then
-  $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE yum install socat -y
-  $ENCRYTEDPASSWD
-elif [ $SUDO = no ]; then
-  yum install socat -y
-fi
-
-if [ ! -f $WORKDIRECTORY/lib/libsodium.so ]; then
+if [ ! -f $WORKDIRECTORY/lib/libsodium.a ]; then
 . $DEP/libsodium
 fi
-if [ ! -f $WORKDIRECTORY/lib/libmbedtls.so ]; then
+if [ ! -f $WORKDIRECTORY/lib/libmbedtls.a ]; then
 . $DEP/mbedtls
 fi
+if [ ! -f $WORKDIRECTORY/lib/libpcre.la ]; then
+. $DEP/pcre
+fi
+if [ ! -f $WORKDIRECTORY/lib/libev.la ]; then
+. $DEP/libev
+fi
+if [ ! -f $WORKDIRECTORY/lib/libcares.la ]; then
+. $DEP/c-ares
+fi
+export PATH=$WORKDIRECTORY/bin:$PATH
+echo "export PATH=$WORKDIRECTORY/bin:\$PATH" >>$WORKDIRECTORY/envsetup.sh
+
 if [ ! -f $WORKDIRECTORY/bin/ss-server ]; then
 . $DEP/shadowsocks
 fi
-#. $DEP/golang
-#if [ ! -f $WORKDIRECTORY/bin/kcptun-server ]; then
-#. $DEP/kcptun
-#fi
-#if [ ! -f $WORKDIRECTORY/bin/v2ray-plugin ]; then
-#. $DEP/v2ray-plugin
-#fi

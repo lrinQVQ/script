@@ -1,0 +1,10 @@
+#!/bin/sh
+#Installation of c-ares
+echo "$MSG_CARES"
+
+git clone https://github.com/c-ares/c-ares.git -b v1.34.5
+cd c-ares
+autoreconf -fi
+./configure --prefix=$WORKDIRECTORY --disable-shared && make -j$CPU_NUM
+make install
+cd ..

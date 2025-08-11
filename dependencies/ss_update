@@ -5,15 +5,7 @@ else
   exit 1
 fi
 
-encrytedpasswd() {
-  export PASSWD=$(echo "$PASSWD" | base64 -i)
-}
-
-unencrytedpasswd() {
-  export PASSWD=$(echo "$PASSWD" | base64 -d)
-}
-
-cd $WORKDIRECTORY && cd .. && git pull --force
+cd $WORKDIRECTORY && cd .. && git fetch && git reset --hard origin master
 
 cd $WORKDIRECTORY/src
 
@@ -21,10 +13,10 @@ ln -f $WORKDIRECTORY/../dependencies/libsodium_update $WORKDIRECTORY/bin/libsodi
 . $WORKDIRECTORY/bin/libsodium_update
 ln -f $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
 . $WORKDIRECTORY/bin/mbedtls_update
+ln -f $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/c-ares_update
+. $WORKDIRECTORY/bin/c-ares_update
 ln -f $WORKDIRECTORY/../dependencies/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
 . $WORKDIRECTORY/bin/shadowsocks_update
-ln -f $WORKDIRECTORY/../dependencies/golang $WORKDIRECTORY/bin/golang
-#. $WORKDIRECTORY/bin/golang
 ln -f $WORKDIRECTORY/../dependencies/kill-all $WORKDIRECTORY/bin/kill-all
 cd $WORKDIRECTORY/bin && sh kill-all
 ln -f $WORKDIRECTORY/../dependencies/ss_startup $WORKDIRECTORY/bin/ss_startup

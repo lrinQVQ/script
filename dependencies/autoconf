@@ -1,10 +1,6 @@
 #!/bin/sh
 #Update autoconf to 2.69 for Redhat 6 derivatives
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "Redhat 6及其衍生需要更新autoconf到2.69"
-else
-  echo "Redhat 6 and its derivatives need to update autoconf to 2.69"
-fi
+echo "$MSG_AUTOCONF"
 
 if [ "$SUDO" = "yes" ]; then
   $UNENCRYTEDPASSWD

@@ -1,15 +1,12 @@
 #!/bin/sh
-#Update Shadowsocks-libev
+#Update Shadowsocks-libev static
 cd shadowsocks-libev
 make distclean
-git pull
+git fetch
+git reset --hard origin/master
 git submodule update --init --recursive
-if [ "$OS" = "redhat6" ]; then
-  ./autogen.sh && ./configure --with-mbedtls=$WORKDIRECTORY --with-sodium=$WORKDIRECTORY --with-ev=$WORKDIRECTORY --prefix=$WORKDIRECTORY && make -j$CPU_NUM
-else
-  ./autogen.sh && ./configure --with-mbedtls=$WORKDIRECTORY --with-sodium=$WORKDIRECTORY --prefix=$WORKDIRECTORY && make -j$CPU_NUM
-fi
-
+./autogen.sh
+CFLAGS="$CFLAGS -I${WORKDIRECTORY}/include" LDFLAGS="$LDFLAGS -L${WORKDIRECTORY}/lib --static" ./configure --prefix=$WORKDIRECTORY --disable-shared --disable-silent-rules && make -j$CPU_NUM
 make install
 
 if [ $SUDO = yes ]; then
@@ -19,4 +16,5 @@ if [ $SUDO = yes ]; then
 elif [ $SUDO = no ]; then
   setcap cap_net_bind_service+ep $WORKDIRECTORY/bin/ss-server
 fi
+
 cd ..

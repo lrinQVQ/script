@@ -1,12 +1,8 @@
 #!/bin/sh
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "在$WORKDIRECTORY安装MbedTLS"
-else
-  echo "Installation MbedTLS in $WORKDIRECTORY"
-fi
+echo "$MSG_MBEDTLS"
 
 git clone --recursive https://github.com/ARMmbed/mbedtls.git -b mbedtls-3.6
 cd mbedtls
-make SHARED=1 CFLAGS=-fPIC
+make CFLAGS=-fPIC
 make DESTDIR=$WORKDIRECTORY install
 cd ..

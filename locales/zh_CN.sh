@@ -1,0 +1,48 @@
+  GNU nano 8.5                           en.sh                            已更改  
+#!/bin/sh
+# 简体中文
+export \
+MSG_NOOBTEST_TIPS="此脚本尚未完善。您可能会遇到部分功能不可用或不稳定的情况，因此我们强烈建议您具备一定的运维知识后再使用此脚本。" \
+MSG_NOOBTEST_CODE="请输入通行码以继续：" \
+MSG_CHOOSE_UNINSTAL="1. 卸载" \
+MSG_CHOOSE_CONFIG="2. 配置 Shadowsocks" \
+MSG_CHOOSE_MANAGE="3. 管理 Shadowsocks" \
+MSG_CHOOSE_NUM="选择一个选项：" \
+MSG_CHOOSE_INSTALL="1. 安装" \
+MSG_CHOOSE_EXIT="2. 退出" \
+MSG_WORKDIRECTORY="创建工作目录" \
+MSG_USERPASS="请输入当前用户密码：" \
+MSG_WRONGPASS="密码错误,请重新输入" \
+MSG_SAVEPASS="是否将密码用 base64 加密并存储到 $WORKDIRECTORY/envsetup.sh 中，以方便程序自动更新？(yes/no) [yes]：" \
+MSG_NOROOT="当前用户没有 root 权限，请安装 sudo 或使用 root 用户执行脚本" \
+MSG_DEBIAN="暂不支持此 Debian 发行版" \
+MSG_REDHAT="暂不支持此 Red Hat 发行版" \
+MSG_OS="暂不支持此发行版" \
+MSG_BBRLOAD="BBR已经加载" \
+MSG_BBRENABLE="开启BBR" \
+MSG_TFOLOAD="TFO已经设置" \
+MSG_TFOENABLE="成功设置TFO" \
+MSG_UPPACK="更新软件包列表" \
+MSG_BUILDDEP="安装编译Shadowsocks-libev时需要的依赖包" \
+MSG_PORT_CHECK="安装端口占用检测工具" \
+MSG_CAP2="安装与Linux内核中POSIX 1003.1e功能接口的实现" \
+MSG_PSMISC="安装psmisc用于ss_update后的服务重启" \
+MSG_WORKDIR="进入$WORKDIRECTORY/src" \
+MSG_AUTOCONF="Redhat 6及其衍生需要更新autoconf到2.69" \
+MSG_LIBEV="Redhat 6及其衍生需要编译libev" \
+MSG_AUTOUPDATE="是否启用自动更新？(yes/no) [yes]：" \
+MSG_STARTUP="是否开机自动运行 Shadowsocks 服务端？(yes/no) [yes]：" \
+MSG_DAEMON="是否部署 HA 检测？(yes/no) [yes]：" \
+MSG_SODIUM="在$WORKDIRECTORY安装Libsodium静态编译版" \
+MSG_CARES="在$WORKDIRECTORY安装c-ares静态编译版" \
+MSG_PCRE="在$WORKDIRECTORY安装pcre静态编译版" \
+MSG_MBEDTLS="在$WORKDIRECTORY安装MbedTLS静态编译版" \
+MSG_SS="安装Shadowsocks-libev静态编译版" \
+MSG_SS_TFO="当前平台不支持 TCP fast open（需要 Linux 内核版本 > 3.7.0）" \
+MSG_SS_ENCRYPTION="加密 [chacha20-ietf-poly1305]：" \
+MSG_SS_USER="运行用户 [nobody]：" \
+MSG_SS_UDP="启用 UDP relay (yes/no) [yes]：" \
+MSG_SS_NODELAY="启用 TCP_NODELAY (yes/no) [yes]：" \
+MSG_SS_PORT_REUSE="启用端口复用（需要 Linux 内核版本 > 3.9.0）(yes/no) [yes]：" \
+MSG_SS_PORT_RANGE="请使用小于8300或大于8400的端口" \
+MSG_SS_START="是否立即启动 Shadowsocks 服务端？(yes/no) [yes]："

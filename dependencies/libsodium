@@ -1,16 +1,10 @@
 #!/bin/sh
 #Installation of Libsodium
-if [ "$LANG" = "zh_CN.UTF-8" ]; then
-  echo "在$WORKDIRECTORY安装Libsodium"
-else
-  echo "Installation Libsodium in $WORKDIRECTORY"
-fi
+echo "$MSG_SODIUM"
 
-git clone https://github.com/jedisct1/libsodium.git -b 1.0.19
+git clone https://github.com/jedisct1/libsodium.git -b 1.0.20-RELEASE
 cd libsodium
 ./autogen.sh
-./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
+./configure --prefix=$WORKDIRECTORY --disable-shared && make -j$CPU_NUM
 make install
-export PATH=$WORKDIRECTORY/bin:$PATH
-echo "export PATH=$WORKDIRECTORY/bin:\$PATH" >>$WORKDIRECTORY/envsetup.sh
 cd ..

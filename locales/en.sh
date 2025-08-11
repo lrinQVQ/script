@@ -1,0 +1,47 @@
+#!/bin/sh
+# English
+export \
+MSG_NOOBTEST_TIPS="This script is far from complete. Some functions may be unavailable or unstable. We strongly recommended you to learn some sysadmin basics before proceeding." \
+MSG_NOOBTEST_CODE="Enter passcode to continue: " \
+MSG_CHOOSE_UNINSTALL="1. Uninstall" \
+MSG_CHOOSE_CONFIG="2. Configure Shadowsocks" \
+MSG_CHOOSE_MANAGE="3. Manage Shadowsocks" \
+MSG_CHOOSE_NUM="Select an option: " \
+MSG_CHOOSE_INSTALL="1. Install" \
+MSG_CHOOSE_EXIT="2. Exit" \
+MSG_WORKDIRECTORY="Creating work directory" \
+MSG_USERPASS="Enter password of current user: " \
+MSG_WRONGPASS="Wrong password,please re-enter" \
+MSG_SAVEPASS="Encrypt the password using base64 and store it in $WORKDIRECTORY/envsetup.sh for automatic updates? (yes/no) [yes]: " \
+MSG_NOROOT="Current user doesn't have root access, make sure you have sudo installed or re-execute the script with the root user" \
+MSG_DEBIAN="Unsupported Debian distribution" \
+MSG_REDHAT="Unsupported Red Hat distribution" \
+MSG_OS="Unsupported operating system" \
+MSG_BBRLOAD="BBR has loaded" \
+MSG_BBRENABLE="BBR Enable" \
+MSG_TFOLOAD="TFO has loaded" \
+MSG_TFOENABLE="TFO Enable" \
+MSG_UPPACK="Update package lists" \
+MSG_BUILDDEP="Installation of basic Shadowsocks-libev build dependencies" \
+MSG_PORT_CHECK="Install port occupancy detection tool" \
+MSG_CAP2="Install user-space interfaces to the POSIX 1003.1e capabilities available in Linux kernels" \
+MSG_PSMISC="Install psmisc for service restart after ss_update" \
+MSG_WORKDIR="work in $WORKDIRECTORY/src" \
+MSG_AUTOCONF="Redhat 6 and its derivatives need to update autoconf to 2.69" \
+MSG_LIBEV="Redhat 6 and derivatives require building of libev" \
+MSG_AUTOUPDATE="Enable automatic updates? (yes/no) [yes]: " \
+MSG_STARTUP="Start shadowsocks server on boot? (yes/no) [yes]: " \
+MSG_DAEMON="Deploy HA detection? (yes/no) [yes]: " \
+MSG_SODIUM="Installation Libsodium static in $WORKDIRECTORY" \
+MSG_CARES="Installation c-ares static in $WORKDIRECTORY" \
+MSG_PCRE="Installation pcre static in $WORKDIRECTORY" \
+MSG_MBEDTLS="Installation MbedTLS static in $WORKDIRECTORY" \
+MSG_SS="Installation of Shadowsocks-libev static" \
+MSG_SS_TFO="TCP fast open is not supported on this platform (requires Linux kernel > 3.7.0)" \
+MSG_SS_ENCRYPTION="Encryption [chacha20-ietf-poly1305]: " \
+MSG_SS_USER="Run as user [nobody]: " \
+MSG_SS_UDP="Enable UDP relay (yes/no) [yes]: " \
+MSG_SS_NODELAY="Enable TCP_NODELAY (yes/no) [yes]: " \
+MSG_SS_PORT_REUSE="Enable port reuse (requires Linux kernel > 3.9.0) (yes/no) [yes]: " \
+MSG_SS_PORT_RANGE="Please use a port smaller than 8300 or larger than 8400" \
+MSG_SS_START="Start Shadowsocks server now? (yes/no) [yes]: "
