@@ -5,6 +5,6 @@ make distclean
 git fetch
 git reset --hard origin/1.0.20-RELEASE
 ./autogen.sh
-./configure --prefix=$WORKDIRECTORY && make -j$CPU_NUM
+./configure --prefix=$WORKDIRECTORY --disable-shared && make -j$CPU_NUM
 make install
 cd ..
