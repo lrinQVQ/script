@@ -1,4 +1,3 @@
-  GNU nano 8.5                           en.sh                            已更改  
 #!/bin/sh
 # 简体中文
 export \
