@@ -20,4 +20,5 @@ ln -f $WORKDIRECTORY/../dependencies/shadowsocks_update $WORKDIRECTORY/bin/shado
 ln -f $WORKDIRECTORY/../dependencies/kill-all $WORKDIRECTORY/bin/kill-all
 cd $WORKDIRECTORY/bin && sh kill-all
 ln -f $WORKDIRECTORY/../dependencies/ss_startup $WORKDIRECTORY/bin/ss_startup
-cd $WORKDIRECTORY&& sh bin/ss_startup
+ln -f $WORKDIRECTORY/../dependencies/daemon $WORKDIRECTORY/bin/daemon
+cd $WORKDIRECTORY&& sh bin/daemon

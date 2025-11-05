@@ -1,4 +1,12 @@
 #!/bin/sh
+if [ -f "$PWD/finish" ]
+  if [ "$LANG" = "zh_CN.UTF-8" ]; then
+    . ../locales/zh_CN.sh
+  else
+    . ../locales/en.sh
+  fi
+fi
+
 encrytedpasswd() {
   export PASSWD=$(echo "$PASSWD" | base64 -i)
 }

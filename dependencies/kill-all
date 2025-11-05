@@ -15,8 +15,8 @@ unencrytedpasswd() {
 
 if [ "$SUDO" = "yes" ]; then
   $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE sh -c "killall ss-server >/dev/null 2>&1"
+  echo $PASSWD | sudo -SE sh -c "killall -9 ss-server >/dev/null 2>&1"
   $ENCRYTEDPASSWD
 elif [ "$SUDO" = "no" ]; then
-  killall ss-server >/dev/null 2>&1
+  killall -9 ss-server >/dev/null 2>&1
 fi
