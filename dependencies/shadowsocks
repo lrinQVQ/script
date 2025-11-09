@@ -2,7 +2,12 @@
 #Shadowsocks-libev static
 echo "$MSG_SS"
 
-git clone --recursive https://github.com/shadowsocks/shadowsocks-libev.git
+if [ -z "$SS_URL" ]; then
+  git clone --recursive https://github.com/shadowsocks/shadowsocks-libev.git
+else
+  git clone --recursive $SS_URL
+fi
+
 cd shadowsocks-libev
 ./autogen.sh
 CFLAGS="$CFLAGS -I${WORKDIRECTORY}/include" LDFLAGS="$LDFLAGS -L${WORKDIRECTORY}/lib --static" ./configure --prefix=$WORKDIRECTORY --disable-shared --disable-silent-rules && make -j$CPU_NUM
