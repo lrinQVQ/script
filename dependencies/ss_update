@@ -9,16 +9,16 @@ cd $WORKDIRECTORY && cd .. && git fetch && git reset --hard origin master
 
 cd $WORKDIRECTORY/src
 
-ln -f $WORKDIRECTORY/../dependencies/libsodium_update $WORKDIRECTORY/bin/libsodium_update
+ln -sf $WORKDIRECTORY/../dependencies/libsodium_update $WORKDIRECTORY/bin/libsodium_update
 . $WORKDIRECTORY/bin/libsodium_update
-ln -f $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
+ln -sf $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
 . $WORKDIRECTORY/bin/mbedtls_update
-ln -f $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/c-ares_update
+ln -sf $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/c-ares_update
 . $WORKDIRECTORY/bin/c-ares_update
-ln -f $WORKDIRECTORY/../dependencies/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
+ln -sf $WORKDIRECTORY/../dependencies/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
 . $WORKDIRECTORY/bin/shadowsocks_update
-ln -f $WORKDIRECTORY/../dependencies/kill-all $WORKDIRECTORY/bin/kill-all
+ln -sf $WORKDIRECTORY/../dependencies/kill-all $WORKDIRECTORY/bin/kill-all
 cd $WORKDIRECTORY/bin && sh kill-all
-ln -f $WORKDIRECTORY/../dependencies/ss_startup $WORKDIRECTORY/bin/ss_startup
-ln -f $WORKDIRECTORY/../dependencies/daemon $WORKDIRECTORY/bin/daemon
+ln -sf $WORKDIRECTORY/../dependencies/ss_startup $WORKDIRECTORY/bin/ss_startup
+ln -sf $WORKDIRECTORY/../dependencies/daemon $WORKDIRECTORY/bin/daemon
 cd $WORKDIRECTORY&& sh bin/daemon

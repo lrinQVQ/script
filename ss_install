@@ -264,12 +264,12 @@ fi
 if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
   read -p "$MSG_AUTOUPDATE" AUTOUPDATE_CHECK
   if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
-    ln -vf $DEP/ss_update $WORKDIRECTORY/bin/ss_update
-    ln -vf $DEP/libsodium_update $WORKDIRECTORY/bin/libsodium_update
-    ln -vf $DEP/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
-    ln -vf $DEP/c-ares_update $WORKDIRECTORY/bin/c-ares_update
-    ln -vf $DEP/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
-    ln -vf $DEP/kill-all $WORKDIRECTORY/bin/kill-all
+    ln -vsf $DEP/ss_update $WORKDIRECTORY/bin/ss_update
+    ln -vsf $DEP/libsodium_update $WORKDIRECTORY/bin/libsodium_update
+    ln -vsf $DEP/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
+    ln -vsf $DEP/c-ares_update $WORKDIRECTORY/bin/c-ares_update
+    ln -vsf $DEP/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
+    ln -vsf $DEP/kill-all $WORKDIRECTORY/bin/kill-all
     AUTOUPDATE_CRON="0 0 * * * cd $WORKDIRECTORY && sh bin/ss_update >/dev/null 2>&1"
     if ! crontab -l | grep -Fq -- "$AUTOUPDATE_CRON"; then
       (crontab -l | sed '/bin\/ss_update/d') | crontab -
@@ -278,13 +278,13 @@ if [ "$AUTOUPDATE_CHECK" = "yes" ] || [ "$AUTOUPDATE_CHECK" = "" ]; then
   fi
 fi
 
-ln -vf $DEP/ss_config $WORKDIRECTORY/bin/ss_config
+ln -vsf $DEP/ss_config $WORKDIRECTORY/bin/ss_config
 ss_config
 
 read -p "$MSG_STARTUP" STARTUP_SERVER
 
 if [ "$STARTUP_SERVER" = "yes" ] || [ "$STARTUP_SERVER" = "" ]; then
-  ln -v $DEP/ss_startup $WORKDIRECTORY/bin
+  ln -vsf $DEP/ss_startup $WORKDIRECTORY/bin
   STARTUP_CRON="@reboot cd $WORKDIRECTORY && sh bin/ss_startup >/dev/null 2>&1"
   if ! crontab -l | grep -Fq -- "$STARTUP_CRON"; then
     (crontab -l | sed '/bin\/ss_startup/d') | crontab -
@@ -296,7 +296,7 @@ fi
 read -p "$MSG_DAEMON" HA_CHECK
 
 if [ "$HA_CHECK" = "yes" ] || [ "$HA_CHECK" = "" ]; then
-  ln -v $DEP/daemon $WORKDIRECTORY/bin/daemon
+  ln -vsf $DEP/daemon $WORKDIRECTORY/bin/daemon
   HA_CRON="*/1 * * * * cd $WORKDIRECTORY && sh bin/daemon >/dev/null 2>&1"
   if ! crontab -l | grep -Fq -- "$HA_CRON"; then
     (crontab -l | sed '/bin\/daemon/d') | crontab -
