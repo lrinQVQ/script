@@ -2,6 +2,8 @@
 #Update Mbedtls
 cd mbedtls
 make clean
+rm $WORKDIRECTORY/lib/*mbed*
+rm -rf $WORKDIRECTORY/include/mbedtls $WORKDIRECTORY/include/psa
 git fetch
 git reset --hard origin/mbedtls-3.6
 make CFLAGS=-fPIC
