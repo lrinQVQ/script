@@ -1,12 +1,12 @@
 #!/bin/sh
 #Update Shadowsocks-libev static
 cd shadowsocks-libev
-make distclean
+rm -rf build
 git fetch
 git reset --hard origin/master
 git submodule update --init --recursive
-./autogen.sh
-CFLAGS="$CFLAGS -I${WORKDIRECTORY}/include" LDFLAGS="$LDFLAGS -L${WORKDIRECTORY}/lib --static" ./configure --prefix=$WORKDIRECTORY --disable-shared --disable-silent-rules && make -j$CPU_NUM
+mkdir -p build && cd build
+cmake .. -DCMAKE_PREFIX_PATH="${WORKDIRECTORY}" -DCMAKE_INSTALL_PREFIX="${WORKDIRECTORY}" -DCMAKE_BUILD_TYPE=Release -DWITH_SHARED=OFF -DWITH_STATIC=ON -DENABLE_CONNMARKTOS=ON -DENABLE_NFTABLES=ON && make -j$CPU_NUM
 make install
 
 if [ $SUDO = yes ]; then

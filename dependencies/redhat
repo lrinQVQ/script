@@ -3,10 +3,10 @@
 echo "$MSG_BUILDDEP"
 if [ $SUDO = yes ]; then
   $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE yum install gettext gcc autoconf libtool automake make asciidoc xmlto curl git python3-jinja2 -y
+  echo $PASSWD | sudo -SE yum install gettext gcc cmake autoconf libtool automake make pkg-config pcre2-devel asciidoc xmlto curl git python3-jinja2 libnetfilter_conntrack-devel libmnl-devel libnftnl-devel -y
   $ENCRYTEDPASSWD
 elif [ $SUDO = no ]; then
-  yum install gettext gcc autoconf libtool automake make asciidoc xmlto curl git python3-jinja2 -y
+  yum install gettext gcc cmake autoconf libtool automake make pkg-config pcre2-devel asciidoc xmlto curl git python3-jinja2 libnetfilter_conntrack-devel libmnl-devel libnftnl-devel -y
 fi
 
 # Install port occupancy detection tool

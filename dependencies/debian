@@ -16,10 +16,10 @@ fi
 echo "$MSG_BUILDDEP"
 if [ "$SUDO" = "yes" ]; then
   $UNENCRYTEDPASSWD
-  echo $PASSWD | sudo -SE apt-get install --no-install-recommends gettext build-essential autoconf libtool asciidoc xmlto automake asciidoc xmlto git curl pkg-config python3-jsonschema python3-jinja2 -y
+  echo $PASSWD | sudo -SE apt-get install --no-install-recommends gettext build-essential autoconf libtool cmake asciidoc xmlto automake asciidoc xmlto git curl pkg-config libpcre2-dev python3-jsonschema python3-jinja2 libnetfilter-conntrack-dev libmnl-dev libnftnl-dev -y
   $ENCRYTEDPASSWD
 elif [ "$SUDO" = "no" ]; then
-  apt-get install --no-install-recommends gettext build-essential autoconf libtool asciidoc xmlto automake asciidoc xmlto git curl pkg-config python3-jsonschema python3-jinja2 -y
+  apt-get install --no-install-recommends gettext build-essential autoconf libtool cmake asciidoc xmlto asciidoc xmlto automake git curl pkg-config libpcre2-dev python3-jsonschema python3-jinja2 libnetfilter-conntrack-dev libmnl-dev libnftnl-dev -y
 fi
 
 # Install port occupancy detection tool
