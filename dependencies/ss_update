@@ -16,7 +16,7 @@ ln -sf $WORKDIRECTORY/../dependencies/libsodium_update $WORKDIRECTORY/bin/libsod
 . $WORKDIRECTORY/bin/libsodium_update
 ln -sf $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
 . $WORKDIRECTORY/bin/mbedtls_update
-ln -sf $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/c-ares_update
+ln -sf $WORKDIRECTORY/../dependencies/c-ares_update $WORKDIRECTORY/bin/c-ares_update
 . $WORKDIRECTORY/bin/c-ares_update
 ln -sf $WORKDIRECTORY/../dependencies/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
 . $WORKDIRECTORY/bin/shadowsocks_update
