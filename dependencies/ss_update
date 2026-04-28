@@ -18,6 +18,8 @@ ln -sf $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/mbedtls_
 . $WORKDIRECTORY/bin/mbedtls_update
 ln -sf $WORKDIRECTORY/../dependencies/c-ares_update $WORKDIRECTORY/bin/c-ares_update
 . $WORKDIRECTORY/bin/c-ares_update
+ln -sf $WORKDIRECTORY/../dependencies/libev $WORKDIRECTORY/bin/libev
+. $WORKDIRECTORY/bin/libev
 ln -sf $WORKDIRECTORY/../dependencies/shadowsocks_update $WORKDIRECTORY/bin/shadowsocks_update
 . $WORKDIRECTORY/bin/shadowsocks_update
 ln -sf $WORKDIRECTORY/../dependencies/kill-all $WORKDIRECTORY/bin/kill-all
