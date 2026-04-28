@@ -2,7 +2,7 @@
 #Installation of Libsodium
 echo "$MSG_SODIUM"
 
-git clone https://github.com/jedisct1/libsodium.git -b 1.0.20-RELEASE
+git clone https://github.com/jedisct1/libsodium.git -b 1.0.21
 cd libsodium
 ./autogen.sh
 ./configure --prefix=$WORKDIRECTORY --disable-shared && make -j$CPU_NUM
