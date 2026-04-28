@@ -7,8 +7,11 @@ fi
 
 cd $WORKDIRECTORY && cd .. && git fetch && git reset --hard origin master
 
+rm -rf $WORKDIRECTORY/bin/* $WORKDIRECTORY/include/* $WORKDIRECTORY/lib/*
+
 cd $WORKDIRECTORY/src
 
+ln -sf $WORKDIRECTORY/../dependencies/ss_update $WORKDIRECTORY/bin/ss_update
 ln -sf $WORKDIRECTORY/../dependencies/libsodium_update $WORKDIRECTORY/bin/libsodium_update
 . $WORKDIRECTORY/bin/libsodium_update
 ln -sf $WORKDIRECTORY/../dependencies/mbedtls_update $WORKDIRECTORY/bin/mbedtls_update
