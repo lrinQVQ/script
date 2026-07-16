@@ -4,7 +4,7 @@ echo "$MSG_SODIUM"
 
 git clone https://github.com/jedisct1/libsodium.git -b master
 cd libsodium
-./autogen.sh
+autoreconf -vi
 ./configure --prefix=$WORKDIRECTORY --disable-shared && make -j$CPU_NUM
 make install
 cd ..
