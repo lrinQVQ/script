@@ -25,5 +25,6 @@ ln -sf $WORKDIRECTORY/../dependencies/shadowsocks_update $WORKDIRECTORY/bin/shad
 ln -sf $WORKDIRECTORY/../dependencies/kill-all $WORKDIRECTORY/bin/kill-all
 cd $WORKDIRECTORY/bin && sh kill-all
 ln -sf $WORKDIRECTORY/../dependencies/ss_startup $WORKDIRECTORY/bin/ss_startup
+ln -sf $WORKDIRECTORY/../dependencies/ss_config $WORKDIRECTORY/bin/ss_config
 ln -sf $WORKDIRECTORY/../dependencies/daemon $WORKDIRECTORY/bin/daemon
 cd $WORKDIRECTORY&& sh bin/daemon
